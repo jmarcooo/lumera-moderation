@@ -74,7 +74,6 @@
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
-        .cell-empty { color: var(--text-tertiary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -106,36 +105,20 @@
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-        .doc-embed-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .doc-embed { flex: 1; width: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed.short { height: 160px; min-width: 45%; }
         
-        /* Avatar specific preview */
         .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; cursor: zoom-in; }
         .avatar-preview.rejected { border-color: #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
         
-        /* New Portfolio Grid layout */
-        .portfolio-gallery {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .portfolio-thumb {
-            height: 90px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #f3f4f6;
-            cursor: zoom-in;
-            position: relative;
-        }
-        .portfolio-thumb img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: opacity 0.2s;
-        }
-        .portfolio-thumb img:hover { opacity: 0.8; }
+        /* Portfolio Grid layout */
+        .portfolio-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 12px; }
+        .portfolio-thumb { height: 90px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
+        .portfolio-thumb img, .portfolio-thumb video { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
+        .portfolio-thumb img:hover, .portfolio-thumb video:hover { opacity: 0.8; }
         
+        .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; color: rgba(255,255,255,0.9); pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); z-index: 10; }
+
         .doc-embed iframe, .doc-embed img.clickable-img { width: 100%; height: 100%; border: none; object-fit: cover; background-color: #e5e7eb; cursor: zoom-in; }
         .doc-embed img.clickable-img:hover { opacity: 0.9; }
 
@@ -143,60 +126,27 @@
 
         /* --- RIGHT DECISION PANEL --- */
         .right-panel {
-            width: 320px;
-            flex-shrink: 0;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            position: sticky;
-            top: 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            width: 320px; flex-shrink: 0; background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 24px; position: sticky; top: 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex; flex-direction: column; gap: 24px;
         }
 
-        .dp-section {
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
-        }
+        .dp-section { padding-bottom: 24px; border-bottom: 1px solid var(--border-color); }
         .dp-section:last-child { border-bottom: none; padding-bottom: 0; }
-        
         .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
-        
         .dp-radio-group { display: flex; flex-direction: column; gap: 8px; }
-        .dp-radio-label {
-            display: flex; align-items: center; gap: 8px; 
-            font-size: 13px; font-weight: 500; color: var(--text-main); 
-            cursor: pointer; padding: 4px 0;
-        }
-        .dp-radio-label input[type="radio"] {
-            accent-color: #8b5cf6;
-            width: 16px; height: 16px;
-            cursor: pointer;
-        }
+        .dp-radio-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-main); cursor: pointer; padding: 4px 0; }
+        .dp-radio-label input[type="radio"] { accent-color: #8b5cf6; width: 16px; height: 16px; cursor: pointer; }
 
         .dp-sub-reasons {
-            margin-left: 24px;
-            margin-top: 8px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            animation: fadeIn 0.2s ease-in-out;
-            background: #fff1f2;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #ffe4e6;
+            margin-left: 24px; margin-top: 8px; display: none; flex-direction: column; gap: 6px;
+            animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6;
         }
         
         .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
         .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
 
-        /* Reveal sub-reasons when reject is checked */
-        .dp-section:has(input[value="reject"]:checked) .dp-sub-reasons {
-            display: flex;
-        }
+        .dp-section:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
         .btn-submit:hover { opacity: 0.9; }
@@ -209,10 +159,11 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- IMAGE VIEWER MODAL WITH NAVIGATION --- */
-        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        /* --- MEDIA VIEWER MODAL (Handles Images & Videos) --- */
+        .media-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .media-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .media-modal-content img, .media-modal-content video { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; display: none; }
+        
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
         .modal-btn:hover { color: #8b5cf6; }
@@ -374,7 +325,7 @@
             <div id="view-detail">
                 <div class="page-header" style="display: block;">
                     <h1>Profile Review: Lumera Events Co.</h1>
-                    <p>Review the public-facing identity assets and portfolio uploads. Click any image to enlarge.</p>
+                    <p>Review the public-facing identity assets and portfolio uploads. Click any media to enlarge.</p>
                 </div>
 
                 <div style="display: flex; gap: 32px; align-items: flex-start;">
@@ -407,12 +358,12 @@
                                 
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Avatar" class="avatar-preview clickable-img" onclick="openImageModal(this)">
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Avatar" class="avatar-preview clickable-img" onclick="openMediaModal(this)">
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Banner" class="clickable-img" onclick="openImageModal(this)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Banner" class="clickable-img" onclick="openMediaModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -433,18 +384,24 @@
                             
                             <!-- Col 2: Portfolio Images grid -->
                             <div class="block-action">
-                                <div class="doc-preview-label">Uploaded Portfolio Media (10 Images)</div>
+                                <div class="doc-preview-label">Uploaded Portfolio Media (10 Items)</div>
                                 <div class="portfolio-gallery">
-                                    <div class="portfolio-thumb"><img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://lightoflove.com.ph/wp-content/uploads/2026/02/ultimate-wedding-supplier-checklist-coordination-light-of-love-quezon-city.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.lovemydress.net/wp-content/uploads/2019/03/how-to-break-up-with-your-wedding-suppliers.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://brideandbreakfast.ph/wp-content/uploads/2023/07/the-list-july-06.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://i0.wp.com/lorismaeshielda.com/wp-content/uploads/2025/10/destination-wedding-venue-club-punta-fuego.jpg?resize=960%2C640&ssl=1" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1fqrjPbpYjR-vRYTIRKZ2pd4UGwCf0JrCMsJYthEpYw2Gxi1pMTau2ss&s=10" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.tiarraverdegardens.com/uploads/1/3/7/7/137736543/forever-always-wedding-package-2023-lazuri-tagaytay-metro-manila-ph-02_orig.jpg" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <!-- Video Element -->
+                                    <div class="portfolio-thumb">
+                                        <video src="https://packaged-media.redd.it/3p2r4m03vffh1/pb/m2-res_1080p.mp4?m=DASHPlaylist.mpd&var=sgpssan&v=1&e=1789509600&s=93c30d6657d879d07e38c5002ca08c382477a53c" class="clickable-img" onclick="openMediaModal(this)"></video>
+                                        <i class="ph-fill ph-play-circle play-overlay"></i>
+                                    </div>
+                                    
+                                    <!-- Image Elements -->
+                                    <div class="portfolio-thumb"><img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://lightoflove.com.ph/wp-content/uploads/2026/02/ultimate-wedding-supplier-checklist-coordination-light-of-love-quezon-city.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://www.lovemydress.net/wp-content/uploads/2019/03/how-to-break-up-with-your-wedding-suppliers.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://brideandbreakfast.ph/wp-content/uploads/2023/07/the-list-july-06.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://i0.wp.com/lorismaeshielda.com/wp-content/uploads/2025/10/destination-wedding-venue-club-punta-fuego.jpg?resize=960%2C640&ssl=1" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1fqrjPbpYjR-vRYTIRKZ2pd4UGwCf0JrCMsJYthEpYw2Gxi1pMTau2ss&s=10" class="clickable-img" onclick="openMediaModal(this)"></div>
                                 </div>
                             </div>
                         </div>
@@ -477,7 +434,7 @@
                                 <label class="dp-radio-label"><input type="radio" name="p2_decision" value="reject"> Reject</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r1"> NSFW / Inappropriate image</label>
+                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r1"> NSFW / Inappropriate media</label>
                                 <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r2"> Low quality / Blurry</label>
                                 <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r3"> Irrelevant to category</label>
                                 <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r4"> Competitor watermark</label>
@@ -513,12 +470,12 @@
                                 <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" class="avatar-preview clickable-img" onclick="openImageModal(this)">
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" class="avatar-preview clickable-img" onclick="openMediaModal(this)">
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openImageModal(this)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openMediaModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -570,12 +527,12 @@
                                 <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" style="filter: blur(2px);" class="avatar-preview rejected clickable-img" onclick="openImageModal(this)">
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" style="filter: blur(2px);" class="avatar-preview rejected clickable-img" onclick="openMediaModal(this)">
                                         <div style="font-size: 11px; font-weight: 600; color: var(--color-reject); margin-top: 8px;">Avatar (Blurry)</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openImageModal(this)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openMediaModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -596,8 +553,8 @@
                             <div class="block-action">
                                 <div class="doc-preview-label">Uploaded Portfolio Media</div>
                                 <div class="portfolio-gallery" style="grid-template-columns: repeat(2, 1fr);">
-                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+1" class="clickable-img" onclick="openImageModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+2" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://www.tiarraverdegardens.com/uploads/1/3/7/7/137736543/forever-always-wedding-package-2023-lazuri-tagaytay-metro-manila-ph-02_orig.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
                                 </div>
                             </div>
                         </div>
@@ -641,25 +598,27 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- IMAGE VIEWER MODAL                             -->
+    <!-- MEDIA VIEWER MODAL (Handles Videos & Images)   -->
     <!-- ============================================== -->
-    <div class="image-modal-overlay" id="image-modal">
-        <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
-        <button class="modal-arrow modal-arrow-left" id="modal-prev" onclick="showPrevImage()"><i class="ph ph-caret-left"></i></button>
-        <button class="modal-arrow modal-arrow-right" id="modal-next" onclick="showNextImage()"><i class="ph ph-caret-right"></i></button>
+    <div class="media-modal-overlay" id="media-modal">
+        <button class="modal-close" onclick="closeMediaModal()"><i class="ph ph-x"></i></button>
+        <button class="modal-arrow modal-arrow-left" id="modal-prev" onclick="showPrevMedia()"><i class="ph ph-caret-left"></i></button>
+        <button class="modal-arrow modal-arrow-right" id="modal-next" onclick="showNextMedia()"><i class="ph ph-caret-right"></i></button>
         
-        <div class="image-modal-content">
-            <img id="modal-img-target" src="" alt="Expanded Document">
+        <div class="media-modal-content">
+            <img id="modal-img-target" src="" alt="Expanded Media">
+            <video id="modal-video-target" controls loop></video>
         </div>
+        
         <div class="modal-toolbar">
-            <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
-            <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
             <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
-            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
-            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
             <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
-            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
-            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
         </div>
     </div>
 
@@ -727,7 +686,7 @@
             document.getElementById('warning-modal').style.display = 'none';
         }
 
-        // --- IMAGE VIEWER MODAL LOGIC (With Navigation & Scroll Zoom) ---
+        // --- DYNAMIC MEDIA VIEWER MODAL LOGIC ---
         let currentScale = 1;
         let currentRotate = 0;
         let currentFlipX = 1;
@@ -735,31 +694,36 @@
         let currentGallery = [];
         let currentIndex = 0;
         
-        const modalEl = document.getElementById('image-modal');
+        const modalEl = document.getElementById('media-modal');
         const modalImgTarget = document.getElementById('modal-img-target');
+        const modalVideoTarget = document.getElementById('modal-video-target');
         const btnPrev = document.getElementById('modal-prev');
         const btnNext = document.getElementById('modal-next');
 
-        function openImageModal(imgElement) {
-            // Find all images within the same section block to build a gallery
-            const container = imgElement.closest('.block-action');
+        function openMediaModal(element) {
+            const container = element.closest('.block-action');
             if (container) {
-                const imgs = Array.from(container.querySelectorAll('img.clickable-img'));
-                currentGallery = imgs.map(i => i.src);
-                currentIndex = currentGallery.indexOf(imgElement.src);
+                const mediaElements = Array.from(container.querySelectorAll('.clickable-img'));
+                currentGallery = mediaElements.map(el => ({
+                    src: el.src,
+                    type: el.tagName.toLowerCase() // "img" or "video"
+                }));
+                currentIndex = currentGallery.findIndex(item => item.src === element.src);
             } else {
-                currentGallery = [imgElement.src];
+                currentGallery = [{ src: element.src, type: element.tagName.toLowerCase() }];
                 currentIndex = 0;
             }
 
             updateArrows();
             resetTransform();
-            modalImgTarget.src = currentGallery[currentIndex];
+            renderModalMedia();
             modalEl.style.display = 'flex';
         }
 
-        function closeImageModal() {
+        function closeMediaModal() {
             modalEl.style.display = 'none';
+            modalVideoTarget.pause();
+            modalVideoTarget.src = '';
             modalImgTarget.src = '';
         }
 
@@ -773,20 +737,39 @@
             }
         }
 
-        function showNextImage() {
+        function showNextMedia() {
             if (currentGallery.length > 1) {
                 currentIndex = (currentIndex + 1) % currentGallery.length;
                 resetTransform();
-                modalImgTarget.src = currentGallery[currentIndex];
+                renderModalMedia();
             }
         }
 
-        function showPrevImage() {
+        function showPrevMedia() {
             if (currentGallery.length > 1) {
                 currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
                 resetTransform();
-                modalImgTarget.src = currentGallery[currentIndex];
+                renderModalMedia();
             }
+        }
+
+        function renderModalMedia() {
+            const currentMedia = currentGallery[currentIndex];
+            
+            // Hide both first
+            modalImgTarget.style.display = 'none';
+            modalVideoTarget.style.display = 'none';
+            modalVideoTarget.pause();
+
+            if (currentMedia.type === 'video') {
+                modalVideoTarget.src = currentMedia.src;
+                modalVideoTarget.style.display = 'block';
+                modalVideoTarget.play(); // Auto-play when opened
+            } else {
+                modalImgTarget.src = currentMedia.src;
+                modalImgTarget.style.display = 'block';
+            }
+            applyTransform();
         }
 
         function resetTransform() {
@@ -798,10 +781,11 @@
         }
 
         function applyTransform() {
-            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+            const target = currentGallery[currentIndex].type === 'video' ? modalVideoTarget : modalImgTarget;
+            target.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
         }
 
-        function modifyImage(action) {
+        function modifyMedia(action) {
             switch(action) {
                 case 'zoom-in': currentScale += 0.2; break;
                 case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
@@ -814,28 +798,30 @@
         }
         
         // Mouse Wheel Zoom
-        modalImgTarget.addEventListener('wheel', function(e) {
-            e.preventDefault();
-            if (e.deltaY < 0) {
-                modifyImage('zoom-in');
-            } else {
-                modifyImage('zoom-out');
+        modalEl.addEventListener('wheel', function(e) {
+            if (e.target === modalImgTarget || e.target === modalVideoTarget) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    modifyMedia('zoom-in');
+                } else {
+                    modifyMedia('zoom-out');
+                }
             }
         });
 
-        // Close on outside click
+        // Close on outside click (avoiding the video controls)
         modalEl.addEventListener('click', function(e) {
             if (e.target === modalEl) {
-                closeImageModal();
+                closeMediaModal();
             }
         });
 
-        // Keyboard Navigation (Escape to close, Arrows to navigate)
+        // Keyboard Navigation
         document.addEventListener('keydown', function(e) {
             if (modalEl.style.display === 'flex') {
-                if (e.key === 'Escape') closeImageModal();
-                if (e.key === 'ArrowRight') showNextImage();
-                if (e.key === 'ArrowLeft') showPrevImage();
+                if (e.key === 'Escape') closeMediaModal();
+                if (e.key === 'ArrowRight') showNextMedia();
+                if (e.key === 'ArrowLeft') showPrevMedia();
             }
         });
     </script>
