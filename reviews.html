@@ -86,48 +86,50 @@
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
         /* --- COMPREHENSIVE MODERATION BLOCKS --- */
-        .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
+        .verification-blocks { display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
         .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
         
-        .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
+        /* Adjusted padding for tighter layout */
+        .block-data { padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .block-action { padding: 20px; background-color: #fafaf9; display: flex; flex-direction: column; }
         .block-action + .block-action { border-left: 1px dashed var(--border-color); }
         .block-action.span-2 { grid-column: 2 / 4; }
 
-        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
-        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+        
+        /* Converted to flexible column stack with smaller gaps */
+        .info-grid { display: flex; flex-direction: column; gap: 12px; }
+        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 8px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.4; }
 
-        .review-comment { background: #fff1f2; border: 1px solid #ffe4e6; color: #881337; font-size: 14px; font-style: italic; padding: 12px 16px; border-radius: 6px; line-height: 1.6; }
+        .review-comment { background: #fff1f2; border: 1px solid #ffe4e6; color: #881337; font-size: 14px; font-style: italic; padding: 10px 14px; border-radius: 6px; line-height: 1.5; }
         
         .field-rejected .label { color: var(--color-reject) !important; }
         .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
 
-        .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
-        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
         .doc-embed { flex: 1; width: 100%; height: 250px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
-        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
+        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: cover; object-position: top; background-color: #e5e7eb; }
         .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
         .doc-embed img.clickable-img:hover { opacity: 0.9; }
 
         .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
         .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
 
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.4; }
 
         /* Flag Box */
-        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.5; }
+        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.4; }
         .flag-box .highlight { color: #b91c1c; font-weight: 600; }
 
         /* Shared Decision Styling */
         .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
         .decision-group { display: flex; flex-direction: column; gap: 8px; } /* Stacked for reviews */
-        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
+        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
         .decision-label input[type="radio"] { display: none; }
         .decision-label.approve:hover { border-color: var(--color-approve); }
         .decision-label.reject:hover { border-color: var(--color-reject); }
@@ -135,7 +137,7 @@
         .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
 
         /* --- READ ONLY MODERATION STATES --- */
-        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 12px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
         .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
         
@@ -147,7 +149,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
-        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .final-action-text h4 { font-size: 16px; font-weight: 600; }
         .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
@@ -218,6 +220,10 @@
                 <a href="reviews.html" class="nav-item active">
                     <i class="ph ph-star"></i>
                     <span>Reviews</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chat-circle-dots"></i>
+                    <span>Chat</span>
                 </a>
                 <a href="contracts.html" class="nav-item">
                     <i class="ph ph-file-text"></i>
@@ -337,7 +343,7 @@
                                     <div class="label">Date Posted</div>
                                     <div class="value">June 24, 2026</div>
                                 </div>
-                                <div class="info-item" style="grid-column: 1 / -1;">
+                                <div class="info-item">
                                     <div class="label">Review Comment</div>
                                     <div class="review-comment">
                                         "Absolutely terrible service. The owner is a complete scam artist and a [PROFANITY CENSORED]. Do not book them under any circumstances. They completely ruined our event!"
@@ -356,11 +362,11 @@
                                 "This person was never a client. This is a competitor trying to tank my rating. Attached is a screenshot showing they have no booking history with us."
                             </div>
                             
-                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence</div>
                             <div class="doc-embed-wrapper" style="margin-bottom: 0;">
                                 <div class="doc-embed short">
                                     <div class="doc-embed-label"><i class="ph ph-image"></i> BookingHistory.jpg</div>
-                                    <img src="https://placehold.co/600x800/e2e8f0/64748b?text=System+Booking+History" alt="Evidence" class="clickable-img" onclick="openImageModal(this.src)">
+                                    <img src="https://dhtmlx.com/blog/wp-content/uploads/2017/12/hotel-calendar.png" alt="Evidence" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
@@ -418,8 +424,8 @@
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
                                 <div class="info-item"><div class="label">Reviewer Name</div><div class="value">David Lee</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★★★★☆ (4.0)</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Review Comment</div><div class="review-comment" style="background:#f9fafb; border-color:#e5e7eb; color:#374151;">"Food was great, but the delivery was 30 minutes late. Otherwise, good service."</div></div>
+                                <div class="info-item"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★★★★☆ (4.0)</div></div>
+                                <div class="info-item"><div class="label">Review Comment</div><div class="review-comment" style="background:#f9fafb; border-color:#e5e7eb; color:#374151;">"Food was great, but the delivery was 30 minutes late. Otherwise, good service."</div></div>
                             </div>
                         </div>
                         
@@ -431,7 +437,7 @@
                                 <strong>System Note:</strong><br>
                                 Automated flag triggered by keyword: "late".
                             </div>
-                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence</div>
                             <div class="action-instructions">No evidence attached.</div>
                         </div>
 
@@ -469,8 +475,8 @@
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
                                 <div class="info-item"><div class="label">Reviewer Name</div><div class="value">Jane Doe</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div></div>
-                                <div class="info-item field-rejected" style="grid-column: 1 / -1;"><div class="label">Review Comment</div><div class="value" style="background:#fef2f2; border-color:#fca5a5; color:#991b1b; font-style:italic;">"Click here to get 50% off your next catering order: http://spam-link-promo.com"</div></div>
+                                <div class="info-item"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div></div>
+                                <div class="info-item field-rejected"><div class="label">Review Comment</div><div class="value" style="background:#fef2f2; border-color:#fca5a5; color:#991b1b; font-style:italic;">"Click here to get 50% off your next catering order: http://spam-link-promo.com"</div></div>
                             </div>
                         </div>
                         
@@ -482,7 +488,7 @@
                                 <strong>System Note:</strong><br>
                                 Automated flag triggered by external URL detection.
                             </div>
-                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence</div>
                             <div class="action-instructions">No evidence attached.</div>
                         </div>
 
@@ -667,9 +673,29 @@
             applyTransform();
         }
         
+        // --- Mouse Wheel Zoom (Bound to entire modal) ---
+        modalEl.addEventListener('wheel', function(e) {
+            e.preventDefault(); // Stop page from scrolling behind it
+            if (e.deltaY < 0) {
+                modifyImage('zoom-in');
+            } else {
+                modifyImage('zoom-out');
+            }
+        }, { passive: false });
+
+        // Close on outside click
         modalEl.addEventListener('click', function(e) {
             if (e.target === modalEl) {
                 closeImageModal();
+            }
+        });
+
+        // --- Keyboard Navigation (Escape to close) ---
+        document.addEventListener('keydown', function(e) {
+            if (window.getComputedStyle(modalEl).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeImageModal();
+                }
             }
         });
 
