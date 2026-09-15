@@ -98,7 +98,6 @@
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
         
-        /* Updated info-grid to stack tightly and not space evenly */
         .info-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
@@ -142,6 +141,20 @@
         
         .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
         .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+
+        /* --- UNIFIED BLOCK FOOTER (DECISION AREA) --- */
+        .block-footer {
+            grid-column: 1 / -1;
+            padding: 16px 24px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .block-footer .footer-text { font-size: 14px; color: var(--text-secondary); font-weight: 500; padding-top: 10px; }
+        .block-footer .decision-wrapper { width: 450px; flex: none; display: flex; flex-direction: column; }
 
         /* --- READ ONLY MODERATION STATES --- */
         .locked-decision { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
@@ -353,7 +366,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <!-- UNIFIED DECISION AREA (Lower Left) -->
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_sec_1" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
@@ -371,24 +384,24 @@
                             </div>
                         </div>
                         
-                        <!-- Col 2: DTI Document (30%) -->
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div>
-                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Col 3: SEC Document (30%) -->
+                        <!-- Col 2: SEC Document (30%) -->
                         <div class="block-action">
                             <div class="doc-preview-label">SEC Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom: 0;">
                                 <div class="doc-embed">
                                     <div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div>
                                     <img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 3: DTI Document (30%) -->
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div>
+                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
@@ -405,7 +418,7 @@
                                 <div class="info-item"><div class="label">Zip Code</div><div class="value">1200</div></div>
                                 <div class="info-item"><div class="label">Primary Service Areas</div><div class="value">Metro Manila</div></div>
                             </div>
-                            <!-- UNIFIED DECISION AREA (Lower Left) -->
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_sec_2" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
@@ -421,9 +434,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
-                            -
-                        </div>
+
+                        <!-- Col 2: Mayor's Permit (30%) -->
                         <div class="block-action">
                             <div class="doc-preview-label">Mayor's Permit</div>
                             <div class="doc-embed-wrapper" style="margin-bottom: 0;">
@@ -432,6 +444,11 @@
                                     <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Col 3: Empty Placeholder (-) -->
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
+                            -
                         </div>
                     </div>
 
@@ -443,7 +460,7 @@
                                 <div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 25,000</div></div>
                                 <div class="info-item"><div class="label">Tax Registration</div><div class="value">VAT Registered (Implied)</div></div>
                             </div>
-                            <!-- UNIFIED DECISION AREA (Lower Left) -->
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_sec_3" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
@@ -459,9 +476,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
-                            -
-                        </div>
+
+                        <!-- Col 2: BIR Certificate (30%) -->
                         <div class="block-action">
                             <div class="doc-preview-label">BIR Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom: 0;">
@@ -470,6 +486,11 @@
                                     <img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" alt="BIR Form 2303" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Col 3: Empty Placeholder (-) -->
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
+                            -
                         </div>
                     </div>
 
@@ -483,7 +504,7 @@
                                 <div class="info-item"><div class="label">Contact Number</div><div class="value">0917 123 4567</div></div>
                                 <div class="info-item"><div class="label">Email Address</div><div class="value">admin@lumeraevents.com</div></div>
                             </div>
-                            <!-- UNIFIED DECISION AREA (Lower Left) -->
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_sec_4" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
@@ -500,19 +521,19 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Col 2: ID Selfie (30%) -->
                         <div class="block-action">
-                            <div class="doc-preview-label">Government ID</div>
-                            <div class="doc-embed-wrapper" style="flex-direction: column; margin-bottom: 0;">
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
-                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div class="doc-preview-label">ID Selfie</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
+                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Col 3: Authorization Letter (30%) -->
                         <div class="block-action">
                             <div class="doc-preview-label">Authorization Letter</div>
                             <div class="doc-embed-wrapper" style="margin-bottom: 0;">
@@ -559,18 +580,21 @@
                                     <div class="value">-</div>
                                 </div>
                             </div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
-                        </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
                             </div>
                         </div>
                         <div class="block-action">
                             <div class="doc-preview-label">SEC Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
                                 <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
                             </div>
                         </div>
                     </div>
@@ -580,15 +604,18 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Street Address</div><div class="value">Unit 100, Greenfield District</div></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
+                            </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                         <div class="block-action">
                             <div class="doc-preview-label">Mayor's Permit</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
                                 <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit.jpg</div><img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" class="clickable-img" onclick="openImageModal(this.src)"></div>
                             </div>
                         </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                     </div>
                     
                     <!-- Block 3 -->
@@ -596,15 +623,18 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 50,000</div></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
+                            </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                         <div class="block-action">
                             <div class="doc-preview-label">BIR Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
                                 <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
                             </div>
                         </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                     </div>
 
                     <!-- Block 4 -->
@@ -612,18 +642,17 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative Details</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Representative name</div><div class="value">Maria Santos</div></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
+                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">Government ID</div>
-                            <div class="doc-embed-wrapper" style="flex-direction: column; margin-bottom:0;">
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
-                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div class="doc-preview-label">ID Selfie</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
+                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
@@ -668,18 +697,21 @@
                                     <a href="https://bnrs.dti.gov.ph/search" target="_blank" class="external-verify-link"><i class="ph ph-arrow-square-out"></i> Verify with DTI</a>
                                 </div>
                             </div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
-                        </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
                             </div>
                         </div>
                         <div class="block-action">
                             <div class="doc-preview-label">SEC Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
                                 <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
                             </div>
                         </div>
                     </div>
@@ -689,12 +721,12 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Street Address</div><div class="value">45 Mabini Street, Ermita</div></div></div>
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Section Rejected</div>
                                 <div class="static-reason"><strong>Violation Reason:</strong> Expired document provided (Dated 2024).</div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                         <div class="block-action">
                             <div class="doc-preview-label">Mayor's Permit</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
@@ -705,6 +737,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                     </div>
                     
                     <!-- Block 3 -->
@@ -712,15 +745,18 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 15,000</div></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div></div>
+                            <!-- Lower Left Decision -->
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
+                            </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                         <div class="block-action">
                             <div class="doc-preview-label">BIR Certificate</div>
                             <div class="doc-embed-wrapper" style="margin-bottom:0;">
                                 <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
                             </div>
                         </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
                     </div>
 
                     <!-- Block 4 (REJECTED INFO) -->
@@ -731,21 +767,18 @@
                                 <!-- HIGHLIGHTED REJECTED FIELD -->
                                 <div class="info-item field-rejected"><div class="label">Representative name</div><div class="value">John Doe</div></div>
                             </div>
+                            <!-- Lower Left Decision -->
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Section Rejected</div>
                                 <div class="static-reason"><strong>Violation Reason:</strong> Details do not match uploaded ID document.</div>
                             </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">Government ID</div>
-                            <div class="doc-embed-wrapper" style="flex-direction: column; margin-bottom:0;">
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
-                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div class="doc-preview-label">ID Selfie</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
+                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
