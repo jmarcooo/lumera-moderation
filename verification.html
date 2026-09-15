@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumera Admin - Verification</title>
+    <title>Lumera Admin - Verification & Moderation</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -89,9 +89,11 @@
         /* --- COMPREHENSIVE MODERATION BLOCKS --- */
         .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
         .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        
         .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
         .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
         .block-action + .block-action { border-left: 1px dashed var(--border-color); }
+        .block-action.span-2 { grid-column: 2 / 4; }
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
@@ -101,28 +103,32 @@
 
         .field-rejected .label { color: var(--color-reject) !important; }
         .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
+        
         .value-with-copy { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         .btn-copy { background: none; border: none; color: var(--text-tertiary); cursor: pointer; font-size: 16px; padding: 2px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s; }
         .btn-copy:hover { color: #8b5cf6; background-color: #f3e8ff; }
+
+        /* External Link utility */
+        .verify-link { font-size: 12px; color: #8b5cf6; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-weight: 500; transition: color 0.2s; }
+        .verify-link:hover { color: #7c3aed; text-decoration: underline; }
 
         .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+        .span-2 .doc-embed-wrapper { flex-direction: row; flex-wrap: wrap; }
         .doc-embed { flex: 1; width: 100%; height: 350px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed.short { height: 250px; }
         .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
         .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
         .doc-embed img.clickable-img:hover { opacity: 0.9; }
 
-        .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; }
+        .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
         .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
         .doc-embed.rejected { border: 2px solid #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
 
         .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
-        .action-instructions a { color: #8b5cf6; text-decoration: none; font-weight: 500; }
-        .action-instructions a:hover { text-decoration: underline; }
 
         /* Shared Decision Styling */
         .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
@@ -207,6 +213,10 @@
                     <i class="ph ph-star"></i>
                     <span>Reviews</span>
                 </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chat-circle-dots"></i>
+                    <span>Chat</span>
+                </a>
                 <a href="contracts.html" class="nav-item">
                     <i class="ph ph-file-text"></i>
                     <span>Contracts</span>
@@ -228,10 +238,6 @@
         </header>
 
         <main class="content" id="main-content">
-            
-            <!-- ============================================== -->
-            <!-- 1. VERIFICATION SECTION                        -->
-            <!-- ============================================== -->
             
             <!-- LIST VIEW -->
             <div id="view-list">
@@ -328,6 +334,9 @@
                                         <span>CS202612345</span>
                                         <button class="btn-copy" onclick="copyToClipboard('CS202612345')" title="Copy"><i class="ph ph-copy"></i></button>
                                     </div>
+                                    <a href="https://checkwithsec.sec.gov.ph/check-with-sec/" target="_blank" class="verify-link">
+                                        <i class="ph ph-arrow-square-out"></i> Verify on SEC
+                                    </a>
                                 </div>
                                 <div class="info-item">
                                     <div class="label">DTI Number</div>
@@ -335,6 +344,9 @@
                                         <span>9876543210</span>
                                         <button class="btn-copy" onclick="copyToClipboard('9876543210')" title="Copy"><i class="ph ph-copy"></i></button>
                                     </div>
+                                    <a href="https://bnrs.dti.gov.ph/search" target="_blank" class="verify-link">
+                                        <i class="ph ph-arrow-square-out"></i> Verify on DTI
+                                    </a>
                                 </div>
                             </div>
                             <div class="data-decision">
@@ -364,6 +376,7 @@
                                     <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
+                            <div class="action-instructions">Ensure the submitted document matches the verified online records.</div>
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_dti_doc" value="approve"><i class="ph ph-check-circle"></i> Approve DTI</label>
@@ -389,6 +402,7 @@
                                     <img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC Certificate" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
+                            <div class="action-instructions">Ensure the submitted document matches the verified online records.</div>
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
                                     <label class="decision-label approve"><input type="radio" name="check_sec_doc" value="approve"><i class="ph ph-check-circle"></i> Approve SEC</label>
@@ -432,7 +446,6 @@
                                             <option value="mismatch">Details do not match document</option>
                                             <option value="inappropriate">Inappropriate or offensive text</option>
                                             <option value="incomplete">Incomplete information</option>
-                                            <option value="other">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -658,8 +671,15 @@
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Alpha Trading Corp.</div></div>
                                 <div class="info-item"><div class="label">Business Type</div><div class="value">Corporation</div></div>
-                                <div class="info-item"><div class="label">SEC Number</div><div class="value">CS202199887</div></div>
-                                <div class="info-item"><div class="label">DTI Number</div><div class="value">-</div></div>
+                                <div class="info-item">
+                                    <div class="label">SEC Number</div>
+                                    <div class="value">CS202199887</div>
+                                    <a href="https://checkwithsec.sec.gov.ph/check-with-sec/" target="_blank" class="verify-link"><i class="ph ph-arrow-square-out"></i> Verify SEC</a>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">DTI Number</div>
+                                    <div class="value">-</div>
+                                </div>
                             </div>
                             <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
                         </div>
@@ -784,7 +804,16 @@
                             <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Manila Catering Services</div></div>
-                                <div class="info-item"><div class="label">DTI Number</div><div class="value">1122334455</div></div>
+                                <div class="info-item"><div class="label">Business Type</div><div class="value">-</div></div>
+                                <div class="info-item">
+                                    <div class="label">SEC Number</div>
+                                    <div class="value">-</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">DTI Number</div>
+                                    <div class="value">1122334455</div>
+                                    <a href="https://bnrs.dti.gov.ph/search" target="_blank" class="verify-link"><i class="ph ph-arrow-square-out"></i> Verify DTI</a>
+                                </div>
                             </div>
                             <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
                         </div>
@@ -934,7 +963,7 @@
     </div>
 
     <script>
-        function hideAllVerificationViews() {
+        function hideAllViews() {
             document.getElementById('view-list').style.display = 'none';
             document.getElementById('view-detail').style.display = 'none';
             document.getElementById('view-completed-approved').style.display = 'none';
@@ -942,7 +971,7 @@
         }
 
         function showDetail() {
-            hideAllVerificationViews();
+            hideAllViews();
             document.getElementById('view-detail').style.display = 'block';
             document.getElementById('btn-back').style.display = 'flex';
             document.getElementById('main-topbar').classList.add('has-back');
@@ -950,7 +979,7 @@
         }
 
         function showCompletedApproved() {
-            hideAllVerificationViews();
+            hideAllViews();
             document.getElementById('view-completed-approved').style.display = 'block';
             document.getElementById('btn-back').style.display = 'flex';
             document.getElementById('main-topbar').classList.add('has-back');
@@ -958,7 +987,7 @@
         }
 
         function showCompletedRejected() {
-            hideAllVerificationViews();
+            hideAllViews();
             document.getElementById('view-completed-rejected').style.display = 'block';
             document.getElementById('btn-back').style.display = 'flex';
             document.getElementById('main-topbar').classList.add('has-back');
@@ -966,7 +995,7 @@
         }
 
         function showList() {
-            hideAllVerificationViews();
+            hideAllViews();
             document.getElementById('view-list').style.display = 'block';
             document.getElementById('btn-back').style.display = 'none';
             document.getElementById('main-topbar').classList.remove('has-back');
