@@ -926,15 +926,15 @@
             applyTransform();
         }
         
-        // --- NEW: Mouse Wheel Zoom ---
-        modalImgTarget.addEventListener('wheel', function(e) {
-            e.preventDefault();
+        // --- NEW: Mouse Wheel Zoom (Bound to entire modal) ---
+        modalEl.addEventListener('wheel', function(e) {
+            e.preventDefault(); // Stop page from scrolling behind it
             if (e.deltaY < 0) {
                 modifyImage('zoom-in');
             } else {
                 modifyImage('zoom-out');
             }
-        });
+        }, { passive: false }); // Force non-passive to allow preventDefault
 
         // Close on outside click
         modalEl.addEventListener('click', function(e) {
@@ -945,8 +945,11 @@
 
         // --- NEW: Keyboard Navigation (Escape to close) ---
         document.addEventListener('keydown', function(e) {
-            if (modalEl.style.display === 'flex') {
-                if (e.key === 'Escape') closeImageModal();
+            // Check computed style to ensure modal is actually visible
+            if (window.getComputedStyle(modalEl).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeImageModal();
+                }
             }
         });
 
