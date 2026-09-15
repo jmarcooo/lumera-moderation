@@ -101,7 +101,9 @@
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
+        
+        /* Compact Info Grid Layout */
+        .info-grid { display: flex; flex-direction: column; gap: 12px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
 
@@ -113,7 +115,8 @@
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; flex: 1; }
         .doc-embed { flex: 1; width: 100%; min-height: 400px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
-        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
+        .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; cursor: zoom-in; transition: opacity 0.2s; }
+        .doc-embed img:hover { opacity: 0.9; }
         
         .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
         .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
@@ -169,6 +172,16 @@
         .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.9; }
 
+        /* --- IMAGE VIEWER MODAL --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
+        .modal-btn:hover { color: #8b5cf6; }
+        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
+
     </style>
 </head>
 <body>
@@ -203,7 +216,7 @@
                 </a>
                 <a href="portfolio.html" class="nav-item">
                     <i class="ph ph-folder-open"></i>
-                    <span>Portfolio</span>
+                    <span>Reference</span>
                 </a>
                 <a href="profile.html" class="nav-item">
                     <i class="ph ph-storefront"></i>
@@ -212,6 +225,10 @@
                 <a href="reviews.html" class="nav-item">
                     <i class="ph ph-star"></i>
                     <span>Reviews</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chat-circle-dots"></i>
+                    <span>Chat</span>
                 </a>
                 <a href="contracts.html" class="nav-item active">
                     <i class="ph ph-file-text"></i>
@@ -268,7 +285,12 @@
                                 <td>Platform Service Agreement</td>
                                 <td class="cell-date">06/25/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td><button class="btn-legal" onclick="showDetailSend()">Send to Legal</button></td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn-view" onclick="showDetailSend()">View</button>
+                                        <button class="btn-legal" onclick="showDetailSend()">Send to Legal</button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -309,7 +331,7 @@
             <div id="view-detail-send">
                 <div class="page-header" style="display: block;">
                     <h1>Route Contract: Lumera Events Co.</h1>
-                    <p>This document contains custom clauses and requires Legal Review before final approval can be granted.</p>
+                    <p>This document requires Legal Review before final approval can be granted.</p>
                 </div>
 
                 <div class="verification-blocks">
@@ -320,7 +342,7 @@
                                 <i class="ph-fill ph-file-text"></i> 1. Document Details
                             </div>
                             <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;">
+                                <div class="info-item">
                                     <div class="label">Target Supplier</div>
                                     <div class="value">Lumera Events Co.</div>
                                 </div>
@@ -332,12 +354,6 @@
                                     <div class="label">Submission Date</div>
                                     <div class="value">June 25, 2026</div>
                                 </div>
-                                <div class="info-item" style="grid-column: 1 / -1;">
-                                    <div class="label">System Flag</div>
-                                    <div class="value" style="background:#fffbeb; border-color:#fde68a; color:#b45309;">
-                                        Custom Addendum detected on page 4. Standard templating bypassed.
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         
@@ -346,8 +362,8 @@
                             <div class="doc-preview-label">Submitted Document</div>
                             <div class="doc-embed-wrapper">
                                 <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-file-pdf"></i> Service_Agreement_V2.pdf</div>
-                                    <iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#toolbar=0" title="Contract PDF"></iframe>
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Service_Agreement_V2.jpg</div>
+                                    <img src="https://legaltemplates.net/wp-content/uploads/service-agreement-template.png" alt="Contract Document" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
@@ -358,7 +374,7 @@
                             <div class="legal-box" style="background:#f3f4f6; border-color:#e5e7eb; color:#374151;">
                                 <i class="ph-fill ph-lock-key" style="font-size:16px; margin-bottom:8px; display:block;"></i>
                                 Moderation is currently <strong>locked</strong>.<br><br>
-                                This document must be routed to the Legal team for thorough review of the custom clauses before you can make a final decision.
+                                This document must be routed to the Legal team for thorough review before you can make a final decision.
                             </div>
                         </div>
                     </div>
@@ -388,7 +404,7 @@
                                 <i class="ph-fill ph-file-text"></i> 1. Document Details
                             </div>
                             <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;">
+                                <div class="info-item">
                                     <div class="label">Target Supplier</div>
                                     <div class="value">Events by Sarah</div>
                                 </div>
@@ -408,8 +424,8 @@
                             <div class="doc-preview-label">Submitted Document</div>
                             <div class="doc-embed-wrapper">
                                 <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-file-pdf"></i> NDA_Signed_Sarah.pdf</div>
-                                    <iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#toolbar=0" title="Contract PDF"></iframe>
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> NDA_Signed_Sarah.jpg</div>
+                                    <img src="https://legaltemplates.net/wp-content/uploads/service-agreement-template.png" alt="Contract Document" class="clickable-img" onclick="openImageModal(this.src)">
                                 </div>
                             </div>
                         </div>
@@ -469,7 +485,7 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-file-text"></i> 1. Document Details</div>
                             <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
+                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
                                 <div class="info-item"><div class="label">Document Type</div><div class="value">Platform SLA</div></div>
                                 <div class="info-item"><div class="label">Signatory</div><div class="value">Maria Santos</div></div>
                             </div>
@@ -478,7 +494,10 @@
                         <div class="block-action">
                             <div class="doc-preview-label">Submitted Document</div>
                             <div class="doc-embed-wrapper">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-file-pdf"></i> SLA_Final.pdf</div><iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#toolbar=0"></iframe></div>
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> SLA_Final.jpg</div>
+                                    <img src="https://legaltemplates.net/wp-content/uploads/service-agreement-template.png" alt="Contract Document" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
                             </div>
                         </div>
 
@@ -520,7 +539,7 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-file-text"></i> 1. Document Details</div>
                             <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
+                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
                                 <div class="info-item"><div class="label">Document Type</div><div class="value">Vendor Agreement</div></div>
                                 <div class="info-item"><div class="label">Signatory</div><div class="value">Jane Doe</div></div>
                             </div>
@@ -529,7 +548,10 @@
                         <div class="block-action">
                             <div class="doc-preview-label">Submitted Document</div>
                             <div class="doc-embed-wrapper">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-file-pdf"></i> Vendor_Agreement.pdf</div><iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#toolbar=0"></iframe></div>
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Vendor_Agreement.jpg</div>
+                                    <img src="https://legaltemplates.net/wp-content/uploads/service-agreement-template.png" alt="Contract Document" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
                             </div>
                         </div>
 
@@ -545,7 +567,7 @@
                                 <div class="locked-decision locked-reject">
                                     <i class="ph ph-x"></i> Contract Rejected
                                 </div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Missing required signatures.</div>
+                                <div class="static-reason"><strong>Violation Reason:</strong> Legal team rejected terms.</div>
                             </div>
                         </div>
                     </div>
@@ -573,6 +595,26 @@
                 <button class="btn-outline" onclick="resumeModerating()">Cancel</button>
                 <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- IMAGE VIEWER MODAL                             -->
+    <!-- ============================================== -->
+    <div class="image-modal-overlay" id="image-modal">
+        <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
+        <div class="image-modal-content">
+            <img id="modal-img-target" src="" alt="Expanded Document">
+        </div>
+        <div class="modal-toolbar">
+            <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+            <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
         </div>
     </div>
 
@@ -651,6 +693,72 @@
         function resumeModerating() {
             document.getElementById('warning-modal').style.display = 'none';
         }
+
+        // --- IMAGE VIEWER MODAL LOGIC ---
+        let currentScale = 1;
+        let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        const modalEl = document.getElementById('image-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openImageModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
+            
+            modalImgTarget.src = src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            modalEl.style.display = 'none';
+            modalImgTarget.src = '';
+        }
+
+        function applyTransform() {
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+        }
+
+        function modifyImage(action) {
+            switch(action) {
+                case 'zoom-in': currentScale += 0.2; break;
+                case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
+                case 'rotate-left': currentRotate -= 90; break;
+                case 'rotate-right': currentRotate += 90; break;
+                case 'flip-h': currentFlipX *= -1; break;
+                case 'flip-v': currentFlipY *= -1; break;
+            }
+            applyTransform();
+        }
+        
+        // --- Mouse Wheel Zoom (Bound to entire modal) ---
+        modalEl.addEventListener('wheel', function(e) {
+            e.preventDefault(); // Stop page from scrolling behind it
+            if (e.deltaY < 0) {
+                modifyImage('zoom-in');
+            } else {
+                modifyImage('zoom-out');
+            }
+        }, { passive: false });
+
+        // Close on outside click
+        modalEl.addEventListener('click', function(e) {
+            if (e.target === modalEl) {
+                closeImageModal();
+            }
+        });
+
+        // --- Keyboard Navigation (Escape to close) ---
+        document.addEventListener('keydown', function(e) {
+            if (window.getComputedStyle(modalEl).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeImageModal();
+                }
+            }
+        });
 
     </script>
 </body>
