@@ -926,9 +926,27 @@
             applyTransform();
         }
         
+        // --- NEW: Mouse Wheel Zoom ---
+        modalImgTarget.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                modifyImage('zoom-in');
+            } else {
+                modifyImage('zoom-out');
+            }
+        });
+
+        // Close on outside click
         modalEl.addEventListener('click', function(e) {
             if (e.target === modalEl) {
                 closeImageModal();
+            }
+        });
+
+        // --- NEW: Keyboard Navigation (Escape to close) ---
+        document.addEventListener('keydown', function(e) {
+            if (modalEl.style.display === 'flex') {
+                if (e.key === 'Escape') closeImageModal();
             }
         });
 
