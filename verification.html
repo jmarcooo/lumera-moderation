@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumera Admin - Verification</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f9f9fb;
+            --bg-surface: #ffffff;
+            --text-main: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --primary-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            
+            /* Action Colors */
+            --color-approve: #059669;
+            --bg-approve: #d1fae5;
+            --color-reject: #dc2626;
+            --bg-reject: #fee2e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: var(--sidebar-width); background-color: var(--bg-surface); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; height: 100%; }
+        .brand { height: var(--header-height); display: flex; align-items: center; padding: 0 24px; gap: 12px; }
+        .logo-icon { width: 24px; height: 24px; background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6); border-radius: 6px 12px 6px 12px; }
+        .brand-name { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        .badge-admin { background-color: #fce7f3; color: #be185d; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 12px; margin-left: 4px; }
+        .sidebar-nav { flex: 1; padding: 24px 16px; overflow-y: auto; }
+        .nav-section { margin-bottom: 24px; }
+        .nav-section-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.5px; padding: 0 12px 12px; text-transform: uppercase; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 20px; color: var(--text-secondary); font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 4px; text-decoration: none; transition: all 0.2s; }
+        .nav-item:hover { background-color: #f3f4f6; }
+        .nav-item.active { background-color: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+
+        /* --- MAIN CONTENT & TOPBAR --- */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .topbar { height: var(--header-height); background-color: var(--bg-surface); display: flex; justify-content: flex-end; align-items: center; padding: 0 32px; border-bottom: 1px solid var(--border-color); gap: 20px; }
+        .topbar.has-back { justify-content: space-between; }
+        .topbar-right { display: flex; align-items: center; gap: 20px; }
+        .topbar-right i.ph-bell { font-size: 24px; color: var(--text-secondary); cursor: pointer; }
+        .avatar { width: 32px; height: 32px; background-color: #9333ea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; cursor: pointer; }
+        
+        .btn-back { display: none; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; cursor: pointer; }
+        .btn-back:hover { color: var(--text-main); }
+        .content { flex: 1; padding: 32px 48px; overflow-y: auto; scroll-behavior: smooth; }
+        
+        .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+        .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #1f2937; }
+        .page-header p { color: var(--text-secondary); font-size: 14px; }
+        .badge-ready { background-color: #fef3c7; color: #d97706; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid #fde68a; }
+        .badge-ready .dot { width: 6px; height: 6px; background-color: #d97706; border-radius: 50%; }
+
+        /* --- VIEW CONTAINERS --- */
+        #view-list { display: block; }
+        #view-detail { display: none; }
+        #view-completed-approved { display: none; }
+        #view-completed-rejected { display: none; }
+
+        /* --- LIST / TABLE VIEW --- */
+        .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
+        .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
+        .data-table tr:hover td { background-color: #f9fafb; }
+        .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .biz-docs { font-size: 12px; color: var(--text-tertiary); }
+        .cell-email, .cell-date { color: var(--text-secondary); }
+        .cell-empty { color: var(--text-tertiary); }
+
+        .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .status-approved { background-color: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+        .status-rejected { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        .btn-verify { background: var(--primary-gradient); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .btn-verify:hover { opacity: 0.9; }
+        .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
+
+        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
+        .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
+        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
+
+        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .block-header i { color: #8b5cf6; font-size: 20px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
+        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+
+        .field-rejected .label { color: var(--color-reject) !important; }
+        .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
+        .value-with-copy { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .btn-copy { background: none; border: none; color: var(--text-tertiary); cursor: pointer; font-size: 16px; padding: 2px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s; }
+        .btn-copy:hover { color: #8b5cf6; background-color: #f3e8ff; }
+
+        .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
+        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        /* --- INLINE DOCUMENT EMBEDS --- */
+        .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+        .doc-embed { flex: 1; width: 100%; height: 350px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
+        .doc-embed.short { height: 250px; }
+        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
+        .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
+        .doc-embed img.clickable-img:hover { opacity: 0.9; }
+
+        .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; }
+        .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
+        .doc-embed.rejected { border: 2px solid #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
+
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+        .action-instructions a { color: #8b5cf6; text-decoration: none; font-weight: 500; }
+        .action-instructions a:hover { text-decoration: underline; }
+
+        /* Shared Decision Styling */
+        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
+        .decision-group { display: flex; gap: 12px; }
+        .decision-label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
+        .decision-label input[type="radio"] { display: none; }
+        .decision-label.approve:hover { border-color: var(--color-approve); }
+        .decision-label.reject:hover { border-color: var(--color-reject); }
+        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
+        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+
+        /* --- READ ONLY MODERATION STATES --- */
+        .locked-decision { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
+        .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
+        
+        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
+        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
+        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
+        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
+        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Final Action Bar */
+        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .final-action-text h4 { font-size: 16px; font-weight: 600; }
+        .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
+        .btn-submit:hover { opacity: 0.9; }
+
+        /* --- IMAGE VIEWER MODAL --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
+        .modal-btn:hover { color: #8b5cf6; }
+        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-icon"></div>
+            <span class="brand-name">Lumera</span>
+            <span class="badge-admin">ADMIN</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <span>PEOPLE</span>
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <a href="index.html" class="nav-item">
+                    <i class="ph ph-users"></i>
+                    <span>Suppliers</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <span>MODERATION</span>
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <a href="verification.html" class="nav-item active">
+                    <i class="ph ph-shield-check"></i>
+                    <span>Verification</span>
+                </a>
+                <a href="portfolio.html" class="nav-item">
+                    <i class="ph ph-folder-open"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i>
+                    <span>Supplier Profile</span>
+                </a>
+                <a href="reviews.html" class="nav-item">
+                    <i class="ph ph-star"></i>
+                    <span>Reviews</span>
+                </a>
+                <a href="contracts.html" class="nav-item">
+                    <i class="ph ph-file-text"></i>
+                    <span>Contracts</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="topbar" id="main-topbar">
+            <a onclick="showList()" class="btn-back" id="btn-back">
+                <i class="ph ph-arrow-left"></i>
+                Back to Queue
+            </a>
+            <div class="topbar-right">
+                <i class="ph-fill ph-bell"></i>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <main class="content" id="main-content">
+            
+            <!-- ============================================== -->
+            <!-- 1. VERIFICATION SECTION                        -->
+            <!-- ============================================== -->
+            
+            <!-- LIST VIEW -->
+            <div id="view-list">
+                <div class="page-header">
+                    <div>
+                        <h1>Verification Queue</h1>
+                        <p>Select a pending business application to review their submitted details and documents.</p>
+                    </div>
+                    <div class="badge-ready">
+                        <div class="dot"></div> 1 pending
+                    </div>
+                </div>
+
+                <div class="list-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Business Name</th>
+                                <th>Contact Email</th>
+                                <th>Date Submitted</th>
+                                <th>Date Actioned</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Lumera Events Co.</div>
+                                    <div class="biz-docs">4 document(s)</div>
+                                </td>
+                                <td class="cell-email">admin@lumeraevents.com</td>
+                                <td class="cell-date">06/21/2026 10:45:30</td>
+                                <td class="cell-empty">-</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Verify</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Alpha Trading Corp.</div>
+                                    <div class="biz-docs">3 document(s)</div>
+                                </td>
+                                <td class="cell-email">hello@alphatrading.ph</td>
+                                <td class="cell-date">06/18/2026 16:05:00</td>
+                                <td class="cell-date">06/19/2026 09:30:45</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
+                                <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Manila Catering Services</div>
+                                    <div class="biz-docs">3 document(s)</div>
+                                </td>
+                                <td class="cell-email">hello@manilacatering.ph</td>
+                                <td class="cell-date">06/20/2026 11:20:15</td>
+                                <td class="cell-date">06/21/2026 08:15:00</td>
+                                <td><span class="status-badge status-rejected">Rejected</span></td>
+                                <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ACTIVE MODERATION DETAIL VIEW (PENDING TASK) -->
+            <div id="view-detail">
+                <div class="page-header" style="display: block;">
+                    <h1>Verify Supplier: Lumera Events Co.</h1>
+                    <p>Evaluate both the submitted details and their corresponding documents independently. Click any image to enlarge and manipulate.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <!-- Block 1 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header">
+                                <i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="label">Registered Business Name</div>
+                                    <div class="value value-with-copy">
+                                        <span>Lumera Events Co.</span>
+                                        <button class="btn-copy" onclick="copyToClipboard('Lumera Events Co.')" title="Copy"><i class="ph ph-copy"></i></button>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Business Type</div>
+                                    <div class="value">Sole Proprietorship</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">SEC Number</div>
+                                    <div class="value value-with-copy">
+                                        <span>CS202612345</span>
+                                        <button class="btn-copy" onclick="copyToClipboard('CS202612345')" title="Copy"><i class="ph ph-copy"></i></button>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">DTI Number</div>
+                                    <div class="value value-with-copy">
+                                        <span>9876543210</span>
+                                        <button class="btn-copy" onclick="copyToClipboard('9876543210')" title="Copy"><i class="ph ph-copy"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-decision">
+                                <div class="action-instructions">Are the inputted business details appropriate and free of violations?</div>
+                                <div class="decision-wrapper">
+                                    <div class="decision-group">
+                                        <label class="decision-label approve"><input type="radio" name="check_identity_info" value="approve"><i class="ph ph-check-circle"></i> Approve Info</label>
+                                        <label class="decision-label reject"><input type="radio" name="check_identity_info" value="reject"><i class="ph ph-x-circle"></i> Reject Info</label>
+                                    </div>
+                                    <div class="rejection-reason">
+                                        <select name="reason_identity_info">
+                                            <option value="">Select violation reason...</option>
+                                            <option value="mismatch">Details do not match document</option>
+                                            <option value="inappropriate">Inappropriate or offensive text</option>
+                                            <option value="incomplete">Incomplete information</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div>
+                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_dti_doc" value="approve"><i class="ph ph-check-circle"></i> Approve DTI</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_dti_doc" value="reject"><i class="ph ph-x-circle"></i> Reject DTI</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_dti_doc">
+                                        <option value="">Select document issue...</option>
+                                        <option value="illegible">Illegible or blurry</option>
+                                        <option value="expired">Expired document</option>
+                                        <option value="fraud">Suspected fraudulent/edited</option>
+                                        <option value="wrong_type">Incorrect document provided</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">SEC Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div>
+                                    <img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_sec_doc" value="approve"><i class="ph ph-check-circle"></i> Approve SEC</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_sec_doc" value="reject"><i class="ph ph-x-circle"></i> Reject SEC</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_sec_doc">
+                                        <option value="">Select document issue...</option>
+                                        <option value="illegible">Illegible or blurry</option>
+                                        <option value="expired">Expired document</option>
+                                        <option value="fraud">Suspected fraudulent/edited</option>
+                                        <option value="wrong_type">Incorrect document provided</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block 2 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="info-grid">
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Street Address</div><div class="value">Unit 4B, 3rd Floor, Ayala Tower One</div></div>
+                                <div class="info-item"><div class="label">City / Municipality</div><div class="value">Makati City</div></div>
+                                <div class="info-item"><div class="label">Province & Region</div><div class="value">Metro Manila, NCR</div></div>
+                                <div class="info-item"><div class="label">Zip Code</div><div class="value">1200</div></div>
+                                <div class="info-item"><div class="label">Primary Service Areas</div><div class="value">Metro Manila</div></div>
+                            </div>
+                            <div class="data-decision">
+                                <div class="action-instructions">Are the inputted address and service areas valid?</div>
+                                <div class="decision-wrapper">
+                                    <div class="decision-group">
+                                        <label class="decision-label approve"><input type="radio" name="check_address_info" value="approve"><i class="ph ph-check-circle"></i> Approve Info</label>
+                                        <label class="decision-label reject"><input type="radio" name="check_address_info" value="reject"><i class="ph ph-x-circle"></i> Reject Info</label>
+                                    </div>
+                                    <div class="rejection-reason">
+                                        <select name="reason_address_info">
+                                            <option value="">Select violation reason...</option>
+                                            <option value="mismatch">Details do not match document</option>
+                                            <option value="inappropriate">Inappropriate or offensive text</option>
+                                            <option value="incomplete">Incomplete information</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
+                            -
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Mayor's Permit</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit_2026.png</div>
+                                    <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="action-instructions">Is the Mayor's Permit authentic and valid for the current year?</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_address_doc" value="approve"><i class="ph ph-check-circle"></i> Approve Doc</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_address_doc" value="reject"><i class="ph ph-x-circle"></i> Reject Doc</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_address_doc">
+                                        <option value="">Select document issue...</option>
+                                        <option value="illegible">Illegible or blurry</option>
+                                        <option value="expired">Expired document</option>
+                                        <option value="fraud">Suspected fraudulent/edited</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block 3 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 25,000</div></div>
+                                <div class="info-item"><div class="label">Tax Registration</div><div class="value">VAT Registered (Implied)</div></div>
+                            </div>
+                            <div class="data-decision">
+                                <div class="action-instructions">Are the financial details reasonable and properly formatted?</div>
+                                <div class="decision-wrapper">
+                                    <div class="decision-group">
+                                        <label class="decision-label approve"><input type="radio" name="check_tax_info" value="approve"><i class="ph ph-check-circle"></i> Approve Info</label>
+                                        <label class="decision-label reject"><input type="radio" name="check_tax_info" value="reject"><i class="ph ph-x-circle"></i> Reject Info</label>
+                                    </div>
+                                    <div class="rejection-reason">
+                                        <select name="reason_tax_info">
+                                            <option value="">Select violation reason...</option>
+                                            <option value="mismatch">Details do not match document</option>
+                                            <option value="unreasonable">Unreasonable values</option>
+                                            <option value="incomplete">Incomplete information</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
+                            -
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">BIR Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Form_2303.jpg</div>
+                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" alt="BIR Form 2303" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="action-instructions">Is the BIR Certificate (Form 2303) authentic and legible?</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_tax_doc" value="approve"><i class="ph ph-check-circle"></i> Approve Doc</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_tax_doc" value="reject"><i class="ph ph-x-circle"></i> Reject Doc</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_tax_doc">
+                                        <option value="">Select document issue...</option>
+                                        <option value="illegible">Illegible or blurry</option>
+                                        <option value="expired">Expired document</option>
+                                        <option value="fraud">Suspected fraudulent/edited</option>
+                                        <option value="wrong_type">Incorrect document provided</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block 4 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative & Account Details</div>
+                            <div class="info-grid">
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Representative Type</div><div class="value">Owner</div></div>
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Representative name</div><div class="value">Juan Dela Cruz</div></div>
+                                <div class="info-item"><div class="label">Contact Number</div><div class="value">0917 123 4567</div></div>
+                                <div class="info-item"><div class="label">Email Address</div><div class="value">admin@lumeraevents.com</div></div>
+                            </div>
+                            <div class="data-decision">
+                                <div class="action-instructions">Is the representative information valid?</div>
+                                <div class="decision-wrapper">
+                                    <div class="decision-group">
+                                        <label class="decision-label approve"><input type="radio" name="check_rep_info" value="approve"><i class="ph ph-check-circle"></i> Approve Info</label>
+                                        <label class="decision-label reject"><input type="radio" name="check_rep_info" value="reject"><i class="ph ph-x-circle"></i> Reject Info</label>
+                                    </div>
+                                    <div class="rejection-reason">
+                                        <select name="reason_rep_info">
+                                            <option value="">Select violation reason...</option>
+                                            <option value="mismatch">Details do not match document</option>
+                                            <option value="inappropriate">Inappropriate or offensive text</option>
+                                            <option value="incomplete">Incomplete information</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Government ID</div>
+                            <div class="doc-embed-wrapper" style="flex-direction: column;">
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
+                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Authorization Letter</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
+                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="action-instructions">Does the ID and Authorization match?</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_rep_doc" value="approve"><i class="ph ph-check-circle"></i> Approve Docs</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_rep_doc" value="reject"><i class="ph ph-x-circle"></i> Reject Docs</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_rep_doc">
+                                        <option value="">Select document issue...</option>
+                                        <option value="illegible">Illegible or blurry</option>
+                                        <option value="expired">Expired document</option>
+                                        <option value="fraud">Suspected fraudulent/edited</option>
+                                        <option value="wrong_type">Incorrect document provided</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block 5 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-article"></i> 5. Profile Content Moderation</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Category</div><div class="value">Event Services</div></div>
+                                <div class="info-item"><div class="label">Sub-Category</div><div class="value">Wedding Planners</div></div>
+                                <div class="info-item"><div class="label">Business Size</div><div class="value">1–5 employees</div></div>
+                                <div class="info-item"><div class="label">Years in Operation</div><div class="value">3 years</div></div>
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Business Description</div><div class="value">Wedding planning and on-the-day coordination specialising in intimate and destination weddings. We ensure your special day is completely stress-free.</div></div>
+                            </div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
+                            -
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-wrapper" style="height: 120px; background-color: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary);">
+                                <i>No document required for content.</i>
+                            </div>
+                            <div class="action-instructions">Review the public-facing content for professionalism and adherence to community guidelines.</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve"><input type="radio" name="check_content" value="approve"><i class="ph ph-check-circle"></i> Approve Content</label>
+                                    <label class="decision-label reject"><input type="radio" name="check_content" value="reject"><i class="ph ph-x-circle"></i> Reject Content</label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_content">
+                                        <option value="">Select violation reason...</option>
+                                        <option value="profanity">Profanity/Inappropriate Language</option>
+                                        <option value="guidelines">Violates community guidelines</option>
+                                        <option value="spam">Spam / Promotional links</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar">
+                        <div class="final-action-text">
+                            <h4>Finalize Application Review</h4>
+                            <p>Ensure all individual decisions are made before submitting your final review.</p>
+                        </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLETED MODERATION - APPROVED EXAMPLE -->
+            <div id="view-completed-approved">
+                <div class="page-header" style="display: block;">
+                    <h1>Supplier Record: Alpha Trading Corp.</h1>
+                    <p>This verification request has already been processed and approved. No further actions can be taken.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <!-- Block 1 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Alpha Trading Corp.</div></div>
+                                <div class="info-item"><div class="label">Business Type</div><div class="value">Corporation</div></div>
+                                <div class="info-item"><div class="label">SEC Number</div><div class="value">CS202199887</div></div>
+                                <div class="info-item"><div class="label">DTI Number</div><div class="value">-</div></div>
+                            </div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> DTI Approved</div></div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">SEC Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> SEC Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 2 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="info-grid"><div class="info-item" style="grid-column: 1 / -1;"><div class="label">Street Address</div><div class="value">Unit 100, Greenfield District</div></div></div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Mayor's Permit</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit.jpg</div><img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Doc Approved</div></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Block 3 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
+                            <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 50,000</div></div></div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">BIR Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Doc Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 4 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative Details</div>
+                            <div class="info-grid"><div class="info-item" style="grid-column: 1 / -1;"><div class="label">Representative name</div><div class="value">Maria Santos</div></div></div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Government ID</div>
+                            <div class="doc-embed-wrapper" style="flex-direction: column;">
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
+                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Authorization Letter</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
+                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Docs Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 5 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-article"></i> 5. Profile Content Moderation</div>
+                            <div class="info-grid"><div class="info-item"><div class="label">Category</div><div class="value">Trading</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-wrapper" style="height: 120px; background-color: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary);">
+                                <i>No document required for content.</i>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top: auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Content Approved</div></div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar" style="background-color: #f0fdf4; border-color: #bbf7d0;">
+                        <div class="final-action-text">
+                            <h4 style="color: #166534;">Review Completed - Approved</h4>
+                            <p>Completed by Moderator on 06/19/2026 09:30:45</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLETED MODERATION - REJECTED EXAMPLE -->
+            <div id="view-completed-rejected">
+                <div class="page-header" style="display: block;">
+                    <h1>Supplier Record: Manila Catering Services</h1>
+                    <p>This verification request was rejected. The supplier must correct the highlighted issues and resubmit.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <!-- Block 1 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Manila Catering Services</div></div>
+                                <div class="info-item"><div class="label">DTI Number</div><div class="value">1122334455</div></div>
+                            </div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">DTI Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> DTI Approved</div></div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">SEC Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> SEC Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 2 (REJECTED DOCUMENT) -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="info-grid"><div class="info-item" style="grid-column: 1 / -1;"><div class="label">Street Address</div><div class="value">45 Mabini Street, Ermita</div></div></div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Mayor's Permit</div>
+                            <div class="doc-embed-wrapper">
+                                <!-- HIGHLIGHTED REJECTED INLINE DOCUMENT -->
+                                <div class="doc-embed rejected">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Expired_Mayor_Permit.jpg</div>
+                                    <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Doc Rejected</div>
+                                <div class="static-reason"><strong>Violation Reason:</strong> Expired document provided (Dated 2024).</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Block 3 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
+                            <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 15,000</div></div></div>
+                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Info Approved</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">BIR Certificate</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Doc Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 4 (REJECTED INFO) -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative Details</div>
+                            <div class="info-grid">
+                                <!-- HIGHLIGHTED REJECTED FIELD -->
+                                <div class="info-item field-rejected" style="grid-column: 1 / -1;"><div class="label">Representative name</div><div class="value">John Doe</div></div>
+                            </div>
+                            <div class="data-decision">
+                                <div class="decision-wrapper">
+                                    <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Info Rejected</div>
+                                    <div class="static-reason"><strong>Violation Reason:</strong> Details do not match uploaded ID document.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Government ID</div>
+                            <div class="doc-embed-wrapper" style="flex-direction: column;">
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Front.jpg</div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c0/Front_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260125091641" alt="Front ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                                <div class="doc-embed" style="height: 165px; min-height: 165px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Gov_ID_Back.jpg</div>
+                                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg/250px-Back_of_a_Philippine_Driver%E2%80%99s_License_%28LTO%29_sample.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Back ID" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div class="doc-preview-label">Authorization Letter</div>
+                            <div class="doc-embed-wrapper">
+                                <div class="doc-embed" style="height: 346px;">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
+                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Docs Approved</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Block 5 -->
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-article"></i> 5. Profile Content Moderation</div>
+                            <div class="info-grid"><div class="info-item"><div class="label">Category</div><div class="value">Catering</div></div></div>
+                        </div>
+                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-action">
+                            <div class="doc-preview-wrapper" style="height: 120px; background-color: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary);">
+                                <i>No document required for content.</i>
+                            </div>
+                            <div class="decision-wrapper" style="margin-top: auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Content Approved</div></div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
+                        <div class="final-action-text">
+                            <h4 style="color: #991b1b;">Review Completed - Rejected</h4>
+                            <p>Completed by Moderator on 06/21/2026 08:15:00</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- IMAGE VIEWER MODAL                             -->
+    <!-- ============================================== -->
+    <div class="image-modal-overlay" id="image-modal">
+        <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
+        <div class="image-modal-content">
+            <img id="modal-img-target" src="" alt="Expanded Document">
+        </div>
+        <div class="modal-toolbar">
+            <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+            <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
+        </div>
+    </div>
+
+    <script>
+        function hideAllVerificationViews() {
+            document.getElementById('view-list').style.display = 'none';
+            document.getElementById('view-detail').style.display = 'none';
+            document.getElementById('view-completed-approved').style.display = 'none';
+            document.getElementById('view-completed-rejected').style.display = 'none';
+        }
+
+        function showDetail() {
+            hideAllVerificationViews();
+            document.getElementById('view-detail').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedApproved() {
+            hideAllVerificationViews();
+            document.getElementById('view-completed-approved').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedRejected() {
+            hideAllVerificationViews();
+            document.getElementById('view-completed-rejected').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showList() {
+            hideAllVerificationViews();
+            document.getElementById('view-list').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('main-topbar').classList.remove('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                console.log('Copied: ' + text);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // --- IMAGE VIEWER MODAL LOGIC ---
+        let currentScale = 1;
+        let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        const modalEl = document.getElementById('image-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openImageModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
+            
+            modalImgTarget.src = src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            modalEl.style.display = 'none';
+            modalImgTarget.src = '';
+        }
+
+        function applyTransform() {
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+        }
+
+        function modifyImage(action) {
+            switch(action) {
+                case 'zoom-in':
+                    currentScale += 0.2;
+                    break;
+                case 'zoom-out':
+                    currentScale = Math.max(0.2, currentScale - 0.2);
+                    break;
+                case 'rotate-left':
+                    currentRotate -= 90;
+                    break;
+                case 'rotate-right':
+                    currentRotate += 90;
+                    break;
+                case 'flip-h':
+                    currentFlipX *= -1;
+                    break;
+                case 'flip-v':
+                    currentFlipY *= -1;
+                    break;
+            }
+            applyTransform();
+        }
+        
+        modalEl.addEventListener('click', function(e) {
+            if (e.target === modalEl) {
+                closeImageModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
