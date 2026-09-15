@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumera Admin - Supplier Profile</title>
+    <title>Lumera Admin - Supplier Profile Moderation</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -87,34 +87,31 @@
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
         /* --- COMPREHENSIVE MODERATION BLOCKS --- */
-        .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
         
         .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
         .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
-        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
-        .block-action.span-2 { grid-column: 2 / 4; }
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
+        
+        .info-grid { display: flex; flex-direction: column; gap: 16px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 12px 14px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
 
         .field-rejected .label { color: var(--color-reject) !important; }
         .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
 
-        .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-        .span-2 .doc-embed-wrapper { flex-direction: row; flex-wrap: wrap; }
-        .doc-embed { flex: 1; width: 100%; height: 250px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
+        .doc-embed-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .doc-embed { flex: 1; width: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed.short { height: 160px; min-width: 45%; }
         
         /* Avatar specific preview */
-        .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 0 auto; display: block; cursor: zoom-in; }
+        .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; cursor: zoom-in; }
         .avatar-preview.rejected { border-color: #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
         
         .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: cover; background-color: #e5e7eb; }
@@ -125,36 +122,85 @@
         .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
         .doc-embed.rejected { border: 2px solid #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
 
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
 
-        /* Shared Decision Styling */
-        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .decision-group { display: flex; gap: 12px; }
-        .decision-label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
-        .decision-label input[type="radio"] { display: none; }
-        .decision-label.approve:hover { border-color: var(--color-approve); }
-        .decision-label.reject:hover { border-color: var(--color-reject); }
-        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
-        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+        /* --- RIGHT DECISION PANEL --- */
+        .right-panel {
+            width: 320px;
+            flex-shrink: 0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dp-section {
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .dp-section:last-child { border-bottom: none; padding-bottom: 0; }
+        
+        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
+        
+        .dp-radio-group { display: flex; flex-direction: column; gap: 8px; }
+        .dp-radio-label {
+            display: flex; align-items: center; gap: 8px; 
+            font-size: 13px; font-weight: 500; color: var(--text-main); 
+            cursor: pointer; padding: 4px 0;
+        }
+        .dp-radio-label input[type="radio"] {
+            accent-color: #8b5cf6;
+            width: 16px; height: 16px;
+            cursor: pointer;
+        }
+
+        .dp-sub-reasons {
+            margin-left: 24px;
+            margin-top: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            animation: fadeIn 0.2s ease-in-out;
+            background: #fff1f2;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffe4e6;
+        }
+        
+        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
+        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
+
+        /* Reveal sub-reasons when reject is checked */
+        .dp-section:has(input[value="reject"]:checked) .dp-sub-reasons {
+            display: flex;
+        }
+
+        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
+        .btn-submit:hover { opacity: 0.9; }
 
         /* --- READ ONLY MODERATION STATES --- */
-        .locked-decision { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
         .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
-        
-        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
-        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
-        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        .static-reason { margin-top: 8px; font-size: 12px; color: var(--color-reject); line-height: 1.4; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Final Action Bar */
-        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .final-action-text h4 { font-size: 16px; font-weight: 600; }
-        .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
-        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
-        .btn-submit:hover { opacity: 0.9; }
+        /* --- IMAGE VIEWER MODAL --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
+        .modal-btn:hover { color: #8b5cf6; }
+        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
 
         /* --- WARNING MODAL --- */
         .warning-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); z-index: 9999; display: none; align-items: center; justify-content: center; }
@@ -167,16 +213,6 @@
         .btn-outline:hover { background: #f3f4f6; }
         .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.9; }
-
-        /* --- IMAGE VIEWER MODAL --- */
-        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
-        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
-        .modal-btn:hover { color: #8b5cf6; }
-        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-        .modal-close:hover { background: rgba(255,255,255,0.2); }
 
     </style>
 </head>
@@ -221,6 +257,10 @@
                 <a href="reviews.html" class="nav-item">
                     <i class="ph ph-star"></i>
                     <span>Reviews</span>
+                </a>
+                <a href="chat.html" class="nav-item">
+                    <i class="ph ph-chat-circle-dots"></i>
+                    <span>Chat</span>
                 </a>
                 <a href="contracts.html" class="nav-item">
                     <i class="ph ph-file-text"></i>
@@ -315,155 +355,114 @@
                     <p>Review the public-facing identity assets and portfolio uploads. Click any image to enlarge.</p>
                 </div>
 
-                <div class="verification-blocks">
+                <!-- Flex container to hold the blocks and the right panel -->
+                <div style="display: flex; gap: 32px; align-items: flex-start;">
                     
-                    <!-- Block 1: Profile Text, Avatar, Banner -->
-                    <div class="mod-block">
-                        <!-- Col 1: Text Data (40%) -->
-                        <div class="block-data">
-                            <div class="block-header">
-                                <i class="ph-fill ph-storefront"></i> 1. Profile Identity & Bio
-                            </div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;">
-                                    <div class="label">Public Display Name</div>
-                                    <div class="value">Lumera Premium Events</div>
-                                </div>
-                                <div class="info-item" style="grid-column: 1 / -1;">
-                                    <div class="label">Profile Bio / About Us</div>
-                                    <div class="value">We orchestrate unforgettable events across Metro Manila. From intimate garden weddings to grand corporate galas, our team ensures perfection. Follow us on IG @lumera.events!</div>
-                                </div>
-                            </div>
-                            <div class="data-decision">
-                                <div class="action-instructions">Does the text adhere to community guidelines (no spam, no prohibited contact info)?</div>
-                                <div class="decision-wrapper">
-                                    <div class="decision-group">
-                                        <label class="decision-label approve"><input type="radio" name="check_prof_info" value="approve"><i class="ph ph-check-circle"></i> Approve Text</label>
-                                        <label class="decision-label reject"><input type="radio" name="check_prof_info" value="reject"><i class="ph ph-x-circle"></i> Reject Text</label>
-                                    </div>
-                                    <div class="rejection-reason">
-                                        <select name="reason_prof_info">
-                                            <option value="">Select violation reason...</option>
-                                            <option value="profanity">Profanity / Hate Speech</option>
-                                            <option value="contact">Contains external phone/email</option>
-                                            <option value="spam">Spam / Keyword stuffing</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- LEFT SIDE: Content Blocks -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
                         
-                        <!-- Col 2: Avatar (30%) -->
-                        <div class="block-action" style="align-items: center; justify-content: flex-start;">
-                            <div class="doc-preview-label" style="align-self: flex-start;">Profile Avatar</div>
-                            <div style="margin: 20px 0; text-align: center;">
-                                <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Logo" alt="Avatar" class="avatar-preview clickable-img" onclick="openImageModal(this.src)">
-                            </div>
-                            <div class="action-instructions" style="text-align: center; flex: none;">Check for clarity and appropriate branding.</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_avatar" value="approve"><i class="ph ph-check-circle"></i> Approve</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_avatar" value="reject"><i class="ph ph-x-circle"></i> Reject</label>
+                        <!-- Block 1: Profile Text, Avatar, Banner -->
+                        <div class="mod-block">
+                            <!-- Col 1: Text Data -->
+                            <div class="block-data">
+                                <div class="block-header">
+                                    <i class="ph-fill ph-storefront"></i> Part 1. Profile Identity
                                 </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_avatar">
-                                        <option value="">Select image issue...</option>
-                                        <option value="nsfw">NSFW / Inappropriate</option>
-                                        <option value="blur">Low quality / Blurry</option>
-                                        <option value="watermark">Competitor watermark</option>
-                                    </select>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="label">Public Display Name</div>
+                                        <div class="value">Lumera Premium Events</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="label">Profile Bio / About Us</div>
+                                        <div class="value">We orchestrate unforgettable events across Metro Manila. From intimate garden weddings to grand corporate galas, our team ensures perfection. Follow us on IG @lumera.events!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Col 2: Media -->
+                            <div class="block-action">
+                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
+                                
+                                <div style="display: flex; gap: 24px; align-items: flex-start;">
+                                    <div style="text-align: center;">
+                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Logo" alt="Avatar" class="avatar-preview clickable-img" onclick="openImageModal(this.src)">
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="doc-embed short" style="height: 120px;">
+                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Cover+Banner" alt="Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-instructions" style="margin-top: 24px;">Ensure bio text has no prohibited contact links, and images are clear and appropriate.</div>
+                            </div>
+                        </div>
+
+                        <!-- Block 2: Portfolio Media Uploads -->
+                        <div class="mod-block">
+                            <!-- Col 1: Portfolio Details -->
+                            <div class="block-data">
+                                <div class="block-header"><i class="ph-fill ph-images"></i> Part 2. Portfolio Project Upload</div>
+                                <div class="info-grid">
+                                    <div class="info-item"><div class="label">Project Title</div><div class="value">Intimate Garden Wedding Setup</div></div>
+                                    <div class="info-item"><div class="label">Project Description</div><div class="value">A look at our floral arrangements and table settings for a beautiful outdoor wedding in Tagaytay.</div></div>
+                                </div>
+                                <div class="action-instructions" style="margin-top: 24px;">Does the description accurately represent the images without violating guidelines?</div>
+                            </div>
+                            
+                            <!-- Col 2: Portfolio Images grid -->
+                            <div class="block-action">
+                                <div class="doc-preview-label">Uploaded Portfolio Media (4 Images)</div>
+                                <div class="doc-embed-wrapper doc-embed-row">
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_3.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+3" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_4.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+4" class="clickable-img" onclick="openImageModal(this.src)"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: Banner (30%) -->
-                        <div class="block-action">
-                            <div class="doc-preview-label">Profile Banner</div>
-                            <div class="doc-embed-wrapper" style="flex: none;">
-                                <div class="doc-embed short">
-                                    <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Cover+Banner" alt="Banner" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                            </div>
-                            <div class="action-instructions">Check for dimensions, clarity, and appropriate background imagery.</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_banner" value="approve"><i class="ph ph-check-circle"></i> Approve</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_banner" value="reject"><i class="ph ph-x-circle"></i> Reject</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_banner">
-                                        <option value="">Select image issue...</option>
-                                        <option value="nsfw">NSFW / Inappropriate</option>
-                                        <option value="blur">Low quality / Blurry</option>
-                                        <option value="watermark">Competitor watermark</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div> <!-- End Left Side -->
 
-                    <!-- Block 2: Portfolio Media Uploads -->
-                    <div class="mod-block">
-                        <!-- Col 1: Portfolio Details (40%) -->
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-images"></i> 2. Portfolio Project Upload</div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Project Title</div><div class="value">Intimate Garden Wedding Setup</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Project Description</div><div class="value">A look at our floral arrangements and table settings for a beautiful outdoor wedding in Tagaytay.</div></div>
-                            </div>
-                            <div class="data-decision">
-                                <div class="action-instructions">Does the portfolio description accurately represent the images without violating guidelines?</div>
-                                <div class="decision-wrapper">
-                                    <div class="decision-group">
-                                        <label class="decision-label approve"><input type="radio" name="check_port_info" value="approve"><i class="ph ph-check-circle"></i> Approve Text</label>
-                                        <label class="decision-label reject"><input type="radio" name="check_port_info" value="reject"><i class="ph ph-x-circle"></i> Reject Text</label>
-                                    </div>
-                                    <div class="rejection-reason">
-                                        <select name="reason_port_info">
-                                            <option value="">Select violation reason...</option>
-                                            <option value="profanity">Profanity / Hate Speech</option>
-                                            <option value="spam">Spam / Keyword stuffing</option>
-                                            <option value="irrelevant">Irrelevant to category</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- RIGHT SIDE: Fixed Decision Panel -->
+                    <div class="right-panel">
                         
-                        <!-- Col 2 & 3: Portfolio Images grid (60%) -->
-                        <div class="block-action span-2">
-                            <div class="doc-preview-label">Uploaded Portfolio Media (4 Images)</div>
-                            <div class="doc-embed-wrapper">
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_3.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+3" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_4.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+4" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                        <!-- Part 1 Decision -->
+                        <div class="dp-section">
+                            <div class="dp-title">Part 1: Profile & Branding</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="p1_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="p1_decision" value="reject"> Reject</label>
                             </div>
-                            <div class="action-instructions">Ensure all uploaded images belong to the supplier, are high quality, and contain no prohibited content.</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_port_media" value="approve"><i class="ph ph-check-circle"></i> Approve Gallery</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_port_media" value="reject"><i class="ph ph-x-circle"></i> Reject Gallery</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_port_media">
-                                        <option value="">Select image issue...</option>
-                                        <option value="nsfw">NSFW / Inappropriate</option>
-                                        <option value="blur">Low quality / Blurry</option>
-                                        <option value="watermark">Competitor watermark</option>
-                                    </select>
-                                </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r1"> Inappropriate text / bio</label>
+                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r2"> Contains prohibited contact info</label>
+                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r3"> Blurry / Low quality media</label>
+                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r4"> Inappropriate media</label>
                             </div>
                         </div>
+
+                        <!-- Part 2 Decision -->
+                        <div class="dp-section">
+                            <div class="dp-title">Part 2: Portfolio Project</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="p2_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="p2_decision" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r1"> NSFW / Inappropriate image</label>
+                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r2"> Low quality / Blurry</label>
+                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r3"> Irrelevant to category</label>
+                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r4"> Competitor watermark</label>
+                            </div>
+                        </div>
+
+                        <button class="btn-submit" onclick="showList()">Publish Decision</button>
                     </div>
 
-                    <div class="final-action-bar">
-                        <div class="final-action-text">
-                            <h4>Publish Profile Updates</h4>
-                            <p>Approved assets will be live on the supplier's public profile immediately.</p>
-                        </div>
-                        <button class="btn-submit" onclick="showList()">Publish Profile</button>
-                    </div>
                 </div>
             </div>
 
@@ -474,35 +473,51 @@
                     <p>These profile updates have been verified and are currently live.</p>
                 </div>
 
-                <div class="verification-blocks">
-                    <!-- Block 1 -->
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Profile Identity & Bio</div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Public Display Name</div><div class="value">Alpha Trading Corporation</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Profile Bio / About Us</div><div class="value">Premium corporate catering services for events scaling from 50 to 1,000 guests.</div></div>
+                <div style="display: flex; gap: 32px; align-items: flex-start;">
+                    
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Block 1 -->
+                        <div class="mod-block">
+                            <div class="block-data">
+                                <div class="block-header"><i class="ph-fill ph-storefront"></i> Part 1. Profile Identity</div>
+                                <div class="info-grid">
+                                    <div class="info-item"><div class="label">Public Display Name</div><div class="value">Alpha Trading Corporation</div></div>
+                                    <div class="info-item"><div class="label">Profile Bio / About Us</div><div class="value">Premium corporate catering services for events scaling from 50 to 1,000 guests.</div></div>
+                                </div>
                             </div>
-                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Text Approved</div></div></div>
-                        </div>
-                        <div class="block-action" style="align-items: center; justify-content: flex-start;">
-                            <div class="doc-preview-label" style="align-self: flex-start;">Profile Avatar</div>
-                            <div style="margin: 20px 0; text-align: center;"><img src="https://placehold.co/400x400/e2e8f0/64748b?text=Alpha+Logo" class="avatar-preview clickable-img" onclick="openImageModal(this.src)"></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Avatar Approved</div></div>
-                        </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">Profile Banner</div>
-                            <div class="doc-embed-wrapper" style="flex: none;"><div class="doc-embed short"><img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Alpha+Banner" class="clickable-img" onclick="openImageModal(this.src)"></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Banner Approved</div></div>
+                            <div class="block-action">
+                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
+                                <div style="display: flex; gap: 24px; align-items: flex-start;">
+                                    <div style="text-align: center;">
+                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Alpha+Logo" class="avatar-preview clickable-img" onclick="openImageModal(this.src)">
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="doc-embed short" style="height: 120px;">
+                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Alpha+Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="final-action-bar" style="background-color: #f0fdf4; border-color: #bbf7d0;">
-                        <div class="final-action-text">
-                            <h4 style="color: #166534;">Review Completed - Approved & Published</h4>
-                            <p>Completed by Moderator on 06/24/2026 09:30:45</p>
+                    <!-- RIGHT SIDE: Locked Decision Panel -->
+                    <div class="right-panel">
+                        <div class="dp-section">
+                            <div class="dp-title">Part 1: Profile & Branding</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                         </div>
-                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                        <div class="dp-section">
+                            <div class="dp-title">Part 2: Portfolio Project</div>
+                            <div style="font-size: 13px; color: var(--text-tertiary); font-style: italic;">No updates submitted</div>
+                        </div>
+                        
+                        <div style="margin-top: auto;">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; text-align: center;">Reviewed on 06/24/2026</div>
+                            <button class="btn-view" style="width: 100%;" onclick="showList()">Return to Queue</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -514,69 +529,74 @@
                     <p>These profile updates were rejected. The profile has been reverted to its last safe state.</p>
                 </div>
 
-                <div class="verification-blocks">
-                    <!-- Block 1 (REJECTED TEXT & AVATAR) -->
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Profile Identity & Bio</div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Public Display Name</div><div class="value">Manila Catering</div></div>
-                                <!-- REJECTED FIELD -->
-                                <div class="info-item field-rejected" style="grid-column: 1 / -1;"><div class="label">Profile Bio / About Us</div><div class="value">For cheaper rates, don't book here! Call me directly at 0917-123-4567 or email direct@manilacatering.ph to avoid platform fees.</div></div>
+                <div style="display: flex; gap: 32px; align-items: flex-start;">
+                    
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Block 1 (REJECTED TEXT & AVATAR) -->
+                        <div class="mod-block">
+                            <div class="block-data">
+                                <div class="block-header"><i class="ph-fill ph-storefront"></i> Part 1. Profile Identity</div>
+                                <div class="info-grid">
+                                    <div class="info-item"><div class="label">Public Display Name</div><div class="value">Manila Catering</div></div>
+                                    <div class="info-item field-rejected"><div class="label">Profile Bio / About Us</div><div class="value">For cheaper rates, don't book here! Call me directly at 0917-123-4567 or email direct@manilacatering.ph to avoid platform fees.</div></div>
+                                </div>
                             </div>
-                            <div class="data-decision">
-                                <div class="decision-wrapper">
-                                    <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Text Rejected</div>
-                                    <div class="static-reason"><strong>Violation Reason:</strong> Contains external phone/email to circumvent platform.</div>
+                            
+                            <div class="block-action">
+                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
+                                <div style="display: flex; gap: 24px; align-items: flex-start;">
+                                    <div style="text-align: center;">
+                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Low+Res+Logo" class="avatar-preview rejected clickable-img" onclick="openImageModal(this.src)">
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--color-reject); margin-top: 8px;">Avatar</div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="doc-embed short" style="height: 120px;">
+                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Good+Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- REJECTED AVATAR -->
-                        <div class="block-action" style="align-items: center; justify-content: flex-start;">
-                            <div class="doc-preview-label" style="align-self: flex-start;">Profile Avatar</div>
-                            <div style="margin: 20px 0; text-align: center;"><img src="https://placehold.co/400x400/e2e8f0/64748b?text=Low+Res+Logo" class="avatar-preview rejected clickable-img" onclick="openImageModal(this.src)"></div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Avatar Rejected</div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Low quality / Blurry.</div>
+
+                        <!-- Block 2 (PASSED PORTFOLIO) -->
+                        <div class="mod-block">
+                            <div class="block-data">
+                                <div class="block-header"><i class="ph-fill ph-images"></i> Part 2. Portfolio Project Upload</div>
+                                <div class="info-grid">
+                                    <div class="info-item"><div class="label">Project Title</div><div class="value">Corporate Buffet Setup</div></div>
+                                    <div class="info-item"><div class="label">Project Description</div><div class="value">A 200-pax corporate buffet setup.</div></div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="block-action">
-                            <div class="doc-preview-label">Profile Banner</div>
-                            <div class="doc-embed-wrapper" style="flex: none;"><div class="doc-embed short"><img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Good+Banner" class="clickable-img" onclick="openImageModal(this.src)"></div></div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Banner Approved</div></div>
+                            
+                            <div class="block-action">
+                                <div class="doc-preview-label">Uploaded Portfolio Media</div>
+                                <div class="doc-embed-wrapper doc-embed-row">
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Block 2 (PASSED PORTFOLIO) -->
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-images"></i> 2. Portfolio Project Upload</div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Project Title</div><div class="value">Corporate Buffet Setup</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Project Description</div><div class="value">A 200-pax corporate buffet setup.</div></div>
-                            </div>
-                            <div class="data-decision"><div class="decision-wrapper"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Text Approved</div></div></div>
+                    <!-- RIGHT SIDE: Locked Decision Panel -->
+                    <div class="right-panel">
+                        <div class="dp-section">
+                            <div class="dp-title">Part 1: Profile & Branding</div>
+                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected</div>
+                            <div class="static-reason">Contains prohibited contact info.<br>Avatar is blurry / low quality.</div>
+                        </div>
+                        <div class="dp-section">
+                            <div class="dp-title">Part 2: Portfolio Project</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                         </div>
                         
-                        <div class="block-action span-2">
-                            <div class="doc-preview-label">Uploaded Portfolio Media (2 Images)</div>
-                            <div class="doc-embed-wrapper">
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                            </div>
-                            <div class="decision-wrapper" style="margin-top:auto;"><div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Gallery Approved</div></div>
+                        <div style="margin-top: auto;">
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; text-align: center;">Reviewed on 06/23/2026</div>
+                            <button class="btn-view" style="width: 100%;" onclick="showList()">Return to Queue</button>
                         </div>
                     </div>
 
-                    <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
-                        <div class="final-action-text">
-                            <h4 style="color: #991b1b;">Review Completed - Rejected</h4>
-                            <p>Completed by Moderator on 06/23/2026 08:15:00</p>
-                        </div>
-                        <button class="btn-view" onclick="showList()">Return to Queue</button>
-                    </div>
                 </div>
             </div>
 
@@ -680,14 +700,6 @@
             document.getElementById('warning-modal').style.display = 'none';
         }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                console.log('Copied: ' + text);
-            }).catch(function(err) {
-                console.error('Could not copy text: ', err);
-            });
-        }
-
         // --- IMAGE VIEWER MODAL LOGIC ---
         let currentScale = 1;
         let currentRotate = 0;
@@ -718,24 +730,12 @@
 
         function modifyImage(action) {
             switch(action) {
-                case 'zoom-in':
-                    currentScale += 0.2;
-                    break;
-                case 'zoom-out':
-                    currentScale = Math.max(0.2, currentScale - 0.2);
-                    break;
-                case 'rotate-left':
-                    currentRotate -= 90;
-                    break;
-                case 'rotate-right':
-                    currentRotate += 90;
-                    break;
-                case 'flip-h':
-                    currentFlipX *= -1;
-                    break;
-                case 'flip-v':
-                    currentFlipY *= -1;
-                    break;
+                case 'zoom-in': currentScale += 0.2; break;
+                case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
+                case 'rotate-left': currentRotate -= 90; break;
+                case 'rotate-right': currentRotate += 90; break;
+                case 'flip-h': currentFlipX *= -1; break;
+                case 'flip-v': currentFlipY *= -1; break;
             }
             applyTransform();
         }
@@ -745,7 +745,6 @@
                 closeImageModal();
             }
         });
-
     </script>
 </body>
 </html>
