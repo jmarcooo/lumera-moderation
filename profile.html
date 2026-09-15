@@ -74,7 +74,6 @@
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
-        .cell-empty { color: var(--text-tertiary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -106,7 +105,6 @@
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-        .doc-embed-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .doc-embed { flex: 1; width: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed.short { height: 160px; min-width: 45%; }
         
@@ -114,13 +112,30 @@
         .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; cursor: zoom-in; }
         .avatar-preview.rejected { border-color: #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
         
-        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: cover; background-color: #e5e7eb; }
-        .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
+        /* New Portfolio Grid layout */
+        .portfolio-gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .portfolio-thumb {
+            height: 90px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f3f4f6;
+            cursor: zoom-in;
+            position: relative;
+        }
+        .portfolio-thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: opacity 0.2s;
+        }
+        .portfolio-thumb img:hover { opacity: 0.8; }
+        
+        .doc-embed iframe, .doc-embed img.clickable-img { width: 100%; height: 100%; border: none; object-fit: cover; background-color: #e5e7eb; cursor: zoom-in; }
         .doc-embed img.clickable-img:hover { opacity: 0.9; }
-
-        .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
-        .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
-        .doc-embed.rejected { border: 2px solid #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
 
         .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
 
@@ -192,15 +207,20 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- IMAGE VIEWER MODAL --- */
+        /* --- IMAGE VIEWER MODAL WITH NAVIGATION --- */
         .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
         .modal-btn:hover { color: #8b5cf6; }
         .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .modal-close:hover { background: rgba(255,255,255,0.2); }
+        
+        .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 32px; border-radius: 50%; width: 56px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 1000; }
+        .modal-arrow:hover { background: rgba(255,255,255,0.35); }
+        .modal-arrow-left { left: 40px; }
+        .modal-arrow-right { right: 40px; }
 
         /* --- WARNING MODAL --- */
         .warning-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); z-index: 9999; display: none; align-items: center; justify-content: center; }
@@ -355,7 +375,6 @@
                     <p>Review the public-facing identity assets and portfolio uploads. Click any image to enlarge.</p>
                 </div>
 
-                <!-- Flex container to hold the blocks and the right panel -->
                 <div style="display: flex; gap: 32px; align-items: flex-start;">
                     
                     <!-- LEFT SIDE: Content Blocks -->
@@ -386,12 +405,12 @@
                                 
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Logo" alt="Avatar" class="avatar-preview clickable-img" onclick="openImageModal(this.src)">
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Avatar" class="avatar-preview clickable-img" onclick="openImageModal(this)">
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Cover+Banner" alt="Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Banner" class="clickable-img" onclick="openImageModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -415,12 +434,18 @@
                             
                             <!-- Col 2: Portfolio Images grid -->
                             <div class="block-action">
-                                <div class="doc-preview-label">Uploaded Portfolio Media (4 Images)</div>
-                                <div class="doc-embed-wrapper doc-embed-row">
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_3.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+3" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_4.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Portfolio+4" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                <div class="doc-preview-label">Uploaded Portfolio Media (10 Images)</div>
+                                <div class="portfolio-gallery">
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+1" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+2" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+3" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+4" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+5" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+6" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+7" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+8" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+9" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Image+10" class="clickable-img" onclick="openImageModal(this)"></div>
                                 </div>
                             </div>
                         </div>
@@ -489,12 +514,12 @@
                                 <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Alpha+Logo" class="avatar-preview clickable-img" onclick="openImageModal(this.src)">
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" class="avatar-preview clickable-img" onclick="openImageModal(this)">
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Alpha+Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openImageModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -546,12 +571,12 @@
                                 <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
                                 <div style="display: flex; gap: 24px; align-items: flex-start;">
                                     <div style="text-align: center;">
-                                        <img src="https://placehold.co/400x400/e2e8f0/64748b?text=Low+Res+Logo" class="avatar-preview rejected clickable-img" onclick="openImageModal(this.src)">
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--color-reject); margin-top: 8px;">Avatar</div>
+                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" style="filter: blur(2px);" class="avatar-preview rejected clickable-img" onclick="openImageModal(this)">
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--color-reject); margin-top: 8px;">Avatar (Blurry)</div>
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://placehold.co/1200x400/e2e8f0/64748b?text=Good+Banner" class="clickable-img" onclick="openImageModal(this.src)">
+                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openImageModal(this)">
                                         </div>
                                         <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
                                     </div>
@@ -571,9 +596,9 @@
                             
                             <div class="block-action">
                                 <div class="doc-preview-label">Uploaded Portfolio Media</div>
-                                <div class="doc-embed-wrapper doc-embed-row">
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_1.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+1" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                                    <div class="doc-embed short"><div class="doc-embed-label"><i class="ph ph-image"></i> img_2.jpg</div><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+2" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                <div class="portfolio-gallery" style="grid-template-columns: repeat(2, 1fr);">
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+1" class="clickable-img" onclick="openImageModal(this)"></div>
+                                    <div class="portfolio-thumb"><img src="https://placehold.co/800x600/e2e8f0/64748b?text=Buffet+2" class="clickable-img" onclick="openImageModal(this)"></div>
                                 </div>
                             </div>
                         </div>
@@ -621,6 +646,9 @@
     <!-- ============================================== -->
     <div class="image-modal-overlay" id="image-modal">
         <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
+        <button class="modal-arrow modal-arrow-left" id="modal-prev" onclick="showPrevImage()"><i class="ph ph-caret-left"></i></button>
+        <button class="modal-arrow modal-arrow-right" id="modal-next" onclick="showNextImage()"><i class="ph ph-caret-right"></i></button>
+        
         <div class="image-modal-content">
             <img id="modal-img-target" src="" alt="Expanded Document">
         </div>
@@ -700,28 +728,74 @@
             document.getElementById('warning-modal').style.display = 'none';
         }
 
-        // --- IMAGE VIEWER MODAL LOGIC ---
+        // --- IMAGE VIEWER MODAL LOGIC (With Navigation & Scroll Zoom) ---
         let currentScale = 1;
         let currentRotate = 0;
         let currentFlipX = 1;
         let currentFlipY = 1;
+        let currentGallery = [];
+        let currentIndex = 0;
+        
         const modalEl = document.getElementById('image-modal');
         const modalImgTarget = document.getElementById('modal-img-target');
+        const btnPrev = document.getElementById('modal-prev');
+        const btnNext = document.getElementById('modal-next');
 
-        function openImageModal(src) {
-            currentScale = 1;
-            currentRotate = 0;
-            currentFlipX = 1;
-            currentFlipY = 1;
-            applyTransform();
-            
-            modalImgTarget.src = src;
+        function openImageModal(imgElement) {
+            // Find all images within the same section block to build a gallery
+            const container = imgElement.closest('.block-action');
+            if (container) {
+                const imgs = Array.from(container.querySelectorAll('img.clickable-img'));
+                currentGallery = imgs.map(i => i.src);
+                currentIndex = currentGallery.indexOf(imgElement.src);
+            } else {
+                currentGallery = [imgElement.src];
+                currentIndex = 0;
+            }
+
+            updateArrows();
+            resetTransform();
+            modalImgTarget.src = currentGallery[currentIndex];
             modalEl.style.display = 'flex';
         }
 
         function closeImageModal() {
             modalEl.style.display = 'none';
             modalImgTarget.src = '';
+        }
+
+        function updateArrows() {
+            if (currentGallery.length > 1) {
+                btnPrev.style.display = 'flex';
+                btnNext.style.display = 'flex';
+            } else {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'none';
+            }
+        }
+
+        function showNextImage() {
+            if (currentGallery.length > 1) {
+                currentIndex = (currentIndex + 1) % currentGallery.length;
+                resetTransform();
+                modalImgTarget.src = currentGallery[currentIndex];
+            }
+        }
+
+        function showPrevImage() {
+            if (currentGallery.length > 1) {
+                currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+                resetTransform();
+                modalImgTarget.src = currentGallery[currentIndex];
+            }
+        }
+
+        function resetTransform() {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
         }
 
         function applyTransform() {
@@ -740,9 +814,29 @@
             applyTransform();
         }
         
+        // Mouse Wheel Zoom
+        modalImgTarget.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                modifyImage('zoom-in');
+            } else {
+                modifyImage('zoom-out');
+            }
+        });
+
+        // Close on outside click
         modalEl.addEventListener('click', function(e) {
             if (e.target === modalEl) {
                 closeImageModal();
+            }
+        });
+
+        // Keyboard Navigation (Escape to close, Arrows to navigate)
+        document.addEventListener('keydown', function(e) {
+            if (modalEl.style.display === 'flex') {
+                if (e.key === 'Escape') closeImageModal();
+                if (e.key === 'ArrowRight') showNextImage();
+                if (e.key === 'ArrowLeft') showPrevImage();
             }
         });
     </script>
