@@ -74,6 +74,7 @@
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
+        .cell-empty { color: var(--text-tertiary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -89,14 +90,17 @@
         /* --- COMPREHENSIVE MODERATION BLOCKS --- */
         .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
         .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
-        
+        .mod-block-full { display: grid; grid-template-columns: 1fr; background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; }
+
         .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .block-data-full { padding: 24px; display: flex; flex-direction: column; border-right: none; }
         .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
         .block-action + .block-action { border-left: 1px dashed var(--border-color); }
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
+        .info-grid-full { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 16px; flex: 1; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
 
@@ -107,9 +111,11 @@
         .btn-copy { background: none; border: none; color: var(--text-tertiary); cursor: pointer; font-size: 16px; padding: 2px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s; }
         .btn-copy:hover { color: #8b5cf6; background-color: #f3e8ff; }
 
+        .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
 
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+        
         /* Reference Call Script Box */
         .script-box { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; font-size: 13px; color: #92400e; margin-bottom: 16px; line-height: 1.5; }
         .script-box ul { margin-left: 20px; margin-top: 8px; }
@@ -135,7 +141,6 @@
         .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
         .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
         .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
         .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
@@ -143,6 +148,30 @@
         .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
         .btn-submit:hover { opacity: 0.9; }
+
+        /* --- WARNING MODAL --- */
+        .warning-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(17, 24, 39, 0.6);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
+        }
+        .warning-modal-content {
+            background: white; border-radius: 12px; width: 400px; max-width: 90%;
+            padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .warning-modal-icon {
+            width: 48px; height: 48px; background: #fef3c7; color: #d97706;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; margin: 0 auto 16px;
+        }
+        .warning-modal-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+        .warning-modal-desc { font-size: 14px; color: #4b5563; margin-bottom: 24px; line-height: 1.5; }
+        .warning-modal-actions { display: flex; gap: 12px; justify-content: center; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-outline:hover { background: #f3f4f6; }
+        .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .btn-primary:hover { opacity: 0.9; }
 
     </style>
 </head>
@@ -198,7 +227,8 @@
 
     <div class="main-wrapper">
         <header class="topbar" id="main-topbar">
-            <a onclick="showList()" class="btn-back" id="btn-back">
+            <!-- Universal back button triggers warning modal if actively moderating -->
+            <a onclick="attemptGoBack()" class="btn-back" id="btn-back">
                 <i class="ph ph-arrow-left"></i>
                 Back to Queue
             </a>
@@ -293,7 +323,39 @@
 
                 <div class="verification-blocks">
 
-                    <!-- Block 1: Reference Contact 1 (Already Passed/Contacted) -->
+                    <!-- Block 1: Portfolio Overview -->
+                    <div class="mod-block-full">
+                        <div class="block-data-full">
+                            <div class="block-header">
+                                <i class="ph-fill ph-folder-open"></i> 1. Portfolio Submission Details
+                            </div>
+                            <div class="info-grid-full">
+                                <div class="info-item" style="grid-column: span 1;">
+                                    <div class="label">Supplier Name</div>
+                                    <div class="value">Lumera Events Co.</div>
+                                </div>
+                                <div class="info-item" style="grid-column: span 1;">
+                                    <div class="label">Primary Category</div>
+                                    <div class="value">Event Services</div>
+                                </div>
+                                <div class="info-item" style="grid-column: span 2;">
+                                    <div class="label">Portfolio Experience Summary</div>
+                                    <div class="value">We specialize in full on-the-day coordination and event styling for intimate and large-scale weddings. We have successfully handled over 50 events in the past 3 years.</div>
+                                </div>
+                            </div>
+                            <div class="data-decision" style="display:flex; justify-content:space-between; align-items:center;">
+                                <div class="action-instructions" style="margin:0;">Does the portfolio summary adhere to community guidelines (no spam, no off-platform links)?</div>
+                                <div class="decision-wrapper" style="width: 380px;">
+                                    <div class="decision-group">
+                                        <label class="decision-label approve"><input type="radio" name="check_port_info" value="approve"><i class="ph ph-check-circle"></i> Approve Text</label>
+                                        <label class="decision-label reject"><input type="radio" name="check_port_info" value="reject"><i class="ph ph-x-circle"></i> Reject Text</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block 2: Reference Contact 1 (Already Passed/Contacted) -->
                     <div class="mod-block">
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-phone-call"></i> 1. Reference Check 1</div>
@@ -346,7 +408,7 @@
                         </div>
                     </div>
 
-                    <!-- Block 2: Reference Contact 2 -->
+                    <!-- Block 3: Reference Contact 2 -->
                     <div class="mod-block">
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-phone-call"></i> 2. Reference Check 2</div>
@@ -398,7 +460,7 @@
                         </div>
                     </div>
 
-                    <!-- Block 3: Reference Contact 3 -->
+                    <!-- Block 4: Reference Contact 3 -->
                     <div class="mod-block">
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-phone-call"></i> 3. Reference Check 3</div>
@@ -610,7 +672,22 @@
         </main>
     </div>
 
+    <!-- --- WARNING MODAL (Save Progress) --- -->
+    <div class="warning-modal-overlay" id="warning-modal">
+        <div class="warning-modal-content">
+            <div class="warning-modal-icon"><i class="ph-fill ph-warning"></i></div>
+            <h3 class="warning-modal-title">Save Progress?</h3>
+            <p class="warning-modal-desc">You are currently verifying references. Do you want to save your progress before returning to the queue?</p>
+            <div class="warning-modal-actions">
+                <button class="btn-outline" onclick="resumeModerating()">Resume Moderating</button>
+                <button class="btn-primary" onclick="confirmGoBack()">Save & Go Back</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let currentView = 'list';
+
         function hideAllViews() {
             document.getElementById('view-list').style.display = 'none';
             document.getElementById('view-detail').style.display = 'none';
@@ -619,28 +696,68 @@
         }
 
         function showDetail() {
+            currentView = 'detail';
             hideAllViews();
             document.getElementById('view-detail').style.display = 'block';
+            
+            // Adjust top bar for "Back to Queue" button (Aligned to Left)
             document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
         }
 
         function showCompletedApproved() {
+            currentView = 'completed';
             hideAllViews();
             document.getElementById('view-completed-approved').style.display = 'block';
+            
+            // Adjust top bar for "Back to Queue" button (Aligned to Left)
             document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
         }
 
         function showCompletedRejected() {
+            currentView = 'completed';
             hideAllViews();
             document.getElementById('view-completed-rejected').style.display = 'block';
+            
+            // Adjust top bar for "Back to Queue" button (Aligned to Left)
             document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
         }
 
         function showList() {
+            currentView = 'list';
             hideAllViews();
             document.getElementById('view-list').style.display = 'block';
+            
+            // Revert top bar formatting
             document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('main-topbar').classList.remove('has-back');
             document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // --- WARNING MODAL LOGIC FOR GOING BACK ---
+        function attemptGoBack() {
+            if (currentView === 'detail') {
+                // If actively moderating, show prompt
+                document.getElementById('warning-modal').style.display = 'flex';
+            } else {
+                // If in a completed view, go straight back
+                showList();
+            }
+        }
+
+        function confirmGoBack() {
+            document.getElementById('warning-modal').style.display = 'none';
+            showList(); // Go back to list
+        }
+
+        function resumeModerating() {
+            document.getElementById('warning-modal').style.display = 'none';
+            // Stays on current view
         }
 
         function copyToClipboard(text) {
