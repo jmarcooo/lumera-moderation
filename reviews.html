@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumera Admin - Review Moderation</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #f9f9fb;
+            --bg-surface: #ffffff;
+            --text-main: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --primary-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            
+            /* Action Colors */
+            --color-approve: #059669;
+            --bg-approve: #d1fae5;
+            --color-reject: #dc2626;
+            --bg-reject: #fee2e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: var(--sidebar-width); background-color: var(--bg-surface); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; height: 100%; }
+        .brand { height: var(--header-height); display: flex; align-items: center; padding: 0 24px; gap: 12px; }
+        .logo-icon { width: 24px; height: 24px; background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6); border-radius: 6px 12px 6px 12px; }
+        .brand-name { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        .badge-admin { background-color: #fce7f3; color: #be185d; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 12px; margin-left: 4px; }
+        .sidebar-nav { flex: 1; padding: 24px 16px; overflow-y: auto; }
+        .nav-section { margin-bottom: 24px; }
+        .nav-section-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.5px; padding: 0 12px 12px; text-transform: uppercase; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 20px; color: var(--text-secondary); font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 4px; text-decoration: none; transition: all 0.2s; }
+        .nav-item:hover { background-color: #f3f4f6; }
+        .nav-item.active { background-color: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+
+        /* --- MAIN CONTENT & TOPBAR --- */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .topbar { height: var(--header-height); background-color: var(--bg-surface); display: flex; justify-content: flex-end; align-items: center; padding: 0 32px; border-bottom: 1px solid var(--border-color); gap: 20px; }
+        .topbar.has-back { justify-content: space-between; }
+        .topbar-right { display: flex; align-items: center; gap: 20px; }
+        .topbar-right i.ph-bell { font-size: 24px; color: var(--text-secondary); cursor: pointer; }
+        .avatar { width: 32px; height: 32px; background-color: #9333ea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; cursor: pointer; }
+        
+        .btn-back { display: none; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; cursor: pointer; }
+        .btn-back:hover { color: var(--text-main); }
+        .content { flex: 1; padding: 32px 48px; overflow-y: auto; scroll-behavior: smooth; }
+        
+        .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+        .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #1f2937; }
+        .page-header p { color: var(--text-secondary); font-size: 14px; }
+        .badge-ready { background-color: #fee2e2; color: #991b1b; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid #fecaca; }
+        .badge-ready .dot { width: 6px; height: 6px; background-color: #991b1b; border-radius: 50%; }
+
+        /* --- VIEW CONTAINERS --- */
+        #view-list { display: block; }
+        #view-detail { display: none; }
+        #view-completed-approved { display: none; }
+        #view-completed-rejected { display: none; }
+
+        /* --- LIST / TABLE VIEW --- */
+        .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
+        .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
+        .data-table tr:hover td { background-color: #f9fafb; }
+        .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .biz-docs { font-size: 12px; color: var(--text-tertiary); }
+        .cell-email, .cell-date { color: var(--text-secondary); }
+
+        .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .status-approved { background-color: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+        .status-rejected { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        .btn-verify { background: var(--primary-gradient); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .btn-verify:hover { opacity: 0.9; }
+        .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
+
+        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
+        .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        
+        .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
+        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
+        .block-action.span-2 { grid-column: 2 / 4; }
+
+        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .block-header i { color: #8b5cf6; font-size: 20px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
+        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+
+        .review-comment { background: #fff1f2; border: 1px solid #ffe4e6; color: #881337; font-size: 14px; font-style: italic; padding: 12px 16px; border-radius: 6px; line-height: 1.6; }
+        
+        .field-rejected .label { color: var(--color-reject) !important; }
+        .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
+
+        .data-decision { margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
+        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        /* --- INLINE DOCUMENT EMBEDS --- */
+        .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+        .doc-embed { flex: 1; width: 100%; height: 250px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
+        .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
+        .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
+        .doc-embed img.clickable-img:hover { opacity: 0.9; }
+
+        .doc-embed-label { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
+        .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
+
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+
+        /* Flag Box */
+        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.5; }
+        .flag-box .highlight { color: #b91c1c; font-weight: 600; }
+
+        /* Shared Decision Styling */
+        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
+        .decision-group { display: flex; flex-direction: column; gap: 8px; } /* Stacked for reviews */
+        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
+        .decision-label input[type="radio"] { display: none; }
+        .decision-label.approve:hover { border-color: var(--color-approve); }
+        .decision-label.reject:hover { border-color: var(--color-reject); }
+        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
+        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+
+        /* --- READ ONLY MODERATION STATES --- */
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 12px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
+        .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
+        
+        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
+        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
+        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
+        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
+        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Final Action Bar */
+        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .final-action-text h4 { font-size: 16px; font-weight: 600; }
+        .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
+        .btn-submit:hover { opacity: 0.9; }
+
+        /* --- WARNING MODAL --- */
+        .warning-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); z-index: 9999; display: none; align-items: center; justify-content: center; }
+        .warning-modal-content { background: white; border-radius: 12px; width: 400px; max-width: 90%; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); text-align: center; }
+        .warning-modal-icon { width: 48px; height: 48px; background: #fef3c7; color: #d97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
+        .warning-modal-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+        .warning-modal-desc { font-size: 14px; color: #4b5563; margin-bottom: 24px; line-height: 1.5; }
+        .warning-modal-actions { display: flex; gap: 12px; justify-content: center; }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-outline:hover { background: #f3f4f6; }
+        .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .btn-primary:hover { opacity: 0.9; }
+
+        /* --- IMAGE VIEWER MODAL --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
+        .modal-btn:hover { color: #8b5cf6; }
+        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-icon"></div>
+            <span class="brand-name">Lumera</span>
+            <span class="badge-admin">ADMIN</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <span>PEOPLE</span>
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <a href="index.html" class="nav-item">
+                    <i class="ph ph-users"></i>
+                    <span>Suppliers</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <span>MODERATION</span>
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <a href="verification.html" class="nav-item">
+                    <i class="ph ph-shield-check"></i>
+                    <span>Verification</span>
+                </a>
+                <a href="portfolio.html" class="nav-item">
+                    <i class="ph ph-folder-open"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="ph ph-storefront"></i>
+                    <span>Supplier Profile</span>
+                </a>
+                <a href="reviews.html" class="nav-item active">
+                    <i class="ph ph-star"></i>
+                    <span>Reviews</span>
+                </a>
+                <a href="contracts.html" class="nav-item">
+                    <i class="ph ph-file-text"></i>
+                    <span>Contracts</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="topbar" id="main-topbar">
+            <!-- Universal back button triggers warning modal if actively moderating -->
+            <a onclick="attemptGoBack()" class="btn-back" id="btn-back">
+                <i class="ph ph-arrow-left"></i>
+                Back to Queue
+            </a>
+            <div class="topbar-right">
+                <i class="ph-fill ph-bell"></i>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <main class="content" id="main-content">
+            
+            <!-- LIST VIEW -->
+            <div id="view-list">
+                <div class="page-header">
+                    <div>
+                        <h1>Flagged Reviews Queue</h1>
+                        <p>Evaluate customer reviews flagged by the system or reported by suppliers for policy violations.</p>
+                    </div>
+                    <div class="badge-ready">
+                        <div class="dot"></div> 1 pending
+                    </div>
+                </div>
+
+                <div class="list-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Target Supplier</th>
+                                <th>Reviewer Name</th>
+                                <th>Flag Reason</th>
+                                <th>Date Flagged</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Lumera Events Co.</div>
+                                    <div class="biz-docs">★☆☆☆☆ (1.0)</div>
+                                </td>
+                                <td>John Smith</td>
+                                <td class="cell-email">Harassment / Profanity</td>
+                                <td class="cell-date">06/25/2026</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Alpha Trading Corp.</div>
+                                    <div class="biz-docs">★★★★☆ (4.0)</div>
+                                </td>
+                                <td>David Lee</td>
+                                <td class="cell-email">System: Keyword Alert</td>
+                                <td class="cell-date">06/24/2026</td>
+                                <td><span class="status-badge status-approved" style="background:#f3f4f6; color:#4b5563; border-color:#e5e7eb;">Review Kept</span></td>
+                                <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Manila Catering Services</div>
+                                    <div class="biz-docs">★☆☆☆☆ (1.0)</div>
+                                </td>
+                                <td>Jane Doe</td>
+                                <td class="cell-email">Fake Booking / Spam</td>
+                                <td class="cell-date">06/23/2026</td>
+                                <td><span class="status-badge status-rejected">Review Removed</span></td>
+                                <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ACTIVE MODERATION DETAIL VIEW (PENDING TASK) -->
+            <div id="view-detail">
+                <div class="page-header" style="display: block;">
+                    <h1>Moderate Review: Lumera Events Co.</h1>
+                    <p>Review the context of the flag and decide whether the review should remain public or be removed.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <!-- Block 1: Review Context -->
+                    <div class="mod-block">
+                        <!-- Col 1: The Review Content (40%) -->
+                        <div class="block-data">
+                            <div class="block-header">
+                                <i class="ph-fill ph-chat-centered-text"></i> 1. Review Details
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="label">Target Supplier</div>
+                                    <div class="value">Lumera Events Co.</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Reviewer Name</div>
+                                    <div class="value">John Smith</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Star Rating</div>
+                                    <div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Date Posted</div>
+                                    <div class="value">June 24, 2026</div>
+                                </div>
+                                <div class="info-item" style="grid-column: 1 / -1;">
+                                    <div class="label">Review Comment</div>
+                                    <div class="review-comment">
+                                        "Absolutely terrible service. The owner is a complete scam artist and a [PROFANITY CENSORED]. Do not book them under any circumstances. They completely ruined our event!"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Col 2: Flag Context & Evidence (30%) -->
+                        <div class="block-action">
+                            <div class="doc-preview-label">Flag Report Context</div>
+                            <div class="flag-box">
+                                Reported By: <span style="font-weight:600;">Supplier</span><br>
+                                Report Reason: <span class="highlight">Harassment / Defamation</span><br><br>
+                                <strong>Supplier Note:</strong><br>
+                                "This person was never a client. This is a competitor trying to tank my rating. Attached is a screenshot showing they have no booking history with us."
+                            </div>
+                            
+                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                <div class="doc-embed short">
+                                    <div class="doc-embed-label"><i class="ph ph-image"></i> BookingHistory.jpg</div>
+                                    <img src="https://placehold.co/600x800/e2e8f0/64748b?text=System+Booking+History" alt="Evidence" class="clickable-img" onclick="openImageModal(this.src)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Decision Area (30%) -->
+                        <div class="block-action">
+                            <div class="doc-preview-label">Moderator Decision</div>
+                            <div class="action-instructions" style="margin-top: 0;">Does this review violate the platform's fair review and anti-harassment policies?</div>
+                            
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="decision-group">
+                                    <label class="decision-label approve" style="border-color:#e5e7eb; color:#374151;">
+                                        <input type="radio" name="check_review" value="approve">
+                                        <i class="ph ph-check"></i> Keep Review (Safe)
+                                    </label>
+                                    <label class="decision-label reject" style="color:#dc2626;">
+                                        <input type="radio" name="check_review" value="reject">
+                                        <i class="ph ph-trash"></i> Remove Review
+                                    </label>
+                                </div>
+                                <div class="rejection-reason">
+                                    <select name="reason_review">
+                                        <option value="">Select removal reason...</option>
+                                        <option value="profanity">Profanity / Hate Speech</option>
+                                        <option value="fake">Fake Review / No Booking</option>
+                                        <option value="harassment">Targeted Harassment</option>
+                                        <option value="spam">Spam / Promotional</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar">
+                        <div class="final-action-text">
+                            <h4>Submit Moderation Decision</h4>
+                            <p>Removing a review will permanently delete it from the supplier's public profile.</p>
+                        </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLETED MODERATION - APPROVED EXAMPLE (KEPT) -->
+            <div id="view-completed-approved">
+                <div class="page-header" style="display: block;">
+                    <h1>Review Record: Alpha Trading Corp.</h1>
+                    <p>This review was evaluated and deemed safe to remain on the platform.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-chat-centered-text"></i> 1. Review Details</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
+                                <div class="info-item"><div class="label">Reviewer Name</div><div class="value">David Lee</div></div>
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★★★★☆ (4.0)</div></div>
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Review Comment</div><div class="review-comment" style="background:#f9fafb; border-color:#e5e7eb; color:#374151;">"Food was great, but the delivery was 30 minutes late. Otherwise, good service."</div></div>
+                            </div>
+                        </div>
+                        
+                        <div class="block-action">
+                            <div class="doc-preview-label">Flag Report Context</div>
+                            <div class="flag-box">
+                                Reported By: <span style="font-weight:600;">System</span><br>
+                                Report Reason: <span class="highlight">Keyword Alert</span><br><br>
+                                <strong>System Note:</strong><br>
+                                Automated flag triggered by keyword: "late".
+                            </div>
+                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="action-instructions">No evidence attached.</div>
+                        </div>
+
+                        <div class="block-action">
+                            <div class="doc-preview-label">Moderator Decision</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision" style="background:#f3f4f6; border:1px solid #d1d5db; color:#374151;">
+                                    <i class="ph ph-check"></i> Review Kept (Safe)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar" style="background-color: #f9fafb; border-color: #e5e7eb;">
+                        <div class="final-action-text">
+                            <h4 style="color: #374151;">Review Completed - Kept on Platform</h4>
+                            <p>Completed by Moderator on 06/24/2026 14:10:00</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLETED MODERATION - REJECTED EXAMPLE (REMOVED) -->
+            <div id="view-completed-rejected">
+                <div class="page-header" style="display: block;">
+                    <h1>Review Record: Manila Catering Services</h1>
+                    <p>This review was evaluated and removed from the platform for policy violations.</p>
+                </div>
+
+                <div class="verification-blocks">
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-chat-centered-text"></i> 1. Review Details</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
+                                <div class="info-item"><div class="label">Reviewer Name</div><div class="value">Jane Doe</div></div>
+                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div></div>
+                                <div class="info-item field-rejected" style="grid-column: 1 / -1;"><div class="label">Review Comment</div><div class="value" style="background:#fef2f2; border-color:#fca5a5; color:#991b1b; font-style:italic;">"Click here to get 50% off your next catering order: http://spam-link-promo.com"</div></div>
+                            </div>
+                        </div>
+                        
+                        <div class="block-action">
+                            <div class="doc-preview-label">Flag Report Context</div>
+                            <div class="flag-box">
+                                Reported By: <span style="font-weight:600;">System</span><br>
+                                Report Reason: <span class="highlight">Spam / External Links</span><br><br>
+                                <strong>System Note:</strong><br>
+                                Automated flag triggered by external URL detection.
+                            </div>
+                            <div class="doc-preview-label" style="margin-top: 12px;">Attached Evidence</div>
+                            <div class="action-instructions">No evidence attached.</div>
+                        </div>
+
+                        <div class="block-action">
+                            <div class="doc-preview-label">Moderator Decision</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-reject">
+                                    <i class="ph ph-trash"></i> Review Removed
+                                </div>
+                                <div class="static-reason"><strong>Violation Reason:</strong> Spam / Promotional links.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
+                        <div class="final-action-text">
+                            <h4 style="color: #991b1b;">Review Completed - Removed from Platform</h4>
+                            <p>Completed by Moderator on 06/23/2026 08:15:00</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- --- WARNING MODAL (Go Back) --- -->
+    <div class="warning-modal-overlay" id="warning-modal">
+        <div class="warning-modal-content">
+            <div class="warning-modal-icon"><i class="ph-fill ph-warning"></i></div>
+            <h3 class="warning-modal-title">Leave Moderation?</h3>
+            <p class="warning-modal-desc">You are currently reviewing a flagged customer review. Any unsaved decisions will be lost. Are you sure you want to return to the queue?</p>
+            <div class="warning-modal-actions">
+                <button class="btn-outline" onclick="resumeModerating()">Cancel</button>
+                <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- IMAGE VIEWER MODAL                             -->
+    <!-- ============================================== -->
+    <div class="image-modal-overlay" id="image-modal">
+        <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
+        <div class="image-modal-content">
+            <img id="modal-img-target" src="" alt="Expanded Document">
+        </div>
+        <div class="modal-toolbar">
+            <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+            <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'list';
+
+        function hideAllViews() {
+            document.getElementById('view-list').style.display = 'none';
+            document.getElementById('view-detail').style.display = 'none';
+            document.getElementById('view-completed-approved').style.display = 'none';
+            document.getElementById('view-completed-rejected').style.display = 'none';
+        }
+
+        function showDetail() {
+            currentView = 'detail';
+            hideAllViews();
+            document.getElementById('view-detail').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedApproved() {
+            currentView = 'completed';
+            hideAllViews();
+            document.getElementById('view-completed-approved').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedRejected() {
+            currentView = 'completed';
+            hideAllViews();
+            document.getElementById('view-completed-rejected').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showList() {
+            currentView = 'list';
+            hideAllViews();
+            document.getElementById('view-list').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('main-topbar').classList.remove('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // --- WARNING MODAL LOGIC FOR GOING BACK ---
+        function attemptGoBack() {
+            if (currentView === 'detail') {
+                document.getElementById('warning-modal').style.display = 'flex';
+            } else {
+                showList();
+            }
+        }
+
+        function confirmGoBack() {
+            document.getElementById('warning-modal').style.display = 'none';
+            showList();
+        }
+
+        function resumeModerating() {
+            document.getElementById('warning-modal').style.display = 'none';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                console.log('Copied: ' + text);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // --- IMAGE VIEWER MODAL LOGIC ---
+        let currentScale = 1;
+        let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        const modalEl = document.getElementById('image-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openImageModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
+            
+            modalImgTarget.src = src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            modalEl.style.display = 'none';
+            modalImgTarget.src = '';
+        }
+
+        function applyTransform() {
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+        }
+
+        function modifyImage(action) {
+            switch(action) {
+                case 'zoom-in':
+                    currentScale += 0.2;
+                    break;
+                case 'zoom-out':
+                    currentScale = Math.max(0.2, currentScale - 0.2);
+                    break;
+                case 'rotate-left':
+                    currentRotate -= 90;
+                    break;
+                case 'rotate-right':
+                    currentRotate += 90;
+                    break;
+                case 'flip-h':
+                    currentFlipX *= -1;
+                    break;
+                case 'flip-v':
+                    currentFlipY *= -1;
+                    break;
+            }
+            applyTransform();
+        }
+        
+        modalEl.addEventListener('click', function(e) {
+            if (e.target === modalEl) {
+                closeImageModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
