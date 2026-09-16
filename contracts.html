@@ -73,7 +73,7 @@
         /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
         
-        /* New Table Toolbar */
+        /* Table Toolbar */
         .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
         .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 12px; }
         
@@ -138,6 +138,9 @@
         .info-grid { display: flex; flex-direction: column; gap: 12px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+
+        .field-rejected .label { color: var(--color-reject) !important; }
+        .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
 
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 
@@ -297,7 +300,7 @@
 
                 <div class="list-container">
                     
-                    <!-- TABLE TOOLBAR (Search, Filter, Select Multiple) -->
+                    <!-- TABLE TOOLBAR (Search, Filter, Sort, Select Multiple) -->
                     <div class="table-toolbar">
                         <div class="toolbar-left">
                             <div class="search-box">
@@ -305,6 +308,7 @@
                                 <input type="text" placeholder="Search supplier or document...">
                             </div>
                             <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
+                            <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
                         </div>
                         <div class="toolbar-right">
                             <!-- Default Button -->
@@ -348,12 +352,7 @@
                                 <td>Platform Service Agreement</td>
                                 <td class="cell-date">06/25/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
                             <tr>
                                 <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
@@ -364,12 +363,7 @@
                                 <td>Platform Service Agreement</td>
                                 <td class="cell-date">06/26/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
                             <tr>
                                 <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
@@ -380,12 +374,7 @@
                                 <td>Vendor Agreement</td>
                                 <td class="cell-date">06/26/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
                             <tr>
                                 <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
@@ -396,12 +385,7 @@
                                 <td>NDA</td>
                                 <td class="cell-date">06/27/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
                             <tr>
                                 <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
@@ -412,12 +396,7 @@
                                 <td>Platform SLA</td>
                                 <td class="cell-date">06/27/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
                             <tr>
                                 <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
@@ -428,12 +407,7 @@
                                 <td>Vendor Agreement</td>
                                 <td class="cell-date">06/28/2026</td>
                                 <td><span class="status-badge status-pending">Requires Routing</span></td>
-                                <td>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn-view" onclick="showDetailSend()">View</button>
-                                        <button class="btn-legal" onclick="sendToLegalSingle()">Send to Legal</button>
-                                    </div>
-                                </td>
+                                <td><button class="btn-verify" onclick="showDetailSend()">Review</button></td>
                             </tr>
 
                             <!-- Waiting for Response Status -->
