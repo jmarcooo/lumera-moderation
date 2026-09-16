@@ -70,13 +70,26 @@
         #view-completed-approved { display: none; }
         #view-completed-rejected { display: none; }
 
-        /* --- LIST / TABLE VIEW & BULK ACTIONS --- */
+        /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
         
-        .bulk-actions-bar { background-color: #f8fafc; padding: 12px 24px; border-bottom: 1px solid var(--border-color); display: none; justify-content: space-between; align-items: center; }
-        .bulk-count { font-size: 14px; font-weight: 600; color: var(--color-legal); }
-        .bulk-buttons { display: flex; gap: 12px; }
-        .bulk-buttons button { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+        /* New Table Toolbar */
+        .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
+        .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 12px; }
+        
+        .search-box { display: flex; align-items: center; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; width: 280px; gap: 8px; transition: border-color 0.2s; }
+        .search-box:focus-within { border-color: #8b5cf6; }
+        .search-box i { color: var(--text-tertiary); font-size: 16px; }
+        .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: var(--text-main); }
+        
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-outline:hover { background: #f3f4f6; color: var(--text-main); }
+
+        /* Bulk Buttons inside Toolbar */
+        #bulk-action-group { display: none; align-items: center; gap: 12px; }
+        .bulk-count { font-size: 13px; font-weight: 600; color: var(--color-legal); margin-right: 8px; }
+        .bulk-buttons { display: flex; gap: 8px; }
+        .bulk-buttons button { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; display: flex; align-items: center; gap: 6px;}
         .btn-bulk-approve { background: var(--bg-approve); color: var(--color-approve); border: 1px solid #a7f3d0 !important; }
         .btn-bulk-reject { background: var(--bg-reject); color: var(--color-reject); border: 1px solid #fecaca !important; }
         .btn-bulk-legal { background: var(--bg-legal); color: var(--color-legal); border: 1px solid #c7d2fe !important; }
@@ -84,10 +97,12 @@
 
         .data-table { width: 100%; border-collapse: collapse; text-align: left; }
         .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
-        .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
+        .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; transition: background-color 0.2s; }
         .data-table tr:hover td { background-color: #f9fafb; }
         
-        /* Checkboxes */
+        /* Hidden Checkbox Logic */
+        .cb-column { width: 40px; display: none; text-align: center; }
+        .selection-active .cb-column { display: table-cell; }
         input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--color-legal); }
 
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
@@ -182,8 +197,8 @@
         .warning-modal-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
         .warning-modal-desc { font-size: 14px; color: #4b5563; margin-bottom: 24px; line-height: 1.5; }
         .warning-modal-actions { display: flex; gap: 12px; justify-content: center; }
-        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-        .btn-outline:hover { background: #f3f4f6; }
+        .btn-outline-modal { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-outline-modal:hover { background: #f3f4f6; }
         .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.9; }
 
@@ -282,20 +297,39 @@
 
                 <div class="list-container">
                     
-                    <!-- BULK ACTIONS BAR -->
-                    <div class="bulk-actions-bar" id="bulk-actions">
-                        <div class="bulk-count" id="bulk-count">1 selected</div>
-                        <div class="bulk-buttons">
-                            <button class="btn-bulk-legal" onclick="executeBulkAction('send')"><i class="ph ph-paper-plane-right"></i> Send to Legal</button>
-                            <button class="btn-bulk-approve" onclick="executeBulkAction('approve')"><i class="ph ph-check"></i> Approve</button>
-                            <button class="btn-bulk-reject" onclick="executeBulkAction('reject')"><i class="ph ph-x"></i> Reject</button>
+                    <!-- TABLE TOOLBAR (Search, Filter, Select Multiple) -->
+                    <div class="table-toolbar">
+                        <div class="toolbar-left">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" placeholder="Search supplier or document...">
+                            </div>
+                            <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
+                        </div>
+                        <div class="toolbar-right">
+                            <!-- Default Button -->
+                            <button class="btn-outline" id="btn-enable-select" onclick="toggleSelectionMode(true)">
+                                <i class="ph ph-list-checks"></i> Select Multiple
+                            </button>
+                            
+                            <!-- Bulk Actions (Hidden by Default) -->
+                            <div id="bulk-action-group">
+                                <span class="bulk-count" id="bulk-count">0 selected</span>
+                                <div class="bulk-buttons">
+                                    <button class="btn-bulk-legal" onclick="executeBulkAction('send')"><i class="ph ph-paper-plane-right"></i> Send to Legal</button>
+                                    <button class="btn-bulk-approve" onclick="executeBulkAction('approve')"><i class="ph ph-check"></i> Approve</button>
+                                    <button class="btn-bulk-reject" onclick="executeBulkAction('reject')"><i class="ph ph-x"></i> Reject</button>
+                                </div>
+                                <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 4px;"></div>
+                                <button class="btn-outline" onclick="toggleSelectionMode(false)">Cancel</button>
+                            </div>
                         </div>
                     </div>
 
-                    <table class="data-table">
+                    <table class="data-table" id="contracts-table">
                         <thead>
                             <tr>
-                                <th style="width: 40px;"><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
+                                <th class="cb-column"><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
                                 <th>Supplier Name</th>
                                 <th>Document Type</th>
                                 <th>Date Submitted</th>
@@ -306,7 +340,7 @@
                         <tbody>
                             <!-- New Requires Routing Samples -->
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Lumera Events Co.</div>
                                     <div class="biz-docs">Custom SLA Addendum</div>
@@ -322,7 +356,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Nexus Logistics</div>
                                     <div class="biz-docs">Delivery SLA Addendum</div>
@@ -338,7 +372,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Horizon Studios</div>
                                     <div class="biz-docs">Media Release Form</div>
@@ -354,7 +388,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Prime Security</div>
                                     <div class="biz-docs">Vendor NDA</div>
@@ -370,7 +404,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Metro Decorators</div>
                                     <div class="biz-docs">Service Addendum V2</div>
@@ -386,7 +420,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">City Sounds Audio</div>
                                     <div class="biz-docs">Equipment Rental Terms</div>
@@ -404,7 +438,7 @@
 
                             <!-- Waiting for Response Status -->
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Zenith Productions</div>
                                     <div class="biz-docs">Main Contract</div>
@@ -417,7 +451,7 @@
 
                             <!-- Existing Workflow Items -->
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Events by Sarah</div>
                                     <div class="biz-docs">Non-Disclosure Agreement</div>
@@ -428,7 +462,7 @@
                                 <td><button class="btn-verify" onclick="showDetailReview()">Moderate</button></td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Alpha Trading Corp.</div>
                                     <div class="biz-docs">Premium Partner SLA</div>
@@ -439,7 +473,7 @@
                                 <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
+                                <td class="cb-column"><input type="checkbox" class="row-cb" onchange="updateBulkActions()"></td>
                                 <td>
                                     <div class="biz-name">Manila Catering Services</div>
                                     <div class="biz-docs">Standard Vendor Terms</div>
@@ -731,7 +765,7 @@
             <h3 class="warning-modal-title">Leave Moderation?</h3>
             <p class="warning-modal-desc">You are currently reviewing a contract. Any unsaved decisions will be lost. Are you sure you want to return to the queue?</p>
             <div class="warning-modal-actions">
-                <button class="btn-outline" onclick="resumeModerating()">Cancel</button>
+                <button class="btn-outline-modal" onclick="resumeModerating()">Cancel</button>
                 <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
             </div>
         </div>
@@ -823,18 +857,38 @@
             currentView = 'list';
             hideAllViews();
             
-            // Reset Bulk Selection UI
-            document.getElementById('selectAll').checked = false;
-            document.querySelectorAll('.row-cb').forEach(cb => cb.checked = false);
-            updateBulkActions();
-
+            // Revert top bar formatting
             document.getElementById('view-list').style.display = 'block';
             document.getElementById('btn-back').style.display = 'none';
             document.getElementById('main-topbar').classList.remove('has-back');
             document.getElementById('main-content').scrollTop = 0;
+            
+            // Auto exit selection mode if active
+            toggleSelectionMode(false);
         }
 
         // --- BULK SELECTION & ACTIONS LOGIC ---
+        function toggleSelectionMode(enable) {
+            const table = document.getElementById('contracts-table');
+            const btnEnable = document.getElementById('btn-enable-select');
+            const bulkGroup = document.getElementById('bulk-action-group');
+            
+            if (enable) {
+                table.classList.add('selection-active');
+                btnEnable.style.display = 'none';
+                bulkGroup.style.display = 'flex';
+                updateBulkActions();
+            } else {
+                table.classList.remove('selection-active');
+                btnEnable.style.display = 'flex';
+                bulkGroup.style.display = 'none';
+                
+                // Uncheck everything
+                document.getElementById('selectAll').checked = false;
+                document.querySelectorAll('.row-cb').forEach(cb => cb.checked = false);
+            }
+        }
+
         function toggleAll(source) {
             const checkboxes = document.querySelectorAll('.row-cb');
             checkboxes.forEach(cb => cb.checked = source.checked);
@@ -844,18 +898,17 @@
         function updateBulkActions() {
             const checkboxes = document.querySelectorAll('.row-cb');
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-            const bulkPanel = document.getElementById('bulk-actions');
             const countText = document.getElementById('bulk-count');
             
-            if (checkedCount > 0) {
-                bulkPanel.style.display = 'flex';
-                countText.innerText = checkedCount + (checkedCount === 1 ? " document selected" : " documents selected");
-            } else {
-                bulkPanel.style.display = 'none';
-            }
+            countText.innerText = checkedCount + (checkedCount === 1 ? " document selected" : " documents selected");
         }
 
         function executeBulkAction(action) {
+            const checkboxes = document.querySelectorAll('.row-cb');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            if (checkedCount === 0) return; // Do nothing if none selected
+            
             let title = "";
             let desc = "";
             if(action === 'send') {
@@ -882,7 +935,7 @@
 
         function closeSuccessModal() {
             document.getElementById('success-modal').style.display = 'none';
-            showList();
+            showList(); // Return to standard view
         }
 
         // --- WARNING MODAL LOGIC FOR GOING BACK ---
