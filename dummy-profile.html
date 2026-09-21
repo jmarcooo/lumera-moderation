@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Business - Lumera</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #fdfdfd;
+            --bg-surface: #ffffff;
+            --text-main: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --primary-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            
+            /* Tag Colors */
+            --tag-yellow-bg: #fef3c7; --tag-yellow-text: #d97706;
+            --tag-blue-bg: #eff6ff; --tag-blue-text: #3b82f6;
+            --tag-green-bg: #dcfce7; --tag-green-text: #16a34a;
+            --tag-gray-bg: #f3f4f6; --tag-gray-text: #4b5563;
+            --tag-pink-bg: #fdf2f8; --tag-pink-text: #db2777;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; }
+
+        /* --- TOP NAVIGATION --- */
+        .navbar { height: 72px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; position: sticky; top: 0; z-index: 100; }
+        .nav-left { display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 24px; height: 24px; background: var(--primary-gradient); border-radius: 6px 12px 6px 12px; }
+        .brand-name { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; margin-right: 8px; }
+        .badge-beta { background-color: #fce7f3; color: #be185d; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 12px; }
+        
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .nav-link { text-decoration: none; color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover { color: var(--text-main); }
+        .nav-icons { display: flex; align-items: center; gap: 16px; margin-left: 8px; }
+        .nav-icon-btn { color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s; }
+        .nav-icon-btn:hover { color: var(--text-main); }
+        .user-menu { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .user-name { font-size: 14px; font-weight: 500; }
+        .logout-btn { border: 1px solid var(--border-color); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
+        .logout-btn:hover { background: #f9fafb; color: var(--text-main); }
+
+        /* --- MAIN LAYOUT --- */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 24px; display: flex; gap: 32px; align-items: flex-start; }
+        .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+        .sidebar { width: 340px; flex-shrink: 0; position: sticky; top: 100px; display: flex; flex-direction: column; gap: 24px; }
+
+        /* --- HERO CARD --- */
+        .hero-card { background: var(--bg-surface); border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; }
+        .hero-banner { width: 100%; height: 280px; position: relative; background: #e5e7eb; }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); }
+        
+        .hero-details { padding: 0 32px 32px; position: relative; }
+        .hero-avatar { width: 120px; height: 120px; border-radius: 12px; border: 4px solid #ffffff; object-fit: cover; position: absolute; top: -60px; left: 32px; background: #fff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .hero-header { margin-top: 70px; display: flex; flex-direction: column; gap: 8px; }
+        .hero-title { font-size: 32px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        .hero-subtitle { font-size: 15px; color: var(--text-secondary); }
+        
+        .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; }
+        .tag i { font-size: 14px; }
+        .tag-yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-text); border-color: #fde68a; }
+        .tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue-text); border-color: #bfdbfe; }
+        .tag-green { background: var(--tag-green-bg); color: var(--tag-green-text); border-color: #bbf7d0; }
+        .tag-gray { background: var(--tag-gray-bg); color: var(--tag-gray-text); border-color: var(--border-color); }
+        .tag-pink { background: var(--tag-pink-bg); color: var(--tag-pink-text); border-color: #fbcfe8; }
+        .tag-outline { background: transparent; border-color: var(--border-color); color: var(--text-secondary); font-weight: 500; }
+
+        .hero-pricing { margin-top: 24px; font-size: 18px; font-weight: 600; color: var(--text-main); }
+        .hero-pricing span { background: var(--primary-gradient); -webkit-background-clip: text; color: transparent; font-weight: 700; font-size: 20px; margin-left: 4px; }
+
+        /* --- SECTION TYPOGRAPHY --- */
+        .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tag-pink-text); background: var(--tag-pink-bg); border: 1px solid #fbcfe8; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+        .section-title { font-size: 28px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
+        .section-title .gradient-text { background: var(--primary-gradient); -webkit-background-clip: text; color: transparent; }
+        .section-desc { font-size: 15px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
+
+        /* --- CONTENT CARDS --- */
+        .content-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+        .card-title { font-size: 20px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .card-subtitle { font-size: 13px; color: var(--text-tertiary); }
+        
+        .btn-dropdown { display: flex; align-items: center; gap: 6px; background: #f9fafb; border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .btn-dropdown:hover { background: #f3f4f6; color: var(--text-main); }
+        .card-text { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* --- PORTFOLIO GRID --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        .portfolio-item { width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; position: relative; background: #f3f4f6; }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .portfolio-item:hover img { transform: scale(1.05); }
+        .badge-featured { position: absolute; top: 8px; left: 8px; background: rgba(190, 24, 93, 0.85); color: white; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; backdrop-filter: blur(4px); }
+
+        /* --- MAP & AVAILABILITY --- */
+        .map-wrapper { width: 100%; height: 280px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 12px; background: #e5e7eb; position: relative; }
+        .map-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .map-controls { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; background: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
+        .map-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #f3f4f6; }
+        .map-btn:last-child { border-bottom: none; }
+        .map-attribution { position: absolute; bottom: 0; right: 0; background: rgba(255,255,255,0.8); font-size: 10px; padding: 2px 6px; color: #4b5563; }
+        .map-caption { font-size: 12px; color: var(--text-tertiary); }
+
+        /* --- SIDEBAR COMPONENTS --- */
+        .alert-box { background: #f9fafb; border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+        
+        .glance-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; }
+        .glance-title { font-size: 12px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+        .stat-box { border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; text-align: left; }
+        .stat-label { font-size: 10px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .stat-value { font-size: 32px; font-weight: 700; color: var(--text-main); line-height: 1; }
+
+        .side-section { margin-bottom: 20px; }
+        .side-section:last-child { margin-bottom: 0; }
+        .side-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .side-value { font-size: 14px; color: var(--text-main); line-height: 1.5; }
+
+        .btn-report { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: #fff1f2; border: 1px solid #fecaca; color: #e11d48; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-report:hover { background: #ffe4e6; }
+        
+        /* Availability Legend */
+        .legend-row { display: flex; gap: 12px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; border: 1px solid; padding: 4px 10px; border-radius: 20px; }
+        .legend-booked { background: #fdf2f8; color: #db2777; border-color: #fbcfe8; }
+        .legend-available { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; }
+        .dot.booked { background-color: #db2777; }
+        .dot.avail { background-color: #16a34a; }
+
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo-icon"></div>
+            <span class="brand-name">Lumera</span>
+            <span class="badge-beta">BETA</span>
+        </div>
+        
+        <div class="nav-right">
+            <a href="#" class="nav-link">Find suppliers</a>
+            <a href="#" class="nav-link">Support</a>
+            
+            <div class="nav-icons">
+                <i class="ph-fill ph-bell nav-icon-btn"></i>
+                <div class="user-menu">
+                    <img src="https://placehold.co/100x100/e2e8f0/64748b?text=User" alt="User Avatar" class="user-avatar">
+                    <span class="user-name">Dashboard</span>
+                </div>
+                <div class="logout-btn">
+                    <i class="ph ph-sign-out"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="container">
+        
+        <!-- LEFT CONTENT -->
+        <main class="main-content">
+            
+            <!-- Hero Section -->
+            <section class="hero-card">
+                <div class="hero-banner">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Banner Image">
+                </div>
+                <div class="hero-details">
+                    <img src="https://placehold.co/200x200/f8fafc/64748b?text=TB" alt="Avatar" class="hero-avatar">
+                    
+                    <div class="hero-header">
+                        <h1 class="hero-title">Test Business</h1>
+                        <p class="hero-subtitle">Venues · Mandaluyong, Metro Manila</p>
+                    </div>
+                    
+                    <div class="tag-row">
+                        <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 5.0 (1 review)</div>
+                        <div class="tag tag-blue"><i class="ph-fill ph-lightning"></i> Fast Responder</div>
+                        <div class="tag tag-green"><i class="ph-bold ph-check-circle"></i> Verified</div>
+                        <div class="tag tag-gray">10 years in business</div>
+                    </div>
+
+                    <div class="hero-pricing">
+                        Starting from <span>₱60,000</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section>
+                <div class="section-label">Portfolio</div>
+                <h2 class="section-title">Recent <span class="gradient-text">work</span></h2>
+                <p class="section-desc">A glimpse of what Test Business has delivered for real couples.</p>
+                
+                <div class="portfolio-grid">
+                    <div class="portfolio-item">
+                        <div class="badge-featured">Featured</div>
+                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 1">
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="badge-featured">Featured</div>
+                        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 2">
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="badge-featured">Featured</div>
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 3">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 4">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 5">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://images.unsplash.com/photo-1522413452208-99690151cdfb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 6">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://images.unsplash.com/photo-1542042161784-26ab9e041e89?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 7">
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://images.unsplash.com/photo-1505944357431-27579db47558?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 8">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Our Story Section -->
+            <section class="content-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Our story</h3>
+                    </div>
+                    <button class="btn-dropdown">Read more <i class="ph ph-caret-down"></i></button>
+                </div>
+                <div class="card-text">
+                    What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...
+                </div>
+            </section>
+
+            <!-- Availability Section -->
+            <section class="content-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Availability</h3>
+                        <p class="card-subtitle">Check this supplier's available dates.</p>
+                    </div>
+                    <button class="btn-dropdown">Show calendar <i class="ph ph-caret-down"></i></button>
+                </div>
+                <div class="legend-row">
+                    <div class="legend-item legend-booked"><div class="dot booked"></div> 1 booked</div>
+                    <div class="legend-item legend-available"><div class="dot avail"></div> 9 available</div>
+                </div>
+            </section>
+
+            <!-- Location Section -->
+            <section>
+                <div class="section-label" style="background:#e0e7ff; color:#4f46e5; border-color:#c7d2fe;">Service Area</div>
+                <h2 class="section-title" style="font-size: 24px; margin-bottom: 16px;">Mandaluyong, Metro Manila (NCR)</h2>
+                
+                <div class="map-wrapper">
+                    <!-- Static map image placeholder representing Leaflet/OSM -->
+                    <img src="https://placehold.co/800x300/f3f4f6/a1a1aa?text=Map+Render+Area" alt="Map Area">
+                    
+                    <!-- Map Controls Overlay -->
+                    <div class="map-controls">
+                        <button class="map-btn">+</button>
+                        <button class="map-btn">−</button>
+                    </div>
+                    <div class="map-attribution">
+                        Leaflet | © OpenStreetMap contributors
+                    </div>
+                </div>
+                <p class="map-caption">Pinned location is approximate — confirm exact address with the supplier when booking.</p>
+            </section>
+
+            <!-- Reviews Section -->
+            <section style="margin-top: 16px;">
+                <div class="section-label" style="background:#fef3c7; color:#d97706; border-color:#fde68a;">Reviews</div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <h2 class="section-title" style="margin-bottom: 0;">What couples <span class="gradient-text">are saying</span></h2>
+                    
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--text-secondary);">
+                        <i class="ph-fill ph-star" style="color: #f59e0b; font-size: 16px;"></i> <strong style="color:var(--text-main);">5.0</strong> from 1 couple
+                    </div>
+                </div>
+                <!-- Review cards would go here -->
+            </section>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="sidebar">
+            
+            <div class="alert-box">
+                You're signed in as a supplier. Inquiries are only sent by couple accounts.
+            </div>
+
+            <div class="glance-card">
+                <div class="glance-title">At a Glance</div>
+                
+                <div class="tag-row" style="margin-top: 0;">
+                    <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 5.0 (1 review)</div>
+                    <div class="tag tag-blue"><i class="ph-fill ph-clock"></i> Replies within 1 hr</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Weddings Booked</div>
+                        <div class="stat-value">9</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Couples Served</div>
+                        <div class="stat-value">4</div>
+                    </div>
+                </div>
+
+                <div class="side-section">
+                    <div class="side-label">Service Area</div>
+                    <div class="side-value">Mandaluyong, Metro Manila (NCR)</div>
+                </div>
+
+                <div class="side-section">
+                    <div class="side-label">Services</div>
+                    <div class="tag-row" style="margin-top: 0; gap: 8px;">
+                        <span class="tag tag-outline">Beach Resort</span>
+                        <span class="tag tag-outline">Convention Center</span>
+                        <span class="tag tag-outline">Garden/Outdoor</span>
+                        <span class="tag tag-outline">Rustic/Farm</span>
+                        <span class="tag tag-outline">Hotel Ballroom</span>
+                        <span class="tag tag-outline">Restaurant/Private Dining</span>
+                        <span class="tag tag-outline">Church/Chapel</span>
+                    </div>
+                </div>
+
+                <div class="side-section" style="margin-top: 24px;">
+                    <div class="side-label">Style</div>
+                    <div class="tag-row" style="margin-top: 0; gap: 8px;">
+                        <span class="tag tag-pink">Rustic</span>
+                        <span class="tag tag-pink">Garden</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-report">
+                <i class="ph ph-flag"></i> Report this supplier
+            </button>
+
+        </aside>
+
+    </div>
+
+</body>
+</html>
