@@ -81,6 +81,12 @@
         .pricing-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
         .pricing-value { background: var(--primary-gradient); -webkit-background-clip: text; color: transparent; font-weight: 700; font-size: 28px; line-height: 1; }
 
+        /* --- CREDENTIALS BOX --- */
+        .credentials-box { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; background: #f9fafb; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .credential-item { display: flex; align-items: center; gap: 12px; }
+        .credential-item img { height: 28px; width: 32px; object-fit: contain; }
+        .credential-item span { font-size: 13px; font-weight: 600; color: var(--text-secondary); line-height: 1.3; }
+
         /* --- SECTION TYPOGRAPHY --- */
         .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tag-pink-text); background: var(--tag-pink-bg); border: 1px solid #fbcfe8; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
         .section-title { font-size: 28px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
@@ -102,7 +108,7 @@
         
         .carousel-arrow { position: absolute; z-index: 10; background: white; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: var(--text-secondary); transition: all 0.2s; }
         .carousel-arrow:hover { background: #f9fafb; color: var(--text-main); transform: scale(1.05); }
-        .carousel-arrow.left { left: -16px; } /* Slightly tucked in due to parent padding */
+        .carousel-arrow.left { left: -16px; } 
         .carousel-arrow.right { right: -16px; }
 
         .portfolio-carousel { 
@@ -450,7 +456,6 @@
         <!-- RIGHT SIDEBAR -->
         <aside class="sidebar">
 
-            <!-- MOVED: Our Story -->
             <div class="glance-card">
                 <div class="glance-title">Our Story</div>
                 <div class="card-text" style="font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
@@ -462,7 +467,6 @@
             <div class="glance-card">
                 <div class="glance-title">At a Glance</div>
                 
-                <!-- MOVED: Pricing Display -->
                 <div class="pricing-display">
                     <div class="pricing-label">Starting from</div>
                     <div class="pricing-value">₱60,000</div>
@@ -481,6 +485,21 @@
                     <div class="stat-box">
                         <div class="stat-label">Couples Served</div>
                         <div class="stat-value">4</div>
+                    </div>
+                </div>
+                
+                <!-- VERIFIED CREDENTIALS -->
+                <div class="side-section">
+                    <div class="side-label">Credentials and Awards</div>
+                    <div class="credentials-box">
+                        <div class="credential-item">
+                            <img src="https://storage.googleapis.com/asia-ceo-forums/uploads/2026-09/aca-floating-badge-graphic-93e38bb2.png" alt="Asia CEO Awards">
+                            <span>Asia CEO Awards</span>
+                        </div>
+                        <div class="credential-item">
+                            <img src="https://iphioslogisticscorp.com/img/awards/awardee1.png" alt="Philippine Finest Business Awards">
+                            <span>Philippine Finest Business Awards</span>
+                        </div>
                     </div>
                 </div>
 
