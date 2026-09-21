@@ -57,13 +57,16 @@
         .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
         .hero-banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); }
         
-        .hero-details { padding: 0 32px 32px; position: relative; }
-        .hero-avatar { width: 120px; height: 120px; border-radius: 12px; border: 4px solid #ffffff; object-fit: cover; position: absolute; top: -60px; left: 32px; background: #fff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .hero-header { margin-top: 70px; display: flex; flex-direction: column; gap: 8px; }
+        .hero-details { padding: 0 32px 32px; display: flex; flex-direction: column; }
+        .hero-top-row { display: flex; gap: 24px; align-items: flex-start; }
+        
+        .hero-avatar { width: 130px; height: 130px; border-radius: 16px; border: 4px solid #ffffff; object-fit: cover; margin-top: -40px; background: #fff; position: relative; z-index: 10; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        
+        .hero-header { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
         .hero-title { font-size: 32px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
         .hero-subtitle { font-size: 15px; color: var(--text-secondary); }
         
-        .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
         .tag { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border: 1px solid transparent; }
         .tag i { font-size: 14px; }
         .tag-yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-text); border-color: #fde68a; }
@@ -73,8 +76,10 @@
         .tag-pink { background: var(--tag-pink-bg); color: var(--tag-pink-text); border-color: #fbcfe8; }
         .tag-outline { background: transparent; border-color: var(--border-color); color: var(--text-secondary); font-weight: 500; }
 
-        .hero-pricing { margin-top: 24px; font-size: 18px; font-weight: 600; color: var(--text-main); }
-        .hero-pricing span { background: var(--primary-gradient); -webkit-background-clip: text; color: transparent; font-weight: 700; font-size: 20px; margin-left: 4px; }
+        /* --- SIDEBAR PRICING --- */
+        .pricing-display { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .pricing-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .pricing-value { background: var(--primary-gradient); -webkit-background-clip: text; color: transparent; font-weight: 700; font-size: 28px; line-height: 1; }
 
         /* --- SECTION TYPOGRAPHY --- */
         .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tag-pink-text); background: var(--tag-pink-bg); border: 1px solid #fbcfe8; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
@@ -88,18 +93,75 @@
         .card-title { font-size: 20px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .card-subtitle { font-size: 13px; color: var(--text-tertiary); }
         
-        .btn-dropdown { display: flex; align-items: center; gap: 6px; background: #f9fafb; border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .btn-dropdown { display: flex; align-items: center; justify-content: center; gap: 6px; background: #f9fafb; border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
         .btn-dropdown:hover { background: #f3f4f6; color: var(--text-main); }
         .card-text { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
 
-        /* --- PORTFOLIO GRID --- */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-        .portfolio-item { width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; position: relative; background: #f3f4f6; }
+        /* --- PORTFOLIO CAROUSEL --- */
+        .carousel-container { position: relative; width: 100%; display: flex; align-items: center; }
+        
+        .carousel-arrow { position: absolute; z-index: 10; background: white; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); color: var(--text-secondary); transition: all 0.2s; }
+        .carousel-arrow:hover { background: #f9fafb; color: var(--text-main); transform: scale(1.05); }
+        .carousel-arrow.left { left: -16px; } /* Slightly tucked in due to parent padding */
+        .carousel-arrow.right { right: -16px; }
+
+        .portfolio-carousel { 
+            display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; 
+            scrollbar-width: none; -ms-overflow-style: none; padding: 8px 0; scroll-behavior: smooth; width: 100%;
+        }
+        .portfolio-carousel::-webkit-scrollbar { display: none; }
+        
+        .portfolio-item { 
+            flex: 0 0 280px; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; position: relative; 
+            background: #f3f4f6; cursor: pointer; scroll-snap-align: start; border: 1px solid var(--border-color);
+        }
         .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .portfolio-item:hover img { transform: scale(1.05); }
-        .badge-featured { position: absolute; top: 8px; left: 8px; background: rgba(190, 24, 93, 0.85); color: white; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; backdrop-filter: blur(4px); }
+        
+        .portfolio-item::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            pointer-events: none; opacity: 0.9;
+        }
+        .album-overlay {
+            position: absolute; bottom: 16px; left: 16px; z-index: 2;
+            display: flex; flex-direction: column; gap: 4px; pointer-events: none;
+        }
+        .album-title { color: white; font-size: 15px; font-weight: 600; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .album-count { color: rgba(255,255,255,0.8); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .badge-featured { position: absolute; top: 12px; left: 12px; background: rgba(190, 24, 93, 0.85); color: white; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; backdrop-filter: blur(4px); }
 
-        /* --- MAP & AVAILABILITY --- */
+        /* --- INTERACTIVE CALENDAR --- */
+        .calendar-wrapper { margin-top: 24px; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #f9fafb; border-bottom: 1px solid var(--border-color); }
+        .calendar-month { font-size: 16px; font-weight: 600; color: var(--text-main); }
+        .calendar-nav-btn { background: white; border: 1px solid var(--border-color); border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
+        .calendar-nav-btn:hover { background: #f3f4f6; color: var(--text-main); }
+        
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 16px; gap: 8px; }
+        .cal-day-header { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; padding-bottom: 8px; }
+        
+        .cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; border-radius: 8px; position: relative; transition: all 0.2s; border: 2px solid transparent; }
+        
+        /* Calendar States */
+        .cal-cell.empty { pointer-events: none; }
+        .cal-cell.past { color: #d1d5db; cursor: not-allowed; }
+        .cal-cell.available { color: var(--text-main); cursor: pointer; }
+        .cal-cell.available:hover { border-color: #c4b5fd; color: #7c3aed; background: #f5f3ff; font-weight: 600; }
+        
+        .cal-cell.booked { background: #fdf2f8; color: #db2777; border-color: #fbcfe8; cursor: not-allowed; }
+        .cal-cell.booked::after { content: 'Booked'; position: absolute; font-size: 9px; bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Availability Legend */
+        .legend-row { display: flex; gap: 12px; align-items: center; margin-top: 16px; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; border: 1px solid; padding: 4px 10px; border-radius: 20px; }
+        .legend-booked { background: #fdf2f8; color: #db2777; border-color: #fbcfe8; }
+        .legend-available { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; }
+        .dot.booked { background-color: #db2777; }
+        .dot.avail { background-color: #16a34a; }
+
+        /* --- MAP & LOCATION --- */
         .map-wrapper { width: 100%; height: 280px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 12px; background: #e5e7eb; position: relative; }
         .map-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .map-controls { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; background: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
@@ -108,9 +170,18 @@
         .map-attribution { position: absolute; bottom: 0; right: 0; background: rgba(255,255,255,0.8); font-size: 10px; padding: 2px 6px; color: #4b5563; }
         .map-caption { font-size: 12px; color: var(--text-tertiary); }
 
+        /* --- REVIEWS SECTION --- */
+        .review-list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; margin-bottom: 40px; }
+        .review-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .reviewer-info { display: flex; align-items: center; gap: 12px; }
+        .reviewer-avatar { width: 44px; height: 44px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #6b7280; font-size: 15px; }
+        .reviewer-name { font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 2px;}
+        .review-date { font-size: 12px; color: var(--text-tertiary); }
+        .review-stars { color: #f59e0b; font-size: 16px; letter-spacing: 1px; }
+        .review-body { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
         /* --- SIDEBAR COMPONENTS --- */
-        .alert-box { background: #f9fafb; border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-        
         .glance-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; }
         .glance-title { font-size: 12px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
         
@@ -124,17 +195,46 @@
         .side-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
         .side-value { font-size: 14px; color: var(--text-main); line-height: 1.5; }
 
+        .btn-outline { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .btn-outline:hover { background: #f3f4f6; color: var(--text-main); }
         .btn-report { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: #fff1f2; border: 1px solid #fecaca; color: #e11d48; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .btn-report:hover { background: #ffe4e6; }
+
+        /* --- SPLIT ALBUM MODAL --- */
+        .album-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.85); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .album-modal-content { background: var(--bg-surface); width: 90vw; max-width: 1200px; height: 85vh; border-radius: 16px; display: flex; flex-direction: row; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); position: relative; }
+
+        .album-media-col { flex: 1; background: #000000; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .album-media-col img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.2s ease-out; }
         
-        /* Availability Legend */
-        .legend-row { display: flex; gap: 12px; align-items: center; }
-        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; border: 1px solid; padding: 4px 10px; border-radius: 20px; }
-        .legend-booked { background: #fdf2f8; color: #db2777; border-color: #fbcfe8; }
-        .legend-available { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
-        .dot { width: 6px; height: 6px; border-radius: 50%; }
-        .dot.booked { background-color: #db2777; }
-        .dot.avail { background-color: #16a34a; }
+        .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 24px; border-radius: 50%; width: 48px; height: 48px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10; }
+        .modal-arrow:hover { background: rgba(255,255,255,0.3); }
+        .modal-arrow-left { left: 24px; }
+        .modal-arrow-right { right: 24px; }
+        .album-counter { position: absolute; bottom: 24px; background: rgba(0,0,0,0.6); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+
+        .album-details-col { width: 380px; background: var(--bg-surface); border-left: 1px solid var(--border-color); padding: 40px 32px 32px; display: flex; flex-direction: column; position: relative; }
+        .modal-close-btn { position: absolute; top: 16px; right: 16px; background: #f3f4f6; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .modal-close-btn:hover { background: #e5e7eb; color: var(--text-main); }
+        
+        .modal-details-title { font-size: 22px; font-weight: 700; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.3;}
+        .modal-details-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 32px; }
+
+        /* --- REQUEST BOOKING MODAL --- */
+        .booking-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.7); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+        .booking-modal-content { background: var(--bg-surface); width: 450px; border-radius: 16px; padding: 32px; position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        
+        .bm-header { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .bm-date-display { font-size: 14px; font-weight: 600; color: #8b5cf6; background: #f3e8ff; display: inline-block; padding: 6px 12px; border-radius: 20px; margin-bottom: 24px; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #8b5cf6; }
+        textarea.form-input { resize: vertical; min-height: 80px; }
+        
+        .btn-submit-booking { background: var(--primary-gradient); color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; margin-top: 16px; }
+        .btn-submit-booking:hover { opacity: 0.9; }
 
     </style>
 </head>
@@ -147,11 +247,9 @@
             <span class="brand-name">Lumera</span>
             <span class="badge-beta">BETA</span>
         </div>
-        
         <div class="nav-right">
             <a href="#" class="nav-link">Find suppliers</a>
             <a href="#" class="nav-link">Support</a>
-            
             <div class="nav-icons">
                 <i class="ph-fill ph-bell nav-icon-btn"></i>
                 <div class="user-menu">
@@ -174,91 +272,104 @@
             <!-- Hero Section -->
             <section class="hero-card">
                 <div class="hero-banner">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Banner Image">
+                    <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Banner Image">
                 </div>
-                <div class="hero-details">
-                    <img src="https://placehold.co/200x200/f8fafc/64748b?text=TB" alt="Avatar" class="hero-avatar">
-                    
-                    <div class="hero-header">
-                        <h1 class="hero-title">Test Business</h1>
-                        <p class="hero-subtitle">Venues · Mandaluyong, Metro Manila</p>
-                    </div>
-                    
-                    <div class="tag-row">
-                        <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 5.0 (1 review)</div>
-                        <div class="tag tag-blue"><i class="ph-fill ph-lightning"></i> Fast Responder</div>
-                        <div class="tag tag-green"><i class="ph-bold ph-check-circle"></i> Verified</div>
-                        <div class="tag tag-gray">10 years in business</div>
-                    </div>
-
-                    <div class="hero-pricing">
-                        Starting from <span>₱60,000</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Portfolio Section -->
-            <section>
-                <div class="section-label">Portfolio</div>
-                <h2 class="section-title">Recent <span class="gradient-text">work</span></h2>
-                <p class="section-desc">A glimpse of what Test Business has delivered for real couples.</p>
                 
-                <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <div class="badge-featured">Featured</div>
-                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 1">
+                <div class="hero-details">
+                    <div class="hero-top-row">
+                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Avatar" class="hero-avatar">
+                        
+                        <div class="hero-header">
+                            <h1 class="hero-title">Test Business</h1>
+                            <p class="hero-subtitle">Venues · Mandaluyong, Metro Manila</p>
+                            
+                            <div class="tag-row">
+                                <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 2.0 (3 reviews)</div>
+                                <div class="tag tag-blue"><i class="ph-fill ph-lightning"></i> Fast Responder</div>
+                                <div class="tag tag-green"><i class="ph-bold ph-check-circle"></i> Verified</div>
+                                <div class="tag tag-gray">10 years in business</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="portfolio-item">
-                        <div class="badge-featured">Featured</div>
-                        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 2">
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="badge-featured">Featured</div>
-                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 3">
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 4">
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 5">
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://images.unsplash.com/photo-1522413452208-99690151cdfb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 6">
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://images.unsplash.com/photo-1542042161784-26ab9e041e89?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 7">
-                    </div>
-                    <div class="portfolio-item">
-                        <img src="https://images.unsplash.com/photo-1505944357431-27579db47558?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Work 8">
+
+                    <!-- Portfolio Section nested inside Hero Details -->
+                    <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border-color);">
+                        <div class="section-label">Portfolio</div>
+                        <h2 class="section-title">Recent <span class="gradient-text">work</span></h2>
+                        <p class="section-desc">A glimpse of what Test Business has delivered for real couples.</p>
+                        
+                        <div class="carousel-container">
+                            <button class="carousel-arrow left" onclick="scrollCarousel(-1)"><i class="ph ph-caret-left"></i></button>
+                            
+                            <div class="portfolio-carousel" id="portfolio-carousel">
+                                <div class="portfolio-item" onclick="openAlbum('album1')">
+                                    <div class="badge-featured">Featured</div>
+                                    <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" alt="Album 1 Cover">
+                                    <div class="album-overlay">
+                                        <span class="album-title">Intimate Garden</span>
+                                        <span class="album-count"><i class="ph-fill ph-images"></i> 2 photos</span>
+                                    </div>
+                                </div>
+                                <div class="portfolio-item" onclick="openAlbum('album2')">
+                                    <div class="badge-featured">Featured</div>
+                                    <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" alt="Album 2 Cover">
+                                    <div class="album-overlay">
+                                        <span class="album-title">Grand Ballroom</span>
+                                        <span class="album-count"><i class="ph-fill ph-images"></i> 2 photos</span>
+                                    </div>
+                                </div>
+                                <div class="portfolio-item" onclick="openAlbum('album3')">
+                                    <img src="https://www.lovemydress.net/wp-content/uploads/2019/03/how-to-break-up-with-your-wedding-suppliers.jpg" alt="Album 3 Cover">
+                                    <div class="album-overlay">
+                                        <span class="album-title">Rustic Setup</span>
+                                        <span class="album-count"><i class="ph-fill ph-images"></i> 2 photos</span>
+                                    </div>
+                                </div>
+                                <div class="portfolio-item" onclick="openAlbum('album4')">
+                                    <img src="https://i0.wp.com/lorismaeshielda.com/wp-content/uploads/2025/10/destination-wedding-venue-club-punta-fuego.jpg?resize=960%2C640&ssl=1" alt="Album 4 Cover">
+                                    <div class="album-overlay">
+                                        <span class="album-title">Destination</span>
+                                        <span class="album-count"><i class="ph-fill ph-images"></i> 2 photos</span>
+                                    </div>
+                                </div>
+                                <div class="portfolio-item" onclick="openAlbum('album5')">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1fqrjPbpYjR-vRYTIRKZ2pd4UGwCf0JrCMsJYthEpYw2Gxi1pMTau2ss&s=10" alt="Album 5 Cover">
+                                    <div class="album-overlay">
+                                        <span class="album-title">Prenup Shoot</span>
+                                        <span class="album-count"><i class="ph-fill ph-images"></i> 2 photos</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="carousel-arrow right" onclick="scrollCarousel(1)"><i class="ph ph-caret-right"></i></button>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Our Story Section -->
+            <!-- Availability Section (Interactive Calendar) -->
             <section class="content-card">
-                <div class="card-header">
-                    <div>
-                        <h3 class="card-title">Our story</h3>
-                    </div>
-                    <button class="btn-dropdown">Read more <i class="ph ph-caret-down"></i></button>
-                </div>
-                <div class="card-text">
-                    What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type...
-                </div>
-            </section>
-
-            <!-- Availability Section -->
-            <section class="content-card">
-                <div class="card-header">
+                <div class="card-header" style="margin-bottom: 0;">
                     <div>
                         <h3 class="card-title">Availability</h3>
-                        <p class="card-subtitle">Check this supplier's available dates.</p>
+                        <p class="card-subtitle">Click an available date to request a booking.</p>
                     </div>
-                    <button class="btn-dropdown">Show calendar <i class="ph ph-caret-down"></i></button>
                 </div>
+                
                 <div class="legend-row">
-                    <div class="legend-item legend-booked"><div class="dot booked"></div> 1 booked</div>
-                    <div class="legend-item legend-available"><div class="dot avail"></div> 9 available</div>
+                    <div class="legend-item legend-available"><div class="dot avail"></div> Available Dates</div>
+                    <div class="legend-item legend-booked"><div class="dot booked"></div> Booked Dates</div>
+                </div>
+
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" id="cal-btn-prev"><i class="ph ph-caret-left"></i></button>
+                        <div class="calendar-month" id="cal-month-display">September 2026</div>
+                        <button class="calendar-nav-btn" id="cal-btn-next"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <!-- Header / Days injected by JS -->
+                    </div>
                 </div>
             </section>
 
@@ -268,17 +379,12 @@
                 <h2 class="section-title" style="font-size: 24px; margin-bottom: 16px;">Mandaluyong, Metro Manila (NCR)</h2>
                 
                 <div class="map-wrapper">
-                    <!-- Static map image placeholder representing Leaflet/OSM -->
                     <img src="https://placehold.co/800x300/f3f4f6/a1a1aa?text=Map+Render+Area" alt="Map Area">
-                    
-                    <!-- Map Controls Overlay -->
                     <div class="map-controls">
                         <button class="map-btn">+</button>
                         <button class="map-btn">−</button>
                     </div>
-                    <div class="map-attribution">
-                        Leaflet | © OpenStreetMap contributors
-                    </div>
+                    <div class="map-attribution">Leaflet | © OpenStreetMap contributors</div>
                 </div>
                 <p class="map-caption">Pinned location is approximate — confirm exact address with the supplier when booking.</p>
             </section>
@@ -289,28 +395,81 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                     <h2 class="section-title" style="margin-bottom: 0;">What couples <span class="gradient-text">are saying</span></h2>
-                    
                     <div style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--text-secondary);">
-                        <i class="ph-fill ph-star" style="color: #f59e0b; font-size: 16px;"></i> <strong style="color:var(--text-main);">5.0</strong> from 1 couple
+                        <i class="ph-fill ph-star" style="color: #f59e0b; font-size: 16px;"></i> <strong style="color:var(--text-main);">2.0</strong> from 3 couples
                     </div>
                 </div>
-                <!-- Review cards would go here -->
+
+                <div class="review-list">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">DL</div>
+                                <div>
+                                    <div class="reviewer-name">David Lee</div>
+                                    <div class="review-date">June 24, 2026</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">★★★★<span style="color:#e5e7eb">★</span></div>
+                        </div>
+                        <div class="review-body">"Food was great, but the delivery was 30 minutes late. Otherwise, good service."</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">JS</div>
+                                <div>
+                                    <div class="reviewer-name">John Smith</div>
+                                    <div class="review-date">June 25, 2026</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">★<span style="color:#e5e7eb">★★★★</span></div>
+                        </div>
+                        <div class="review-body">"Absolutely terrible service. The owner is a complete scam artist. Do not book them under any circumstances. They completely ruined our event!"</div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">JD</div>
+                                <div>
+                                    <div class="reviewer-name">Jane Doe</div>
+                                    <div class="review-date">June 23, 2026</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">★<span style="color:#e5e7eb">★★★★</span></div>
+                        </div>
+                        <div class="review-body">"Click here to get 50% off your next catering order: http://spam-link-promo.com"</div>
+                    </div>
+                </div>
             </section>
 
         </main>
 
         <!-- RIGHT SIDEBAR -->
         <aside class="sidebar">
-            
-            <div class="alert-box">
-                You're signed in as a supplier. Inquiries are only sent by couple accounts.
+
+            <!-- MOVED: Our Story -->
+            <div class="glance-card">
+                <div class="glance-title">Our Story</div>
+                <div class="card-text" style="font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                    We orchestrate unforgettable events across Metro Manila. From intimate garden weddings to grand corporate galas, our dedicated team ensures absolute perfection. What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+                </div>
+                <button class="btn-dropdown" style="margin-top: 16px; width: 100%; justify-content: center;">Read more <i class="ph ph-caret-down"></i></button>
             </div>
 
             <div class="glance-card">
                 <div class="glance-title">At a Glance</div>
                 
+                <!-- MOVED: Pricing Display -->
+                <div class="pricing-display">
+                    <div class="pricing-label">Starting from</div>
+                    <div class="pricing-value">₱60,000</div>
+                </div>
+
                 <div class="tag-row" style="margin-top: 0;">
-                    <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 5.0 (1 review)</div>
+                    <div class="tag tag-yellow"><i class="ph-fill ph-star"></i> 2.0 (3 reviews)</div>
                     <div class="tag tag-blue"><i class="ph-fill ph-clock"></i> Replies within 1 hr</div>
                 </div>
 
@@ -338,8 +497,6 @@
                         <span class="tag tag-outline">Garden/Outdoor</span>
                         <span class="tag tag-outline">Rustic/Farm</span>
                         <span class="tag tag-outline">Hotel Ballroom</span>
-                        <span class="tag tag-outline">Restaurant/Private Dining</span>
-                        <span class="tag tag-outline">Church/Chapel</span>
                     </div>
                 </div>
 
@@ -352,13 +509,301 @@
                 </div>
             </div>
 
-            <button class="btn-report">
-                <i class="ph ph-flag"></i> Report this supplier
-            </button>
+            <button class="btn-report"><i class="ph ph-flag"></i> Report this supplier</button>
 
         </aside>
 
     </div>
 
+    <!-- ============================================== -->
+    <!-- BOOKING REQUEST MODAL                          -->
+    <!-- ============================================== -->
+    <div class="booking-modal-overlay" id="booking-modal">
+        <div class="booking-modal-content">
+            <button class="modal-close-btn" onclick="closeBookingModal()"><i class="ph ph-x"></i></button>
+            <h3 class="bm-header">Request a Booking</h3>
+            <div class="bm-date-display" id="bm-date-target">Date Here</div>
+            
+            <div class="form-group">
+                <label class="form-label">Event Type</label>
+                <select class="form-input">
+                    <option>Wedding Ceremony & Reception</option>
+                    <option>Pre-Wedding / Engagement</option>
+                    <option>Corporate Event</option>
+                    <option>Other Private Event</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Estimated Guest Count</label>
+                <input type="number" class="form-input" placeholder="e.g. 150">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Message to Supplier (Optional)</label>
+                <textarea class="form-input" placeholder="Hi! I'm interested in booking your venue for our upcoming wedding. Are you available on this date?"></textarea>
+            </div>
+
+            <button class="btn-submit-booking" onclick="closeBookingModal()">Send Booking Request</button>
+        </div>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- ALBUM MODAL (Split View)                       -->
+    <!-- ============================================== -->
+    <div class="album-modal-overlay" id="album-modal">
+        <div class="album-modal-content">
+            <div class="album-media-col" id="media-zoom-container">
+                <button class="modal-arrow modal-arrow-left" id="album-prev" onclick="prevAlbumImage()"><i class="ph ph-caret-left"></i></button>
+                <img id="album-img-target" src="" alt="Album Media">
+                <button class="modal-arrow modal-arrow-right" id="album-next" onclick="nextAlbumImage()"><i class="ph ph-caret-right"></i></button>
+                <div class="album-counter" id="album-counter-display">1 of X</div>
+            </div>
+            <div class="album-details-col">
+                <button class="modal-close-btn" onclick="closeAlbum()"><i class="ph ph-x"></i></button>
+                <div class="side-label" style="margin-top: 8px;">Portfolio Project</div>
+                <h3 class="modal-details-title" id="album-title-display">Album Title</h3>
+                <p class="modal-details-desc" id="album-desc-display">Description goes here.</p>
+                <div class="side-label">Tags & Categories</div>
+                <div class="tag-row" id="album-tags-display" style="margin-top:0;"></div>
+                <div style="margin-top: auto; padding-top: 32px; border-top: 1px solid var(--border-color);">
+                    <button class="btn-outline" style="width: 100%; justify-content: center;"><i class="ph ph-share-network"></i> Share Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- INTERACTIVE CALENDAR LOGIC ---
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+        // Base context is September 2026
+        const todayContext = new Date(2026, 8, 22); // Sept 22, 2026
+        let currentMonthIndex = 8;
+        let currentYear = 2026;
+
+        // Hardcoded booked dates for the prototype (Format: YYYY-MM-DD)
+        const bookedDates = ["2026-09-25", "2026-09-28", "2026-10-04", "2026-10-10"];
+
+        const calGrid = document.getElementById('calendar-grid');
+        const calMonthDisplay = document.getElementById('cal-month-display');
+        const bookingModal = document.getElementById('booking-modal');
+        const bmDateTarget = document.getElementById('bm-date-target');
+
+        function renderCalendar() {
+            calGrid.innerHTML = ''; // Clear previous
+            
+            // Render Headers (Sun - Sat)
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'cal-day-header';
+                header.innerText = day;
+                calGrid.appendChild(header);
+            });
+
+            calMonthDisplay.innerText = `${monthNames[currentMonthIndex]} ${currentYear}`;
+
+            const firstDay = new Date(currentYear, currentMonthIndex, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+
+            // Empty cells for days before the 1st
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'cal-cell empty';
+                calGrid.appendChild(emptyCell);
+            }
+
+            // Fill actual days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const cell = document.createElement('div');
+                const cellDateObj = new Date(currentYear, currentMonthIndex, i);
+                
+                // Format YYYY-MM-DD to check against booked array
+                const m = String(currentMonthIndex + 1).padStart(2, '0');
+                const d = String(i).padStart(2, '0');
+                const dateString = `${currentYear}-${m}-${d}`;
+
+                cell.innerText = i;
+                
+                // Determine State (Past vs Booked vs Available)
+                // In our context, anything before Sept 22 2026 is past
+                if (cellDateObj < new Date(todayContext.getFullYear(), todayContext.getMonth(), todayContext.getDate())) {
+                    cell.className = 'cal-cell past';
+                } 
+                else if (bookedDates.includes(dateString)) {
+                    cell.className = 'cal-cell booked';
+                } 
+                else {
+                    cell.className = 'cal-cell available';
+                    // Click to Request Booking
+                    cell.onclick = () => openBookingModal(dateString);
+                }
+
+                calGrid.appendChild(cell);
+            }
+        }
+
+        function changeMonth(step) {
+            currentMonthIndex += step;
+            if (currentMonthIndex < 0) {
+                currentMonthIndex = 11;
+                currentYear--;
+            } else if (currentMonthIndex > 11) {
+                currentMonthIndex = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
+
+        document.getElementById('cal-btn-prev').addEventListener('click', () => changeMonth(-1));
+        document.getElementById('cal-btn-next').addEventListener('click', () => changeMonth(1));
+
+        // Initial Render
+        renderCalendar();
+
+        // --- BOOKING MODAL LOGIC ---
+        function openBookingModal(dateString) {
+            // Parse to readable format (e.g. September 24, 2026)
+            const parts = dateString.split('-');
+            const displayDate = `${monthNames[parseInt(parts[1])-1]} ${parseInt(parts[2])}, ${parts[0]}`;
+            bmDateTarget.innerText = displayDate;
+            bookingModal.style.display = 'flex';
+        }
+
+        function closeBookingModal() {
+            bookingModal.style.display = 'none';
+        }
+
+        // --- CAROUSEL LOGIC & AUTO-SCROLL ---
+        const carousel = document.getElementById('portfolio-carousel');
+        let autoScrollTimer;
+
+        function scrollCarousel(direction) {
+            carousel.scrollBy({ left: direction * 296, behavior: 'smooth' });
+        }
+
+        function startAutoScroll() {
+            autoScrollTimer = setInterval(() => {
+                if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10) {
+                    carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    scrollCarousel(1);
+                }
+            }, 3000);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollTimer);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            startAutoScroll();
+            const container = document.querySelector('.carousel-container');
+            if(container) {
+                container.addEventListener('mouseenter', stopAutoScroll);
+                container.addEventListener('mouseleave', startAutoScroll);
+            }
+        });
+
+        // --- ALBUM DATA ---
+        const albumsData = {
+            'album1': { title: "Intimate Garden Wedding", desc: "A beautiful outdoor setup with lush floral arrangements and warm ambient lighting. Perfect for smaller, intimate gatherings with close family and friends in Tagaytay.", tags: ["Garden", "Intimate", "Floral"], images: ["https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg", "https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp"] },
+            'album2': { title: "Grand Ballroom Gala", desc: "Elegant draping, crystal chandeliers, and a massive dance floor setup designed specifically for a large-scale hotel wedding reception in Metro Manila.", tags: ["Ballroom", "Elegant", "Indoor"], images: ["https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg", "https://lightoflove.com.ph/wp-content/uploads/2026/02/ultimate-wedding-supplier-checklist-coordination-light-of-love-quezon-city.jpg"] },
+            'album3': { title: "Rustic Farm Setup", desc: "Wooden accents, fairy lights, and vintage table settings for a classic rustic-themed celebration. We provided full styling and furniture rentals for this event.", tags: ["Rustic", "Vintage", "Farm"], images: ["https://www.lovemydress.net/wp-content/uploads/2019/03/how-to-break-up-with-your-wedding-suppliers.jpg", "https://brideandbreakfast.ph/wp-content/uploads/2023/07/the-list-july-06.jpg"] },
+            'album4': { title: "Beachfront Destination", desc: "Breathtaking beachfront views with minimalist decor to let the natural ocean scenery shine. Coordinated travel and setup logistics for 150 guests.", tags: ["Beach", "Destination", "Minimalist"], images: ["https://i0.wp.com/lorismaeshielda.com/wp-content/uploads/2025/10/destination-wedding-venue-club-punta-fuego.jpg?resize=960%2C640&ssl=1", "https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg"] },
+            'album5': { title: "Creative Prenup Shoot", desc: "Creative styling for pre-wedding photography, featuring unique custom-built props and stunning scenic locations curated by our team.", tags: ["Prenup", "Styling", "Creative"], images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1fqrjPbpYjR-vRYTIRKZ2pd4UGwCf0JrCMsJYthEpYw2Gxi1pMTau2ss&s=10", "https://www.tiarraverdegardens.com/uploads/1/3/7/7/137736543/forever-always-wedding-package-2023-lazuri-tagaytay-metro-manila-ph-02_orig.jpg"] }
+        };
+
+        // --- SPLIT MODAL LOGIC ---
+        let currentAlbumId = null;
+        let currentImageIndex = 0;
+        let currentScale = 1;
+
+        const modalEl = document.getElementById('album-modal');
+        const modalImg = document.getElementById('album-img-target');
+        const mediaContainer = document.getElementById('media-zoom-container');
+        
+        const titleDisplay = document.getElementById('album-title-display');
+        const descDisplay = document.getElementById('album-desc-display');
+        const tagsDisplay = document.getElementById('album-tags-display');
+        const countDisplay = document.getElementById('album-counter-display');
+
+        function openAlbum(albumId) {
+            currentAlbumId = albumId;
+            currentImageIndex = 0;
+            currentScale = 1;
+            renderAlbumData();
+            modalEl.style.display = 'flex';
+        }
+
+        function closeAlbum() {
+            modalEl.style.display = 'none';
+            modalImg.src = '';
+            currentAlbumId = null;
+        }
+
+        function renderAlbumData() {
+            const album = albumsData[currentAlbumId];
+            modalImg.style.transform = `scale(1)`;
+            currentScale = 1;
+            modalImg.src = album.images[currentImageIndex];
+            
+            titleDisplay.innerText = album.title;
+            descDisplay.innerText = album.desc;
+            countDisplay.innerText = `Image ${currentImageIndex + 1} of ${album.images.length}`;
+            
+            tagsDisplay.innerHTML = '';
+            album.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'tag tag-outline';
+                span.innerText = tag;
+                tagsDisplay.appendChild(span);
+            });
+            
+            document.getElementById('album-prev').style.display = album.images.length > 1 ? 'flex' : 'none';
+            document.getElementById('album-next').style.display = album.images.length > 1 ? 'flex' : 'none';
+        }
+
+        function nextAlbumImage() {
+            const album = albumsData[currentAlbumId];
+            if (album && album.images.length > 1) {
+                currentImageIndex = (currentImageIndex + 1) % album.images.length;
+                renderAlbumData();
+            }
+        }
+
+        function prevAlbumImage() {
+            const album = albumsData[currentAlbumId];
+            if (album && album.images.length > 1) {
+                currentImageIndex = (currentImageIndex - 1 + album.images.length) % album.images.length;
+                renderAlbumData();
+            }
+        }
+
+        mediaContainer.addEventListener('wheel', function(e) {
+            if (modalEl.style.display === 'flex') {
+                e.preventDefault();
+                if (e.deltaY < 0) currentScale += 0.15;
+                else currentScale = Math.max(0.5, currentScale - 0.15);
+                modalImg.style.transform = `scale(${currentScale})`;
+            }
+        }, { passive: false });
+
+        modalEl.addEventListener('click', function(e) { if (e.target === modalEl) closeAlbum(); });
+        bookingModal.addEventListener('click', function(e) { if (e.target === bookingModal) closeBookingModal(); });
+
+        document.addEventListener('keydown', function(e) {
+            if (window.getComputedStyle(modalEl).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') closeAlbum();
+                if (e.key === 'ArrowRight') nextAlbumImage();
+                if (e.key === 'ArrowLeft') prevAlbumImage();
+            }
+            if (window.getComputedStyle(bookingModal).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') closeBookingModal();
+            }
+        });
+    </script>
 </body>
 </html>
