@@ -65,8 +65,20 @@
         #view-completed-approved { display: none; }
         #view-completed-rejected { display: none; }
 
-        /* --- LIST / TABLE VIEW --- */
+        /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
+        .toolbar-left { display: flex; align-items: center; gap: 12px; }
+        
+        .search-box { display: flex; align-items: center; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; width: 280px; gap: 8px; transition: border-color 0.2s; }
+        .search-box:focus-within { border-color: #8b5cf6; }
+        .search-box i { color: var(--text-tertiary); font-size: 16px; }
+        .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: var(--text-main); }
+        
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-outline:hover { background: #f3f4f6; color: var(--text-main); }
+
         .data-table { width: 100%; border-collapse: collapse; text-align: left; }
         .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
         .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
@@ -86,21 +98,36 @@
         .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
-        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
+        /* --- COMPREHENSIVE MODERATION BLOCKS (25% - 50% - 25%) --- */
         .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        
+        .mod-block { 
+            background-color: var(--bg-surface); 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            overflow: hidden; 
+            display: grid; 
+            grid-template-columns: 1fr 2fr 1fr; /* 25% 50% 25% */
+        }
         
         .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
         .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
-        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
-        .block-action.span-2 { grid-column: 2 / 4; }
+        
+        /* Decision panel directly inside the block */
+        .block-decision { 
+            padding: 24px; 
+            background-color: #ffffff; 
+            border-left: 1px solid var(--border-color); 
+            display: flex; 
+            flex-direction: column; 
+        }
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
         
         .info-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; word-break: break-word;}
 
         .field-rejected .label { color: var(--color-reject) !important; }
         .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
@@ -115,10 +142,8 @@
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 
         /* --- INLINE DOCUMENT EMBEDS --- */
-        .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-        .span-2 .doc-embed-wrapper { flex-direction: row; }
-        .doc-embed { flex: 1; width: 100%; height: 350px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
-        .doc-embed.short { height: 250px; }
+        .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; flex: 1; height: 100%; min-height: 250px;}
+        .doc-embed { flex: 1; width: 100%; height: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed iframe, .doc-embed img { width: 100%; height: 100%; border: none; object-fit: contain; background-color: #e5e7eb; }
         .doc-embed img.clickable-img { cursor: zoom-in; transition: opacity 0.2s; }
         .doc-embed img.clickable-img:hover { opacity: 0.9; }
@@ -127,45 +152,48 @@
         .doc-embed-label i { color: #8b5cf6; font-size: 14px; }
         .doc-embed.rejected { border: 2px solid #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
 
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
-        .action-instructions a { color: #8b5cf6; text-decoration: none; font-weight: 500; }
-        .action-instructions a:hover { text-decoration: underline; }
-
-        /* Shared Decision Styling */
-        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .decision-group { display: flex; gap: 12px; }
-        .decision-label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
-        .decision-label input[type="radio"] { display: none; }
-        .decision-label.approve:hover { border-color: var(--color-approve); }
-        .decision-label.reject:hover { border-color: var(--color-reject); }
+        /* --- RADIO DECISION STYLING (Profile Style) --- */
+        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; }
         
-        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
-        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
-
-        /* --- UNIFIED BLOCK FOOTER (DECISION AREA) --- */
-        .block-footer {
-            grid-column: 1 / -1;
-            padding: 16px 24px;
-            background-color: #f8fafc;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 24px;
+        .dp-radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .dp-radio-label {
+            display: flex; align-items: center; gap: 8px; 
+            font-size: 13px; font-weight: 500; color: var(--text-main); 
+            cursor: pointer; padding: 4px 0;
         }
-        .block-footer .footer-text { font-size: 14px; color: var(--text-secondary); font-weight: 500; padding-top: 10px; }
-        .block-footer .decision-wrapper { width: 450px; flex: none; display: flex; flex-direction: column; }
+        .dp-radio-label input[type="radio"] {
+            accent-color: #8b5cf6;
+            width: 16px; height: 16px;
+            cursor: pointer;
+        }
+
+        .dp-sub-reasons {
+            margin-left: 24px;
+            margin-top: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            animation: fadeIn 0.2s ease-in-out;
+            background: #fff1f2;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffe4e6;
+        }
+        
+        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
+        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
+
+        /* Reveal sub-reasons when reject is checked */
+        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
+            display: flex;
+        }
 
         /* --- READ ONLY MODERATION STATES --- */
-        .locked-decision { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
         .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
         
-        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
-        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
-        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        .static-reason { margin-top: 12px; font-size: 13px; color: var(--color-reject); line-height: 1.5; padding: 8px 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 6px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
@@ -178,7 +206,7 @@
         /* --- IMAGE VIEWER MODAL --- */
         .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
         .modal-btn:hover { color: #8b5cf6; }
@@ -268,6 +296,18 @@
                 </div>
 
                 <div class="list-container">
+                    <!-- TABLE TOOLBAR (Search, Filter, Sort) -->
+                    <div class="table-toolbar">
+                        <div class="toolbar-left">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" placeholder="Search supplier...">
+                            </div>
+                            <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
+                            <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
+                        </div>
+                    </div>
+
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -322,16 +362,17 @@
             <div id="view-detail">
                 <div class="page-header" style="display: block;">
                     <h1>Verify Supplier: Lumera Events Co.</h1>
-                    <p>Evaluate both the submitted details and their corresponding documents independently. Click any image to enlarge and manipulate.</p>
+                    <p>Evaluate both the submitted details and their corresponding documents. Click any media to enlarge.</p>
                 </div>
 
                 <div class="verification-blocks">
-                    <!-- Block 1 -->
+                    
+                    <!-- Block 1: Identity & Reg -->
                     <div class="mod-block">
-                        <!-- Col 1: Data (40%) -->
+                        <!-- Col 1: Data (25%) -->
                         <div class="block-data">
                             <div class="block-header">
-                                <i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration
+                                <i class="ph-fill ph-storefront"></i> 1. Business Identity
                             </div>
                             <div class="info-grid">
                                 <div class="info-item">
@@ -352,7 +393,7 @@
                                         <button class="btn-copy" onclick="copyToClipboard('CS202612345')" title="Copy"><i class="ph ph-copy"></i></button>
                                     </div>
                                     <a href="https://checkwithsec.sec.gov.ph/check-with-sec/" target="_blank" class="external-verify-link">
-                                        <i class="ph ph-arrow-square-out"></i> Verify with SEC
+                                        <i class="ph ph-arrow-square-out"></i> Verify SEC
                                     </a>
                                 </div>
                                 <div class="info-item">
@@ -362,55 +403,57 @@
                                         <button class="btn-copy" onclick="copyToClipboard('9876543210')" title="Copy"><i class="ph ph-copy"></i></button>
                                     </div>
                                     <a href="https://bnrs.dti.gov.ph/search" target="_blank" class="external-verify-link">
-                                        <i class="ph ph-arrow-square-out"></i> Verify with DTI
+                                        <i class="ph ph-arrow-square-out"></i> Verify DTI
                                     </a>
-                                </div>
-                            </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_sec_1" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_sec_1" value="reject"><i class="ph ph-x-circle"></i> Reject Section</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_sec_1">
-                                        <option value="">Select violation reason...</option>
-                                        <option value="mismatch">Details do not match documents</option>
-                                        <option value="expired">Expired or invalid document</option>
-                                        <option value="fraud">Suspected fraudulent document</option>
-                                        <option value="incomplete">Incomplete information</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Col 2: SEC Document (30%) -->
+                        <!-- Col 2: Documents (50%) -->
                         <div class="block-action">
-                            <div class="doc-preview-label">SEC Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div>
-                                    <img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">SEC Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div>
+                                            <img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">DTI Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div>
+                                            <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: DTI Document (30%) -->
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div>
-                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI Certificate" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
+                        <!-- Col 3: Decision Panel (25%) -->
+                        <div class="block-decision">
+                            <div class="dp-title">Section 1 Decision</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_1" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_1" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="mismatch"> Details mismatch</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="expired"> Expired document</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="fraud"> Suspected fraud</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="incomplete"> Incomplete info</label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Block 2 -->
+                    <!-- Block 2: Address -->
                     <div class="mod-block">
+                        <!-- Col 1: Data (25%) -->
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Address & Services</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Street Address</div><div class="value">Unit 4B, 3rd Floor, Ayala Tower One</div></div>
                                 <div class="info-item"><div class="label">City / Municipality</div><div class="value">Makati City</div></div>
@@ -418,129 +461,128 @@
                                 <div class="info-item"><div class="label">Zip Code</div><div class="value">1200</div></div>
                                 <div class="info-item"><div class="label">Primary Service Areas</div><div class="value">Metro Manila</div></div>
                             </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_sec_2" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_sec_2" value="reject"><i class="ph ph-x-circle"></i> Reject Section</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_sec_2">
-                                        <option value="">Select violation reason...</option>
-                                        <option value="mismatch">Address mismatch</option>
-                                        <option value="expired">Expired document</option>
-                                        <option value="fraud">Suspected fraudulent document</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
 
-                        <!-- Col 2: Mayor's Permit (30%) -->
+                        <!-- Col 2: Documents (50%) -->
                         <div class="block-action">
-                            <div class="doc-preview-label">Mayor's Permit</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit_2026.png</div>
-                                    <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Mayor's Permit</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit_2026.png</div>
+                                            <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: Empty Placeholder (-) -->
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
-                            -
+                        <!-- Col 3: Decision Panel (25%) -->
+                        <div class="block-decision">
+                            <div class="dp-title">Section 2 Decision</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_2" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_2" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_2" value="mismatch"> Address mismatch</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_2" value="expired"> Expired document</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_2" value="fraud"> Suspected fraud</label>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Block 3 -->
+                    <!-- Block 3: Tax -->
                     <div class="mod-block">
+                        <!-- Col 1: Data (25%) -->
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 25,000</div></div>
                                 <div class="info-item"><div class="label">Tax Registration</div><div class="value">VAT Registered (Implied)</div></div>
                             </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_sec_3" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_sec_3" value="reject"><i class="ph ph-x-circle"></i> Reject Section</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_sec_3">
-                                        <option value="">Select violation reason...</option>
-                                        <option value="mismatch">Details do not match document</option>
-                                        <option value="unreasonable">Unreasonable starting price</option>
-                                        <option value="expired">Illegible/Expired document</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
 
-                        <!-- Col 2: BIR Certificate (30%) -->
+                        <!-- Col 2: Documents (50%) -->
                         <div class="block-action">
-                            <div class="doc-preview-label">BIR Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Form_2303.jpg</div>
-                                    <img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" alt="BIR Form 2303" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">BIR Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Form_2303.jpg</div>
+                                            <img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" alt="BIR Form 2303" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: Empty Placeholder (-) -->
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
-                            -
+                        <!-- Col 3: Decision Panel (25%) -->
+                        <div class="block-decision">
+                            <div class="dp-title">Section 3 Decision</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_3" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_3" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="mismatch"> Details mismatch</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="unreasonable"> Unreasonable price</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="expired"> Expired / Illegible</label>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Block 4 -->
+                    <!-- Block 4: Representative -->
                     <div class="mod-block">
+                        <!-- Col 1: Data (25%) -->
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative & Account Details</div>
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Representative Type</div><div class="value">Owner</div></div>
-                                <div class="info-item"><div class="label">Representative name</div><div class="value">Juan Dela Cruz</div></div>
+                                <div class="info-item"><div class="label">Representative Name</div><div class="value">Juan Dela Cruz</div></div>
                                 <div class="info-item"><div class="label">Contact Number</div><div class="value">0917 123 4567</div></div>
                                 <div class="info-item"><div class="label">Email Address</div><div class="value">admin@lumeraevents.com</div></div>
                             </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve"><input type="radio" name="check_sec_4" value="approve"><i class="ph ph-check-circle"></i> Approve Section</label>
-                                    <label class="decision-label reject"><input type="radio" name="check_sec_4" value="reject"><i class="ph ph-x-circle"></i> Reject Section</label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_sec_4">
-                                        <option value="">Select document issue...</option>
-                                        <option value="mismatch">Details do not match document</option>
-                                        <option value="illegible">Illegible or blurry</option>
-                                        <option value="expired">Expired document</option>
-                                        <option value="fraud">Suspected fraudulent/edited</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                         
-                        <!-- Col 2: ID Selfie (30%) -->
+                        <!-- Col 2: Documents (50%) -->
                         <div class="block-action">
-                            <div class="doc-preview-label">ID Selfie</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
-                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">ID Selfie</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
+                                            <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Authorization Letter</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom: 0;">
+                                        <div class="doc-embed">
+                                            <div class="doc-embed-label"><i class="ph ph-image"></i> Auth_Letter.jpg</div>
+                                            <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: Authorization Letter (30%) -->
-                        <div class="block-action">
-                            <div class="doc-preview-label">Authorization Letter</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
-                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
+                        <!-- Col 3: Decision Panel (25%) -->
+                        <div class="block-decision">
+                            <div class="dp-title">Section 4 Decision</div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_4" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="check_sec_4" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="mismatch"> Details mismatch</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="illegible"> Illegible / Blurry</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="expired"> Expired document</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="fraud"> Suspected fraud</label>
                             </div>
                         </div>
                     </div>
@@ -559,63 +601,63 @@
             <div id="view-completed-approved">
                 <div class="page-header" style="display: block;">
                     <h1>Supplier Record: Alpha Trading Corp.</h1>
-                    <p>This verification request has already been processed and approved. No further actions can be taken.</p>
+                    <p>This verification request has already been processed and approved.</p>
                 </div>
 
                 <div class="verification-blocks">
                     <!-- Block 1 -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration</div>
+                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Alpha Trading Corp.</div></div>
                                 <div class="info-item"><div class="label">Business Type</div><div class="value">Corporation</div></div>
-                                <div class="info-item">
-                                    <div class="label">SEC Number</div>
-                                    <div class="value">CS202199887</div>
-                                    <a href="https://checkwithsec.sec.gov.ph/check-with-sec/" target="_blank" class="external-verify-link"><i class="ph ph-arrow-square-out"></i> Verify with SEC</a>
-                                </div>
-                                <div class="info-item">
-                                    <div class="label">DTI Number</div>
-                                    <div class="value">-</div>
-                                </div>
-                            </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
+                                <div class="info-item"><div class="label">SEC Number</div><div class="value">CS202199887</div></div>
+                                <div class="info-item"><div class="label">DTI Number</div><div class="value">-</div></div>
                             </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">SEC Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">SEC Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">DTI Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                            </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 1 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                         </div>
                     </div>
 
                     <!-- Block 2 -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Address & Services</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Street Address</div><div class="value">Unit 100, Greenfield District</div></div></div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
-                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">Mayor's Permit</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> Mayors_Permit.jpg</div><img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Mayor's Permit</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 2 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
+                        </div>
                     </div>
                     
                     <!-- Block 3 -->
@@ -623,47 +665,48 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 50,000</div></div></div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
-                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">BIR Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">BIR Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 3 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
+                        </div>
                     </div>
 
                     <!-- Block 4 -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative Details</div>
-                            <div class="info-grid"><div class="info-item"><div class="label">Representative name</div><div class="value">Maria Santos</div></div></div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
-                            </div>
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative</div>
+                            <div class="info-grid"><div class="info-item"><div class="label">Representative Name</div><div class="value">Maria Santos</div></div></div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">ID Selfie</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
-                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">ID Selfie</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Authorization Letter</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">Authorization Letter</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
-                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                            </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 4 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                         </div>
                     </div>
 
@@ -688,56 +731,55 @@
                     <!-- Block 1 -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity & Registration</div>
+                            <div class="block-header"><i class="ph-fill ph-storefront"></i> 1. Business Identity</div>
                             <div class="info-grid">
                                 <div class="info-item"><div class="label">Registered Business Name</div><div class="value">Manila Catering Services</div></div>
-                                <div class="info-item">
-                                    <div class="label">DTI Number</div>
-                                    <div class="value">1122334455</div>
-                                    <a href="https://bnrs.dti.gov.ph/search" target="_blank" class="external-verify-link"><i class="ph ph-arrow-square-out"></i> Verify with DTI</a>
+                                <div class="info-item"><div class="label">DTI Number</div><div class="value">1122334455</div></div>
+                            </div>
+                        </div>
+                        <div class="block-action">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">SEC Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">DTI Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
-                            </div>
                         </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">SEC Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> SEC_Cert.jpg</div><img src="https://imgv2-1-f.scribdassets.com/img/document/767641712/original/b36602bea4/1?v=1" alt="SEC" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                            </div>
-                        </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">DTI Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> DTI_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/728292310/original/61e4248517/1?v=1" alt="DTI" class="clickable-img" onclick="openImageModal(this.src)"></div>
-                            </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 1 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                         </div>
                     </div>
 
                     <!-- Block 2 (REJECTED) -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Business Address & Service Areas</div>
+                            <div class="block-header"><i class="ph-fill ph-map-pin"></i> 2. Address & Services</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Street Address</div><div class="value">45 Mabini Street, Ermita</div></div></div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Section Rejected</div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Expired document provided (Dated 2024).</div>
-                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">Mayor's Permit</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <!-- HIGHLIGHTED REJECTED INLINE DOCUMENT -->
-                                <div class="doc-embed rejected">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Expired_Mayor_Permit.jpg</div>
-                                    <img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" alt="Mayor's Permit" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Mayor's Permit</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed rejected"><img src="https://website-assets.studocu.com/img/document_thumbnails/68658f344ede76bda69d01884d156c2b/thumb_1200_1601.png" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 2 Decision</div>
+                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected</div>
+                            <div class="static-reason"><strong>Reason:</strong> Expired document provided (Dated 2024).</div>
+                        </div>
                     </div>
                     
                     <!-- Block 3 -->
@@ -745,51 +787,51 @@
                         <div class="block-data">
                             <div class="block-header"><i class="ph-fill ph-receipt"></i> 3. Tax & Financials</div>
                             <div class="info-grid"><div class="info-item"><div class="label">Starting Price</div><div class="value">₱ 15,000</div></div></div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Section Approved</div>
-                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">BIR Certificate</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed"><div class="doc-embed-label"><i class="ph ph-image"></i> BIR_Cert.jpg</div><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">BIR Certificate</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://imgv2-2-f.scribdassets.com/img/document/417780640/original/36e7debba6/1?v=1" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 3 Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
+                        </div>
                     </div>
 
                     <!-- Block 4 (REJECTED INFO) -->
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative Details</div>
+                            <div class="block-header"><i class="ph-fill ph-user-circle"></i> 4. Representative</div>
                             <div class="info-grid">
-                                <!-- HIGHLIGHTED REJECTED FIELD -->
                                 <div class="info-item field-rejected"><div class="label">Representative name</div><div class="value">John Doe</div></div>
                             </div>
-                            <!-- Lower Left Decision -->
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Section Rejected</div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Details do not match uploaded ID document.</div>
-                            </div>
                         </div>
                         <div class="block-action">
-                            <div class="doc-preview-label">ID Selfie</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom: 0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> ID_Selfie.jpg</div>
-                                    <img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" alt="ID Selfie" class="clickable-img" onclick="openImageModal(this.src)">
+                            <div style="display: flex; gap: 16px; height: 100%;">
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">ID Selfie</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://i.pinimg.com/236x/48/a8/cd/48a8cd59d5f163d791fb65232af33654.jpg" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; display: flex; flex-direction: column;">
+                                    <div class="doc-preview-label">Authorization Letter</div>
+                                    <div class="doc-embed-wrapper" style="margin-bottom:0;">
+                                        <div class="doc-embed"><img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" class="clickable-img" onclick="openImageModal(this.src)"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="block-action">
-                            <div class="doc-preview-label">Authorization Letter</div>
-                            <div class="doc-embed-wrapper" style="margin-bottom:0;">
-                                <div class="doc-embed" style="height: 346px;">
-                                    <div class="doc-embed-label"><i class="ph ph-image"></i> Authorization.jpg</div>
-                                    <img src="https://www.theodmgroup.com/wp-content/uploads/2023/11/Brand-Authorization-Letter-scaled-scaled.jpg" alt="Authorization Letter" class="clickable-img" onclick="openImageModal(this.src)">
-                                </div>
-                            </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Section 4 Decision</div>
+                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected</div>
+                            <div class="static-reason"><strong>Reason:</strong> Details do not match uploaded ID document.</div>
                         </div>
                     </div>
 
@@ -926,15 +968,17 @@
             applyTransform();
         }
         
-        // --- NEW: Mouse Wheel Zoom (Bound to entire modal) ---
+        // --- UPDATED: Mouse Wheel Zoom (Bound to entire modal with passive: false) ---
         modalEl.addEventListener('wheel', function(e) {
-            e.preventDefault(); // Stop page from scrolling behind it
-            if (e.deltaY < 0) {
-                modifyImage('zoom-in');
-            } else {
-                modifyImage('zoom-out');
+            if (modalEl.style.display === 'flex') {
+                e.preventDefault(); // Stop page from scrolling behind it
+                if (e.deltaY < 0) {
+                    modifyImage('zoom-in');
+                } else {
+                    modifyImage('zoom-out');
+                }
             }
-        }, { passive: false }); // Force non-passive to allow preventDefault
+        }, { passive: false });
 
         // Close on outside click
         modalEl.addEventListener('click', function(e) {
@@ -943,10 +987,10 @@
             }
         });
 
-        // --- NEW: Keyboard Navigation (Escape to close) ---
+        // --- UPDATED: Keyboard Navigation (Escape to close) ---
         document.addEventListener('keydown', function(e) {
-            // Check computed style to ensure modal is actually visible
-            if (window.getComputedStyle(modalEl).display !== 'none') {
+            // Guarantee we detect visibility properly regardless of browser rendering state
+            if (modalEl.style.display === 'flex') {
                 if (e.key === 'Escape' || e.key === 'Esc') {
                     closeImageModal();
                 }
