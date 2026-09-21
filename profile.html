@@ -65,8 +65,20 @@
         #view-completed-approved { display: none; }
         #view-completed-rejected { display: none; }
 
-        /* --- LIST / TABLE VIEW --- */
+        /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
+        .toolbar-left { display: flex; align-items: center; gap: 12px; }
+        
+        .search-box { display: flex; align-items: center; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; width: 280px; gap: 8px; transition: border-color 0.2s; }
+        .search-box:focus-within { border-color: #8b5cf6; }
+        .search-box i { color: var(--text-tertiary); font-size: 16px; }
+        .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: var(--text-main); }
+        
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-outline:hover { background: #f3f4f6; color: var(--text-main); }
+
         .data-table { width: 100%; border-collapse: collapse; text-align: left; }
         .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
         .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
@@ -74,6 +86,7 @@
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
+        .cell-empty { color: var(--text-tertiary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -105,13 +118,15 @@
 
         /* --- INLINE DOCUMENT EMBEDS --- */
         .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+        .doc-embed-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .doc-embed { flex: 1; width: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
         .doc-embed.short { height: 160px; min-width: 45%; }
         
+        /* Avatar specific preview */
         .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; cursor: zoom-in; }
         .avatar-preview.rejected { border-color: #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
         
-        /* Portfolio Grid layout */
+        /* Portfolio Grid layout (5 items max) */
         .portfolio-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 12px; }
         .portfolio-thumb { height: 90px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
         .portfolio-thumb img, .portfolio-thumb video { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
@@ -271,6 +286,19 @@
                 </div>
 
                 <div class="list-container">
+                    
+                    <!-- TABLE TOOLBAR (Search, Filter, Sort) -->
+                    <div class="table-toolbar">
+                        <div class="toolbar-left">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" placeholder="Search supplier...">
+                            </div>
+                            <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
+                            <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
+                        </div>
+                    </div>
+
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -384,7 +412,7 @@
                             
                             <!-- Col 2: Portfolio Images grid -->
                             <div class="block-action">
-                                <div class="doc-preview-label">Uploaded Portfolio Media (10 Items)</div>
+                                <div class="doc-preview-label">Uploaded Portfolio Media (5 Items)</div>
                                 <div class="portfolio-gallery">
                                     <!-- Video Element -->
                                     <div class="portfolio-thumb">
@@ -397,11 +425,6 @@
                                     <div class="portfolio-thumb"><img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)"></div>
                                     <div class="portfolio-thumb"><img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
                                     <div class="portfolio-thumb"><img src="https://lightoflove.com.ph/wp-content/uploads/2026/02/ultimate-wedding-supplier-checklist-coordination-light-of-love-quezon-city.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.lovemydress.net/wp-content/uploads/2019/03/how-to-break-up-with-your-wedding-suppliers.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://brideandbreakfast.ph/wp-content/uploads/2023/07/the-list-july-06.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://i0.wp.com/lorismaeshielda.com/wp-content/uploads/2025/10/destination-wedding-venue-club-punta-fuego.jpg?resize=960%2C640&ssl=1" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1fqrjPbpYjR-vRYTIRKZ2pd4UGwCf0JrCMsJYthEpYw2Gxi1pMTau2ss&s=10" class="clickable-img" onclick="openMediaModal(this)"></div>
                                 </div>
                             </div>
                         </div>
@@ -797,29 +820,31 @@
             applyTransform();
         }
         
-        // Mouse Wheel Zoom
+        // --- NEW: Mouse Wheel Zoom (Bound to entire modal with passive: false) ---
         modalEl.addEventListener('wheel', function(e) {
-            if (e.target === modalImgTarget || e.target === modalVideoTarget) {
-                e.preventDefault();
+            if (modalEl.style.display === 'flex') {
+                e.preventDefault(); // Stop page from scrolling behind it
                 if (e.deltaY < 0) {
                     modifyMedia('zoom-in');
                 } else {
                     modifyMedia('zoom-out');
                 }
             }
-        });
+        }, { passive: false });
 
-        // Close on outside click (avoiding the video controls)
+        // Close on outside click
         modalEl.addEventListener('click', function(e) {
             if (e.target === modalEl) {
                 closeMediaModal();
             }
         });
 
-        // Keyboard Navigation
+        // --- NEW: Keyboard Navigation (Escape to close) ---
         document.addEventListener('keydown', function(e) {
-            if (modalEl.style.display === 'flex') {
-                if (e.key === 'Escape') closeMediaModal();
+            if (window.getComputedStyle(modalEl).display !== 'none') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeMediaModal();
+                }
                 if (e.key === 'ArrowRight') showNextMedia();
                 if (e.key === 'ArrowLeft') showPrevMedia();
             }
