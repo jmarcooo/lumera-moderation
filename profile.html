@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumera Admin - Supplier Profile Moderation</title>
+    <title>Lumera Admin - Profile Content Moderation</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -83,10 +83,10 @@
         .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
         .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
         .data-table tr:hover td { background-color: #f9fafb; }
+        
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
-        .cell-empty { color: var(--text-tertiary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -98,86 +98,65 @@
         .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
-        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
+        /* --- GRANULAR MODERATION BLOCKS (1fr 1fr 1fr) --- */
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 24px; }
         
-        .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
+        .block-data { padding: 32px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .block-action { padding: 32px; background-color: #fdfdfd; display: flex; flex-direction: column; }
+        .block-decision { padding: 32px; background-color: #fafaf9; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; }
 
-        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
-        .block-header i { color: #8b5cf6; font-size: 20px; }
+        .block-header { font-size: 14px; font-weight: 600; color: #4b5563; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .block-header i { font-size: 18px; }
+        .block-header.requested { color: #8b5cf6; }
+        .block-header.requested i { color: #8b5cf6; }
+
+        /* Preview Containers */
+        .preview-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         
-        .info-grid { display: flex; flex-direction: column; gap: 16px; }
-        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 12px 14px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+        .avatar-preview { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; margin-bottom: 16px; }
+        .avatar-preview.current { filter: grayscale(100%) opacity(0.7); }
+        .avatar-preview.clickable-img { cursor: zoom-in; transition: transform 0.2s; }
+        .avatar-preview.clickable-img:hover { transform: scale(1.05); }
 
-        .field-rejected .label { color: var(--color-reject) !important; }
-        .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
+        .banner-preview { width: 100%; aspect-ratio: 21/9; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 16px; }
+        .banner-preview.current { filter: grayscale(100%) opacity(0.7); }
+        .banner-preview.clickable-img { cursor: zoom-in; transition: transform 0.2s; }
+        .banner-preview.clickable-img:hover { opacity: 0.9; }
 
-        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .text-preview { background: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.6; color: var(--text-main); text-align: left; width: 100%; }
+        .text-preview.current { color: var(--text-secondary); font-style: italic; background: #f3f4f6; }
 
-        /* --- INLINE DOCUMENT EMBEDS --- */
-        .doc-embed-wrapper { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-        .doc-embed-row { display: flex; gap: 16px; flex-wrap: wrap; }
-        .doc-embed { flex: 1; width: 100%; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background-color: #f3f4f6; position: relative; }
-        .doc-embed.short { height: 160px; min-width: 45%; }
+        .preview-meta { font-size: 12px; color: var(--text-tertiary); }
+
+        /* --- DECISION PANEL STYLING --- */
+        .dp-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         
-        /* Avatar specific preview */
-        .avatar-preview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; cursor: zoom-in; }
-        .avatar-preview.rejected { border-color: #fca5a5 !important; box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5); }
+        .dp-radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+        .dp-radio-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text-main); cursor: pointer; padding: 4px 0; }
+        .dp-radio-label input[type="radio"] { accent-color: #8b5cf6; width: 18px; height: 18px; cursor: pointer; }
+
+        .dp-sub-reasons { margin-left: 26px; display: none; flex-direction: column; gap: 8px; animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6; }
+        .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
-        /* Portfolio Grid layout (5 items max) */
-        .portfolio-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 12px; }
-        .portfolio-thumb { height: 90px; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
-        .portfolio-thumb img, .portfolio-thumb video { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
-        .portfolio-thumb img:hover, .portfolio-thumb video:hover { opacity: 0.8; }
-        
-        .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; color: rgba(255,255,255,0.9); pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); z-index: 10; }
-
-        .doc-embed iframe, .doc-embed img.clickable-img { width: 100%; height: 100%; border: none; object-fit: cover; background-color: #e5e7eb; cursor: zoom-in; }
-        .doc-embed img.clickable-img:hover { opacity: 0.9; }
-
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
-
-        /* --- RIGHT DECISION PANEL --- */
-        .right-panel {
-            width: 320px; flex-shrink: 0; background: var(--bg-surface); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 24px; position: sticky; top: 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            display: flex; flex-direction: column; gap: 24px;
-        }
-
-        .dp-section { padding-bottom: 24px; border-bottom: 1px solid var(--border-color); }
-        .dp-section:last-child { border-bottom: none; padding-bottom: 0; }
-        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
-        .dp-radio-group { display: flex; flex-direction: column; gap: 8px; }
-        .dp-radio-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-main); cursor: pointer; padding: 4px 0; }
-        .dp-radio-label input[type="radio"] { accent-color: #8b5cf6; width: 16px; height: 16px; cursor: pointer; }
-
-        .dp-sub-reasons {
-            margin-left: 24px; margin-top: 8px; display: none; flex-direction: column; gap: 6px;
-            animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6;
-        }
-        
-        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
-        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
-
-        .dp-section:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
+        /* Reveal sub-reasons when reject is checked */
+        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
         .btn-submit:hover { opacity: 0.9; }
 
         /* --- READ ONLY MODERATION STATES --- */
-        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 12px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; width: 100%; cursor: not-allowed; margin-bottom: 12px;}
         .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
-        .static-reason { margin-top: 8px; font-size: 12px; color: var(--color-reject); line-height: 1.4; }
+        
+        .static-reason { font-size: 13px; color: var(--color-reject); line-height: 1.5; padding: 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 6px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MEDIA VIEWER MODAL (Handles Images & Videos) --- */
+        /* --- MEDIA VIEWER MODAL --- */
         .media-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .media-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .media-modal-content img, .media-modal-content video { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; display: none; }
+        .media-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
         
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
@@ -185,23 +164,6 @@
         .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .modal-close:hover { background: rgba(255,255,255,0.2); }
         
-        .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 32px; border-radius: 50%; width: 56px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 1000; }
-        .modal-arrow:hover { background: rgba(255,255,255,0.35); }
-        .modal-arrow-left { left: 40px; }
-        .modal-arrow-right { right: 40px; }
-
-        /* --- WARNING MODAL --- */
-        .warning-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); z-index: 9999; display: none; align-items: center; justify-content: center; }
-        .warning-modal-content { background: white; border-radius: 12px; width: 400px; max-width: 90%; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); text-align: center; }
-        .warning-modal-icon { width: 48px; height: 48px; background: #fef3c7; color: #d97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px; }
-        .warning-modal-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
-        .warning-modal-desc { font-size: 14px; color: #4b5563; margin-bottom: 24px; line-height: 1.5; }
-        .warning-modal-actions { display: flex; gap: 12px; justify-content: center; }
-        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-        .btn-outline:hover { background: #f3f4f6; }
-        .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
-        .btn-primary:hover { opacity: 0.9; }
-
     </style>
 </head>
 <body>
@@ -260,8 +222,7 @@
 
     <div class="main-wrapper">
         <header class="topbar" id="main-topbar">
-            <!-- Universal back button triggers warning modal if actively moderating -->
-            <a onclick="attemptGoBack()" class="btn-back" id="btn-back">
+            <a onclick="showList()" class="btn-back" id="btn-back">
                 <i class="ph ph-arrow-left"></i>
                 Back to Queue
             </a>
@@ -278,7 +239,7 @@
                 <div class="page-header">
                     <div>
                         <h1>Profile Content Queue</h1>
-                        <p>Review supplier display names, biographies, avatars, banners, and portfolio media updates.</p>
+                        <p>Review modular supplier profile updates including display names, bios, avatars, and cover banners.</p>
                     </div>
                     <div class="badge-ready">
                         <div class="dot"></div> 1 pending
@@ -287,12 +248,11 @@
 
                 <div class="list-container">
                     
-                    <!-- TABLE TOOLBAR (Search, Filter, Sort) -->
                     <div class="table-toolbar">
                         <div class="toolbar-left">
                             <div class="search-box">
                                 <i class="ph ph-magnifying-glass"></i>
-                                <input type="text" placeholder="Search supplier...">
+                                <input type="text" placeholder="Search supplier or asset...">
                             </div>
                             <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
                             <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
@@ -303,7 +263,7 @@
                         <thead>
                             <tr>
                                 <th>Supplier Name</th>
-                                <th>Update Type</th>
+                                <th>Update Target</th>
                                 <th>Date Submitted</th>
                                 <th>Date Actioned</th>
                                 <th>Status</th>
@@ -311,36 +271,39 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Pending Avatar -->
                             <tr>
                                 <td>
                                     <div class="biz-name">Lumera Events Co.</div>
-                                    <div class="biz-docs">Avatar, Bio, Portfolio</div>
+                                    <div class="biz-docs">Profile Setup</div>
                                 </td>
-                                <td>Full Profile Update</td>
-                                <td class="cell-date">06/25/2026</td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Avatar Update</td>
+                                <td class="cell-date">09/27/2026</td>
                                 <td class="cell-empty">-</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Review</button></td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
                             </tr>
+                            <!-- Approved Bio -->
                             <tr>
                                 <td>
                                     <div class="biz-name">Alpha Trading Corp.</div>
-                                    <div class="biz-docs">Cover Banner</div>
+                                    <div class="biz-docs">Content Edit</div>
                                 </td>
-                                <td>Media Update</td>
-                                <td class="cell-date">06/24/2026</td>
-                                <td class="cell-date">06/24/2026</td>
+                                <td>Bio Update</td>
+                                <td class="cell-date">09/26/2026</td>
+                                <td class="cell-date">09/26/2026</td>
                                 <td><span class="status-badge status-approved">Approved</span></td>
                                 <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
                             </tr>
+                            <!-- Rejected Banner -->
                             <tr>
                                 <td>
                                     <div class="biz-name">Manila Catering Services</div>
-                                    <div class="biz-docs">Avatar, Portfolio</div>
+                                    <div class="biz-docs">Media Upload</div>
                                 </td>
-                                <td>Media Update</td>
-                                <td class="cell-date">06/23/2026</td>
-                                <td class="cell-date">06/23/2026</td>
+                                <td>Banner Update</td>
+                                <td class="cell-date">09/25/2026</td>
+                                <td class="cell-date">09/25/2026</td>
                                 <td><span class="status-badge status-rejected">Rejected</span></td>
                                 <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
                             </tr>
@@ -349,299 +312,157 @@
                 </div>
             </div>
 
-            <!-- ACTIVE MODERATION DETAIL VIEW (PENDING TASK) -->
+            <!-- ACTIVE MODERATION DETAIL VIEW (Avatar Task) -->
             <div id="view-detail">
                 <div class="page-header" style="display: block;">
-                    <h1>Profile Review: Lumera Events Co.</h1>
-                    <p>Review the public-facing identity assets and portfolio uploads. Click any media to enlarge.</p>
+                    <h1>Moderate Asset: Avatar Update</h1>
+                    <p>Compare the requested profile image against the current asset and platform guidelines.</p>
                 </div>
 
-                <div style="display: flex; gap: 32px; align-items: flex-start;">
+                <div class="mod-block">
+                    <!-- Current Live Asset -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
+                        <div class="preview-container">
+                            <img src="https://placehold.co/200x200/e2e8f0/94a3b8?text=No+Avatar" alt="Current Avatar" class="avatar-preview current">
+                            <span class="preview-meta">Last updated: System Default</span>
+                        </div>
+                    </div>
                     
-                    <!-- LEFT SIDE: Content Blocks -->
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
-                        
-                        <!-- Block 1: Profile Text, Avatar, Banner -->
-                        <div class="mod-block">
-                            <!-- Col 1: Text Data -->
-                            <div class="block-data">
-                                <div class="block-header">
-                                    <i class="ph-fill ph-storefront"></i> Part 1. Profile Identity
-                                </div>
-                                <div class="info-grid">
-                                    <div class="info-item">
-                                        <div class="label">Public Display Name</div>
-                                        <div class="value">Lumera Premium Events</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="label">Profile Bio / About Us</div>
-                                        <div class="value">We orchestrate unforgettable events across Metro Manila. From intimate garden weddings to grand corporate galas, our team ensures perfection. Follow us on IG @lumera.events!</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Col 2: Media -->
-                            <div class="block-action">
-                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
-                                
-                                <div style="display: flex; gap: 24px; align-items: flex-start;">
-                                    <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Avatar" class="avatar-preview clickable-img" onclick="openMediaModal(this)">
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Banner" class="clickable-img" onclick="openMediaModal(this)">
-                                        </div>
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Requested Update -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Requested Avatar" class="avatar-preview clickable-img" onclick="openMediaModal(this.src)">
+                            <span class="preview-meta">Submitted by: Lumera Events Co.</span>
                         </div>
-
-                        <!-- Block 2: Portfolio Media Uploads -->
-                        <div class="mod-block">
-                            <!-- Col 1: Portfolio Details -->
-                            <div class="block-data">
-                                <div class="block-header"><i class="ph-fill ph-images"></i> Part 2. Portfolio Project Upload</div>
-                                <div class="info-grid">
-                                    <div class="info-item"><div class="label">Project Title</div><div class="value">Intimate Garden Wedding Setup</div></div>
-                                    <div class="info-item"><div class="label">Project Description</div><div class="value">A look at our floral arrangements and table settings for a beautiful outdoor wedding in Tagaytay.</div></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Col 2: Portfolio Images grid -->
-                            <div class="block-action">
-                                <div class="doc-preview-label">Uploaded Portfolio Media (5 Items)</div>
-                                <div class="portfolio-gallery">
-                                    <!-- Video Element -->
-                                    <div class="portfolio-thumb">
-                                        <video src="https://packaged-media.redd.it/3p2r4m03vffh1/pb/m2-res_1080p.mp4?m=DASHPlaylist.mpd&var=sgpssan&v=1&e=1789509600&s=93c30d6657d879d07e38c5002ca08c382477a53c" class="clickable-img" onclick="openMediaModal(this)"></video>
-                                        <i class="ph-fill ph-play-circle play-overlay"></i>
-                                    </div>
-                                    
-                                    <!-- Image Elements -->
-                                    <div class="portfolio-thumb"><img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://lightoflove.com.ph/wp-content/uploads/2026/02/ultimate-wedding-supplier-checklist-coordination-light-of-love-quezon-city.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> <!-- End Left Side -->
-
-                    <!-- RIGHT SIDE: Fixed Decision Panel -->
-                    <div class="right-panel">
-                        
-                        <!-- Part 1 Decision -->
-                        <div class="dp-section">
-                            <div class="dp-title">Part 1: Profile & Branding</div>
-                            <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="p1_decision" value="approve"> Approve</label>
-                                <label class="dp-radio-label"><input type="radio" name="p1_decision" value="reject"> Reject</label>
-                            </div>
-                            <div class="dp-sub-reasons">
-                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r1"> Inappropriate text / bio</label>
-                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r2"> Contains prohibited contact info</label>
-                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r3"> Blurry / Low quality media</label>
-                                <label class="dp-radio-label"><input type="radio" name="p1_sub" value="r4"> Inappropriate media</label>
-                            </div>
-                        </div>
-
-                        <!-- Part 2 Decision -->
-                        <div class="dp-section">
-                            <div class="dp-title">Part 2: Portfolio Project</div>
-                            <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="p2_decision" value="approve"> Approve</label>
-                                <label class="dp-radio-label"><input type="radio" name="p2_decision" value="reject"> Reject</label>
-                            </div>
-                            <div class="dp-sub-reasons">
-                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r1"> NSFW / Inappropriate media</label>
-                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r2"> Low quality / Blurry</label>
-                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r3"> Irrelevant to category</label>
-                                <label class="dp-radio-label"><input type="radio" name="p2_sub" value="r4"> Competitor watermark</label>
-                            </div>
-                        </div>
-
-                        <button class="btn-submit" onclick="showList()">Publish Decision</button>
                     </div>
 
+                    <!-- Decision Panel -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <select name="avatar_reject_reason">
+                                    <option value="">Select failure reason...</option>
+                                    <option value="quality">Blurry / Low Resolution</option>
+                                    <option value="text">Contains Contact Info / Heavy Text</option>
+                                    <option value="irrelevant">Irrelevant / Generic Stock Photo</option>
+                                    <option value="safety">Inappropriate / NSFW</option>
+                                </select>
+                            </div>
+                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- COMPLETED MODERATION - APPROVED EXAMPLE -->
+            <!-- COMPLETED MODERATION - APPROVED EXAMPLE (Bio) -->
             <div id="view-completed-approved">
                 <div class="page-header" style="display: block;">
-                    <h1>Profile Record: Alpha Trading Corp.</h1>
-                    <p>These profile updates have been verified and are currently live.</p>
+                    <h1>Asset Record: Bio Update</h1>
+                    <p>This text update was approved and is currently live on the supplier's profile.</p>
                 </div>
 
-                <div style="display: flex; gap: 32px; align-items: flex-start;">
+                <div class="mod-block">
+                    <!-- Current (Before) -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Previous Live Asset</div>
+                        <div class="preview-container">
+                            <div class="text-preview current">
+                                "We are a catering company in Metro Manila."
+                            </div>
+                            <span class="preview-meta" style="margin-top: 16px;">Last updated: 01/15/2025</span>
+                        </div>
+                    </div>
                     
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
-                        <!-- Block 1 -->
-                        <div class="mod-block">
-                            <div class="block-data">
-                                <div class="block-header"><i class="ph-fill ph-storefront"></i> Part 1. Profile Identity</div>
-                                <div class="info-grid">
-                                    <div class="info-item"><div class="label">Public Display Name</div><div class="value">Alpha Trading Corporation</div></div>
-                                    <div class="info-item"><div class="label">Profile Bio / About Us</div><div class="value">Premium corporate catering services for events scaling from 50 to 1,000 guests.</div></div>
-                                </div>
+                    <!-- Requested Update -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-text-aa"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <div class="text-preview">
+                                "Alpha Trading Corp provides premium corporate catering services across Metro Manila. Specializing in events scaling from 50 to 1,000 guests, we deliver exquisite culinary experiences tailored to your company's exact needs."
                             </div>
-                            <div class="block-action">
-                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
-                                <div style="display: flex; gap: 24px; align-items: flex-start;">
-                                    <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" class="avatar-preview clickable-img" onclick="openMediaModal(this)">
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px;">Avatar</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openMediaModal(this)">
-                                        </div>
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <span class="preview-meta" style="margin-top: 16px;">Submitted by: Alpha Trading Corp.</span>
                         </div>
                     </div>
 
-                    <!-- RIGHT SIDE: Locked Decision Panel -->
-                    <div class="right-panel">
-                        <div class="dp-section">
-                            <div class="dp-title">Part 1: Profile & Branding</div>
-                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
-                        </div>
-                        <div class="dp-section">
-                            <div class="dp-title">Part 2: Portfolio Project</div>
-                            <div style="font-size: 13px; color: var(--text-tertiary); font-style: italic;">No updates submitted</div>
-                        </div>
-                        
-                        <div style="margin-top: auto;">
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; text-align: center;">Reviewed on 06/24/2026</div>
-                            <button class="btn-view" style="width: 100%;" onclick="showList()">Return to Queue</button>
+                    <!-- Locked Decision -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved & Published</div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/26/2026</div>
+                            <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- COMPLETED MODERATION - REJECTED EXAMPLE -->
+            <!-- COMPLETED MODERATION - REJECTED EXAMPLE (Banner) -->
             <div id="view-completed-rejected">
                 <div class="page-header" style="display: block;">
-                    <h1>Profile Record: Manila Catering Services</h1>
-                    <p>These profile updates were rejected. The profile has been reverted to its last safe state.</p>
+                    <h1>Asset Record: Banner Update</h1>
+                    <p>This media update was rejected. The supplier's profile was reverted to the previous state.</p>
                 </div>
 
-                <div style="display: flex; gap: 32px; align-items: flex-start;">
+                <div class="mod-block">
+                    <!-- Current Live Asset -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
+                        <div class="preview-container">
+                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" alt="Current Banner" class="banner-preview current">
+                            <span class="preview-meta">Last updated: 05/10/2026</span>
+                        </div>
+                    </div>
                     
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 24px;">
-                        <!-- Block 1 (REJECTED TEXT & AVATAR) -->
-                        <div class="mod-block">
-                            <div class="block-data">
-                                <div class="block-header"><i class="ph-fill ph-storefront"></i> Part 1. Profile Identity</div>
-                                <div class="info-grid">
-                                    <div class="info-item"><div class="label">Public Display Name</div><div class="value">Manila Catering</div></div>
-                                    <div class="info-item field-rejected"><div class="label">Profile Bio / About Us</div><div class="value">For cheaper rates, don't book here! Call me directly at 0917-123-4567 or email direct@manilacatering.ph to avoid platform fees.</div></div>
-                                </div>
+                    <!-- Requested Update (Rejected) -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <!-- Simulated rejected banner with contact info overlay -->
+                            <div style="position: relative; width: 100%;">
+                                <img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" alt="Requested Banner" class="banner-preview clickable-img" onclick="openMediaModal(this.src)" style="margin-bottom: 0;">
+                                <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: yellow; padding: 10px 20px; font-weight: bold; font-size: 18px; border-radius: 8px; pointer-events: none; width: 80%; text-align: center;">CALL DIRECTLY: 0917-XXX-XXXX FOR 20% OFF</div>
                             </div>
-                            
-                            <div class="block-action">
-                                <div class="doc-preview-label" style="margin-bottom: 24px;">Profile Media</div>
-                                <div style="display: flex; gap: 24px; align-items: flex-start;">
-                                    <div style="text-align: center;">
-                                        <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" style="filter: blur(2px);" class="avatar-preview rejected clickable-img" onclick="openMediaModal(this)">
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--color-reject); margin-top: 8px;">Avatar (Blurry)</div>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div class="doc-embed short" style="height: 120px;">
-                                            <img src="https://aaronsleather.com/cdn/shop/articles/wholesale-leather-supplier-evaluation-71-cover.webp?v=1788995437&width=1100" class="clickable-img" onclick="openMediaModal(this)">
-                                        </div>
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; text-align: center;">Cover Banner</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Block 2 (PASSED PORTFOLIO) -->
-                        <div class="mod-block">
-                            <div class="block-data">
-                                <div class="block-header"><i class="ph-fill ph-images"></i> Part 2. Portfolio Project Upload</div>
-                                <div class="info-grid">
-                                    <div class="info-item"><div class="label">Project Title</div><div class="value">Corporate Buffet Setup</div></div>
-                                    <div class="info-item"><div class="label">Project Description</div><div class="value">A 200-pax corporate buffet setup.</div></div>
-                                </div>
-                            </div>
-                            
-                            <div class="block-action">
-                                <div class="doc-preview-label">Uploaded Portfolio Media</div>
-                                <div class="portfolio-gallery" style="grid-template-columns: repeat(2, 1fr);">
-                                    <div class="portfolio-thumb"><img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                    <div class="portfolio-thumb"><img src="https://www.tiarraverdegardens.com/uploads/1/3/7/7/137736543/forever-always-wedding-package-2023-lazuri-tagaytay-metro-manila-ph-02_orig.jpg" class="clickable-img" onclick="openMediaModal(this)"></div>
-                                </div>
-                            </div>
+                            <span class="preview-meta" style="margin-top: 16px;">Submitted by: Manila Catering Services</span>
                         </div>
                     </div>
 
-                    <!-- RIGHT SIDE: Locked Decision Panel -->
-                    <div class="right-panel">
-                        <div class="dp-section">
-                            <div class="dp-title">Part 1: Profile & Branding</div>
-                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected</div>
-                            <div class="static-reason">Contains prohibited contact info.<br>Avatar is blurry / low quality.</div>
-                        </div>
-                        <div class="dp-section">
-                            <div class="dp-title">Part 2: Portfolio Project</div>
-                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
-                        </div>
-                        
-                        <div style="margin-top: auto;">
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; text-align: center;">Reviewed on 06/23/2026</div>
-                            <button class="btn-view" style="width: 100%;" onclick="showList()">Return to Queue</button>
+                    <!-- Locked Decision -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected Update</div>
+                            <div class="static-reason"><strong>Reason:</strong> Contains Contact Info / Heavy Text overlay attempting to bypass platform booking.</div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/25/2026</div>
+                            <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
                     </div>
-
                 </div>
             </div>
 
         </main>
     </div>
 
-    <!-- --- WARNING MODAL (Go Back) --- -->
-    <div class="warning-modal-overlay" id="warning-modal">
-        <div class="warning-modal-content">
-            <div class="warning-modal-icon"><i class="ph-fill ph-warning"></i></div>
-            <h3 class="warning-modal-title">Leave Moderation?</h3>
-            <p class="warning-modal-desc">You are currently reviewing profile updates. Any unsaved decisions will be lost. Are you sure you want to return to the queue?</p>
-            <div class="warning-modal-actions">
-                <button class="btn-outline" onclick="resumeModerating()">Cancel</button>
-                <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ============================================== -->
-    <!-- MEDIA VIEWER MODAL (Handles Videos & Images)   -->
+    <!-- MEDIA VIEWER MODAL                             -->
     <!-- ============================================== -->
     <div class="media-modal-overlay" id="media-modal">
         <button class="modal-close" onclick="closeMediaModal()"><i class="ph ph-x"></i></button>
-        <button class="modal-arrow modal-arrow-left" id="modal-prev" onclick="showPrevMedia()"><i class="ph ph-caret-left"></i></button>
-        <button class="modal-arrow modal-arrow-right" id="modal-next" onclick="showNextMedia()"><i class="ph ph-caret-right"></i></button>
-        
         <div class="media-modal-content">
             <img id="modal-img-target" src="" alt="Expanded Media">
-            <video id="modal-video-target" controls loop></video>
         </div>
-        
         <div class="modal-toolbar">
             <button class="modal-btn" onclick="modifyMedia('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
             <button class="modal-btn" onclick="modifyMedia('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
             <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
             <button class="modal-btn" onclick="modifyMedia('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
             <button class="modal-btn" onclick="modifyMedia('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
-            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
-            <button class="modal-btn" onclick="modifyMedia('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
-            <button class="modal-btn" onclick="modifyMedia('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
         </div>
     </div>
 
@@ -691,121 +512,28 @@
             document.getElementById('main-content').scrollTop = 0;
         }
 
-        // --- WARNING MODAL LOGIC FOR GOING BACK ---
-        function attemptGoBack() {
-            if (currentView === 'detail') {
-                document.getElementById('warning-modal').style.display = 'flex';
-            } else {
-                showList();
-            }
-        }
-
-        function confirmGoBack() {
-            document.getElementById('warning-modal').style.display = 'none';
-            showList();
-        }
-
-        function resumeModerating() {
-            document.getElementById('warning-modal').style.display = 'none';
-        }
-
-        // --- DYNAMIC MEDIA VIEWER MODAL LOGIC ---
+        // --- MEDIA VIEWER MODAL LOGIC ---
         let currentScale = 1;
         let currentRotate = 0;
-        let currentFlipX = 1;
-        let currentFlipY = 1;
-        let currentGallery = [];
-        let currentIndex = 0;
-        
         const modalEl = document.getElementById('media-modal');
         const modalImgTarget = document.getElementById('modal-img-target');
-        const modalVideoTarget = document.getElementById('modal-video-target');
-        const btnPrev = document.getElementById('modal-prev');
-        const btnNext = document.getElementById('modal-next');
 
-        function openMediaModal(element) {
-            const container = element.closest('.block-action');
-            if (container) {
-                const mediaElements = Array.from(container.querySelectorAll('.clickable-img'));
-                currentGallery = mediaElements.map(el => ({
-                    src: el.src,
-                    type: el.tagName.toLowerCase() // "img" or "video"
-                }));
-                currentIndex = currentGallery.findIndex(item => item.src === element.src);
-            } else {
-                currentGallery = [{ src: element.src, type: element.tagName.toLowerCase() }];
-                currentIndex = 0;
-            }
-
-            updateArrows();
-            resetTransform();
-            renderModalMedia();
+        function openMediaModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            applyTransform();
+            
+            modalImgTarget.src = src;
             modalEl.style.display = 'flex';
         }
 
         function closeMediaModal() {
             modalEl.style.display = 'none';
-            modalVideoTarget.pause();
-            modalVideoTarget.src = '';
             modalImgTarget.src = '';
         }
 
-        function updateArrows() {
-            if (currentGallery.length > 1) {
-                btnPrev.style.display = 'flex';
-                btnNext.style.display = 'flex';
-            } else {
-                btnPrev.style.display = 'none';
-                btnNext.style.display = 'none';
-            }
-        }
-
-        function showNextMedia() {
-            if (currentGallery.length > 1) {
-                currentIndex = (currentIndex + 1) % currentGallery.length;
-                resetTransform();
-                renderModalMedia();
-            }
-        }
-
-        function showPrevMedia() {
-            if (currentGallery.length > 1) {
-                currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
-                resetTransform();
-                renderModalMedia();
-            }
-        }
-
-        function renderModalMedia() {
-            const currentMedia = currentGallery[currentIndex];
-            
-            // Hide both first
-            modalImgTarget.style.display = 'none';
-            modalVideoTarget.style.display = 'none';
-            modalVideoTarget.pause();
-
-            if (currentMedia.type === 'video') {
-                modalVideoTarget.src = currentMedia.src;
-                modalVideoTarget.style.display = 'block';
-                modalVideoTarget.play(); // Auto-play when opened
-            } else {
-                modalImgTarget.src = currentMedia.src;
-                modalImgTarget.style.display = 'block';
-            }
-            applyTransform();
-        }
-
-        function resetTransform() {
-            currentScale = 1;
-            currentRotate = 0;
-            currentFlipX = 1;
-            currentFlipY = 1;
-            applyTransform();
-        }
-
         function applyTransform() {
-            const target = currentGallery[currentIndex].type === 'video' ? modalVideoTarget : modalImgTarget;
-            target.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg)`;
         }
 
         function modifyMedia(action) {
@@ -814,16 +542,13 @@
                 case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
                 case 'rotate-left': currentRotate -= 90; break;
                 case 'rotate-right': currentRotate += 90; break;
-                case 'flip-h': currentFlipX *= -1; break;
-                case 'flip-v': currentFlipY *= -1; break;
             }
             applyTransform();
         }
         
-        // --- NEW: Mouse Wheel Zoom (Bound to entire modal with passive: false) ---
         modalEl.addEventListener('wheel', function(e) {
             if (modalEl.style.display === 'flex') {
-                e.preventDefault(); // Stop page from scrolling behind it
+                e.preventDefault(); 
                 if (e.deltaY < 0) {
                     modifyMedia('zoom-in');
                 } else {
@@ -832,21 +557,15 @@
             }
         }, { passive: false });
 
-        // Close on outside click
         modalEl.addEventListener('click', function(e) {
-            if (e.target === modalEl) {
-                closeMediaModal();
-            }
+            if (e.target === modalEl) closeMediaModal();
         });
 
-        // --- NEW: Keyboard Navigation (Escape to close) ---
         document.addEventListener('keydown', function(e) {
             if (window.getComputedStyle(modalEl).display !== 'none') {
                 if (e.key === 'Escape' || e.key === 'Esc') {
                     closeMediaModal();
                 }
-                if (e.key === 'ArrowRight') showNextMedia();
-                if (e.key === 'ArrowLeft') showPrevMedia();
             }
         });
     </script>
