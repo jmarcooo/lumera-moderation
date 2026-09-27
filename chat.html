@@ -65,8 +65,18 @@
         #view-completed-approved { display: none; }
         #view-completed-rejected { display: none; }
 
-        /* --- LIST / TABLE VIEW --- */
+        /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
+        .toolbar-left { display: flex; align-items: center; gap: 12px; }
+        .search-box { display: flex; align-items: center; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; width: 280px; gap: 8px; transition: border-color 0.2s; }
+        .search-box:focus-within { border-color: #8b5cf6; }
+        .search-box i { color: var(--text-tertiary); font-size: 16px; }
+        .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: var(--text-main); }
+        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-outline:hover { background: #f3f4f6; color: var(--text-main); }
+
         .data-table { width: 100%; border-collapse: collapse; text-align: left; }
         .data-table th { background-color: #f9fafb; padding: 16px 24px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
         .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
@@ -77,7 +87,7 @@
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-        .status-approved { background-color: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+        .status-approved { background-color: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
         .status-rejected { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
         .btn-verify { background: var(--primary-gradient); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
@@ -85,101 +95,80 @@
         .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
-        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
-        .verification-blocks { display: flex; flex-direction: column; gap: 24px; padding-bottom: 40px; }
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 4fr 3fr 3fr; }
+        /* --- COMPREHENSIVE MODERATION BLOCKS (1fr 2fr 1fr) --- */
+        .verification-blocks { display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1.2fr 2fr 1fr; }
         
-        .block-data { padding: 24px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .block-action { padding: 24px; background-color: #fafaf9; display: flex; flex-direction: column; }
-        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
-        .block-action.span-2 { grid-column: 2 / 4; }
+        .block-data { padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; background: #fafaf9; }
+        .block-action { padding: 20px; display: flex; flex-direction: column; background: #ffffff; }
+        .block-decision { padding: 20px; background-color: #fafaf9; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; }
 
-        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 16px; flex: 1; }
-        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 10px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.5; }
+        
+        .info-grid { display: flex; flex-direction: column; gap: 12px; }
+        .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #ffffff; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); line-height: 1.4; word-break: break-word;}
 
-        /* --- CUSTOM CHAT UI --- */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            height: 350px;
-            overflow-y: auto;
-        }
-        .chat-message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-            position: relative;
-        }
-        .chat-supplier {
-            align-self: flex-start;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-bottom-left-radius: 2px;
-        }
-        .chat-client {
-            align-self: flex-end;
-            background: #8b5cf6;
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
-        .chat-flagged {
-            border: 2px solid #ef4444;
-            background: #fef2f2;
-            color: #991b1b;
-            box-shadow: 0 0 0 4px rgba(254, 226, 226, 0.5);
-        }
-        .chat-meta {
-            font-size: 11px;
-            margin-bottom: 4px;
-            color: var(--text-tertiary);
-        }
-        .chat-supplier .chat-meta { color: var(--text-secondary); font-weight: 600;}
-        .chat-client .chat-meta { color: #ddd6fe; font-weight: 600;}
-        .chat-flagged .chat-meta { color: #991b1b; }
-
-        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.5; }
+        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 
         /* Flag Box */
-        .flag-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; font-size: 13px; color: #991b1b; margin-bottom: 16px; line-height: 1.5; }
-        .flag-box.safe { background: #f9fafb; border-color: #e5e7eb; color: #374151; }
-        .flag-box .highlight { font-weight: 700; }
+        .flag-box { background: #fff1f2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px; font-size: 13px; color: #881337; margin-bottom: 16px; line-height: 1.5; }
+        .flag-box .highlight { color: #b91c1c; font-weight: 700; }
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.4; }
 
-        /* Shared Decision Styling */
+        /* --- CHAT LOG UI --- */
+        .chat-container { display: flex; flex-direction: column; gap: 16px; height: 400px; overflow-y: auto; padding: 16px; background: #f3f4f6; border: 1px solid var(--border-color); border-radius: 8px; }
+        
+        .chat-message { display: flex; flex-direction: column; max-width: 85%; }
+        .chat-message.supplier { align-self: flex-end; align-items: flex-end; }
+        .chat-message.client { align-self: flex-start; align-items: flex-start; }
+        
+        .chat-bubble { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .supplier .chat-bubble { background: var(--primary-gradient); color: white; border-bottom-right-radius: 4px; }
+        .client .chat-bubble { background: white; border: 1px solid var(--border-color); color: var(--text-main); border-bottom-left-radius: 4px; }
+        
+        .chat-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; display: flex; gap: 8px; }
+        
+        /* Inline Chat Images */
+        .chat-image { max-width: 220px; height: auto; border-radius: 8px; margin-top: 8px; cursor: zoom-in; display: block; border: 2px solid transparent; transition: opacity 0.2s; }
+        .chat-image:hover { opacity: 0.9; }
+        .client .chat-image { border-color: var(--border-color); }
+        .supplier .chat-image { border-color: rgba(255,255,255,0.2); }
+
+        .system-message { align-self: center; background: #e5e7eb; color: #4b5563; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin: 8px 0; }
+
+        /* --- STYLED DECISION BUTTONS --- */
+        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
         .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .decision-group { display: flex; flex-direction: column; gap: 8px; }
-        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
+        .decision-group { display: flex; flex-direction: column; gap: 8px; } 
+        
+        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
         .decision-label input[type="radio"] { display: none; }
-        .decision-label.approve:hover { border-color: var(--color-approve); }
-        .decision-label.reject:hover { border-color: var(--color-reject); }
-        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
+        
+        .decision-label.approve:hover { border-color: var(--text-main); background-color: #f3f4f6; }
+        .decision-label.reject:hover { border-color: var(--color-reject); background-color: #fef2f2; }
+        
+        /* Checked States */
+        .decision-label:has(input[value="approve"]:checked) { background-color: #e5e7eb; border-color: var(--text-main); color: var(--text-main); font-weight: 600; }
         .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
 
-        /* --- READ ONLY MODERATION STATES --- */
-        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 12px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
-        .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
-        .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
-        
-        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
         .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
         .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
         .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
         .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+
+        /* --- READ ONLY MODERATION STATES --- */
+        .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
+        .locked-approve { background-color: #e5e7eb; border: 1px solid #d1d5db; color: #374151; }
+        .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
+        
+        .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; line-height: 1.4; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
-        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .final-action-bar { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .final-action-text h4 { font-size: 16px; font-weight: 600; }
         .final-action-text p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); }
@@ -192,10 +181,20 @@
         .warning-modal-title { font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 8px; }
         .warning-modal-desc { font-size: 14px; color: #4b5563; margin-bottom: 24px; line-height: 1.5; }
         .warning-modal-actions { display: flex; gap: 12px; justify-content: center; }
-        .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-        .btn-outline:hover { background: #f3f4f6; }
+        .btn-outline-modal { background: transparent; border: 1px solid #d1d5db; color: #374151; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn-outline-modal:hover { background: #f3f4f6; }
         .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.9; }
+
+        /* --- IMAGE VIEWER MODAL --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
+        .modal-btn:hover { color: #8b5cf6; }
+        .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
 
     </style>
 </head>
@@ -272,19 +271,32 @@
                 <div class="page-header">
                     <div>
                         <h1>Chat Moderation Queue</h1>
-                        <p>Evaluate direct messages flagged by the system or reported by users for policy violations.</p>
+                        <p>Evaluate reported chat threads between suppliers and clients for safety and policy violations.</p>
                     </div>
                     <div class="badge-ready">
-                        <div class="dot"></div> 1 pending
+                        <div class="dot"></div> 2 pending
                     </div>
                 </div>
 
                 <div class="list-container">
+                    
+                    <!-- TABLE TOOLBAR -->
+                    <div class="table-toolbar">
+                        <div class="toolbar-left">
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input type="text" placeholder="Search chat records...">
+                            </div>
+                            <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
+                            <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
+                        </div>
+                    </div>
+
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Target Supplier</th>
-                                <th>Client / User</th>
+                                <th>Reported Party</th>
+                                <th>Reported By</th>
                                 <th>Flag Reason</th>
                                 <th>Date Flagged</th>
                                 <th>Status</th>
@@ -295,35 +307,48 @@
                             <tr>
                                 <td>
                                     <div class="biz-name">Lumera Events Co.</div>
-                                    <div class="biz-docs">Chat ID: #CH-9921</div>
+                                    <div class="biz-docs">Supplier</div>
                                 </td>
-                                <td>Maria Santos</td>
-                                <td class="cell-email">External Contact (System)</td>
-                                <td class="cell-date">06/25/2026</td>
+                                <td>Client (Anna Reyes)</td>
+                                <td class="cell-email">Off-Platform Transaction</td>
+                                <td class="cell-date">06/27/2026</td>
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
                                 <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="biz-name">Alpha Trading Corp.</div>
-                                    <div class="biz-docs">Chat ID: #CH-9810</div>
+                                    <div class="biz-name">Client (Mark Chua)</div>
+                                    <div class="biz-docs">Client</div>
                                 </td>
-                                <td>David Lee</td>
-                                <td class="cell-email">Spam Alert (System)</td>
+                                <td>Nexus Logistics</td>
+                                <td class="cell-email">Harassment / Profanity</td>
+                                <td class="cell-date">06/26/2026</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                            </tr>
+                            
+                            <!-- Existing History -->
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Client (Jane Doe)</div>
+                                    <div class="biz-docs">Client</div>
+                                </td>
+                                <td>System Alert</td>
+                                <td class="cell-email">Spam Links Detected</td>
                                 <td class="cell-date">06/24/2026</td>
-                                <td><span class="status-badge status-approved" style="background:#f3f4f6; color:#4b5563; border-color:#e5e7eb;">No Action Taken</span></td>
-                                <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
+                                <td><span class="status-badge status-rejected">Account Suspended</span></td>
+                                <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="biz-name">Manila Catering Services</div>
-                                    <div class="biz-docs">Chat ID: #CH-9705</div>
+                                    <div class="biz-name">Alpha Trading Corp.</div>
+                                    <div class="biz-docs">Supplier</div>
                                 </td>
-                                <td>Jane Doe</td>
-                                <td class="cell-email">Harassment (User Reported)</td>
+                                <td>Client (David Lee)</td>
+                                <td class="cell-email">Communication Issue</td>
                                 <td class="cell-date">06/23/2026</td>
-                                <td><span class="status-badge status-rejected">Warning Issued</span></td>
-                                <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
+                                <td><span class="status-badge status-approved">Report Dismissed</span></td>
+                                <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -334,104 +359,102 @@
             <div id="view-detail">
                 <div class="page-header" style="display: block;">
                     <h1>Moderate Chat: Lumera Events Co.</h1>
-                    <p>Review the flagged conversation transcript to determine if platform rules were violated.</p>
+                    <p>Review the flagged chat history below to determine if a platform violation occurred.</p>
                 </div>
 
                 <div class="verification-blocks">
-                    <!-- Block 1: Chat Context & Transcript -->
+                    <!-- Block 1: Chat Context (1fr 2fr 1fr) -->
                     <div class="mod-block">
-                        <!-- Col 1: Context (40%) -->
-                        <div class="block-data">
-                            <div class="block-header">
-                                <i class="ph-fill ph-chat-circle-dots"></i> 1. Chat Context
-                            </div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;">
-                                    <div class="label">Target Supplier</div>
-                                    <div class="value">Lumera Events Co.</div>
-                                </div>
-                                <div class="info-item" style="grid-column: 1 / -1;">
-                                    <div class="label">Client / User Name</div>
-                                    <div class="value">Maria Santos</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="label">Chat ID</div>
-                                    <div class="value">#CH-9921</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="label">Booking Status</div>
-                                    <div class="value">No Active Booking</div>
-                                </div>
-                            </div>
-                        </div>
                         
-                        <!-- Col 2 & 3: Chat Transcript (60%) -->
-                        <div class="block-action span-2">
-                            <div class="doc-preview-label">Live Chat Transcript</div>
-                            <div class="chat-container">
-                                <!-- Client Message -->
-                                <div class="chat-message chat-client">
-                                    <div class="chat-meta">Maria Santos • Jun 25, 10:15 AM</div>
-                                    Hi! I love your portfolio. How much would it cost for a 50 pax setup in Tagaytay next month?
-                                </div>
-                                
-                                <!-- Supplier Message -->
-                                <div class="chat-message chat-supplier">
-                                    <div class="chat-meta">Lumera Events Co. • Jun 25, 10:30 AM</div>
-                                    Hello Maria! Thank you. For 50 pax, our standard package is usually 25k through the app.
-                                </div>
-
-                                <!-- FLAGGED Supplier Message -->
-                                <div class="chat-message chat-supplier chat-flagged">
-                                    <div class="chat-meta">Lumera Events Co. • Jun 25, 10:31 AM</div>
-                                    But if you want to avoid the platform fees, I can give it to you for 20k. Just text me directly at 0917-123-4567 or message us on FB at LumeraEventsPH so we can deal outside.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Block 2: Flag Context & Decision -->
-                    <div class="mod-block">
-                        <!-- Col 1: Flag Info (40%) -->
+                        <!-- Col 1: Report Details (25%) -->
                         <div class="block-data">
                             <div class="block-header">
-                                <i class="ph-fill ph-flag"></i> 2. Flag Report & Decision
+                                <i class="ph-fill ph-flag"></i> 1. Report Details
                             </div>
+                            
                             <div class="flag-box">
-                                Reported By: <span style="font-weight:600;">System</span><br>
-                                Report Reason: <span class="highlight">External Contact / Platform Circumvention</span><br><br>
-                                <strong>System Note:</strong><br>
-                                Automated flag triggered by detection of phone numbers ("0917-123-4567") and external platform mentions ("FB at LumeraEventsPH") prior to a confirmed booking.
+                                <span class="highlight">Off-Platform Transaction</span><br><br>
+                                <strong>Reported By:</strong> Anna Reyes (Client)<br>
+                                <strong>Target:</strong> Lumera Events Co.<br>
+                                <strong>Date:</strong> June 27, 2026<br>
+                            </div>
+
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="label">Client Note</div>
+                                    <div class="value" style="font-style: italic; font-size: 13px;">
+                                        "The supplier is asking me to pay outside the app via GCash instead of the booking platform."
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <!-- Col 2: Empty Spacer (-) (30%) -->
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">
-                            -
+                        <!-- Col 2: The Chat Window (50%) -->
+                        <div class="block-action">
+                            <div class="doc-preview-label">Chat Log Transcript</div>
+                            
+                            <div class="chat-container">
+                                <div class="system-message">Chat Started: June 26, 2026</div>
+
+                                <!-- Client Message -->
+                                <div class="chat-message client">
+                                    <div class="chat-bubble">
+                                        Hi! We're interested in booking the Intimate Garden Setup for our anniversary on August 15. Is it still available?
+                                    </div>
+                                    <div class="chat-meta">Anna Reyes • 10:15 AM</div>
+                                </div>
+
+                                <!-- Supplier Message -->
+                                <div class="chat-message supplier">
+                                    <div class="chat-bubble">
+                                        Hello Anna! Yes, August 15 is still open. We'd love to host your anniversary.
+                                    </div>
+                                    <div class="chat-meta">Lumera Events Co. • 10:45 AM</div>
+                                </div>
+
+                                <!-- Client Message -->
+                                <div class="chat-message client">
+                                    <div class="chat-bubble">
+                                        Perfect! We're ready to secure the date. Should I click the "Request Booking" button on your profile?
+                                    </div>
+                                    <div class="chat-meta">Anna Reyes • 11:02 AM</div>
+                                </div>
+
+                                <!-- Supplier Message (Violation) -->
+                                <div class="chat-message supplier">
+                                    <div class="chat-bubble">
+                                        Actually, to avoid the platform's service fees, you can just send the 50% downpayment directly to my personal GCash account. 
+                                        <img src="https://media.licdn.com/dms/image/D5612AQE9h8jX9A9A4A/article-inline_image-shrink_1500_2232/0/1684300305886?e=1715817600&v=beta&t=7hZ8W-wKjUqGZlqV5Kz2f2o8M2k_R5l7Q1w3xH2q8z4" alt="GCash QR Code" class="chat-image clickable-img" onclick="openImageModal(this.src)">
+                                    </div>
+                                    <div class="chat-meta">Lumera Events Co. • 11:15 AM</div>
+                                </div>
+
+                                <div class="system-message">User Flagged Chat • 11:20 AM</div>
+                            </div>
                         </div>
 
-                        <!-- Col 3: Decision Area (30%) -->
-                        <div class="block-action">
-                            <div class="doc-preview-label">Moderator Decision</div>
-                            <div class="action-instructions" style="margin-top: 0;">Does this message violate the platform's communication guidelines?</div>
+                        <!-- Col 3: Decision Area (25%) -->
+                        <div class="block-decision">
+                            <div class="dp-title">Moderator Decision</div>
+                            <div class="action-instructions" style="margin-top: 0;">Select the appropriate enforcement action based on the chat evidence.</div>
                             
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="decision-group">
-                                    <label class="decision-label approve" style="border-color:#e5e7eb; color:#374151;">
+                                    <label class="decision-label approve">
                                         <input type="radio" name="check_chat" value="approve">
-                                        <i class="ph ph-check"></i> No Action (Safe)
+                                        <i class="ph ph-prohibit"></i> Dismiss Report
                                     </label>
-                                    <label class="decision-label reject" style="color:#dc2626;">
+                                    <label class="decision-label reject">
                                         <input type="radio" name="check_chat" value="reject">
-                                        <i class="ph ph-warning-circle"></i> Delete & Warn
+                                        <i class="ph ph-warning"></i> Apply Penalty
                                     </label>
                                 </div>
                                 <div class="rejection-reason">
                                     <select name="reason_chat">
-                                        <option value="">Select warning reason...</option>
-                                        <option value="circumvent">Circumventing Platform / Direct Booking</option>
-                                        <option value="harassment">Harassment / Abusive Language</option>
-                                        <option value="spam">Spam / Unsolicited Promos</option>
+                                        <option value="">Select Penalty...</option>
+                                        <option value="warning">Issue Formal Warning</option>
+                                        <option value="suspend_7">Suspend Account (7 Days)</option>
+                                        <option value="ban">Permanent Ban</option>
                                     </select>
                                 </div>
                             </div>
@@ -441,132 +464,117 @@
                     <div class="final-action-bar">
                         <div class="final-action-text">
                             <h4>Submit Moderation Decision</h4>
-                            <p>Warning a supplier will delete the flagged message and strike their account.</p>
+                            <p>Penalties will restrict the user's ability to use Lumera messaging and booking features.</p>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
                     </div>
                 </div>
             </div>
 
-            <!-- COMPLETED MODERATION - APPROVED EXAMPLE (NO ACTION) -->
+            <!-- COMPLETED MODERATION - APPROVED EXAMPLE (DISMISSED) -->
             <div id="view-completed-approved">
                 <div class="page-header" style="display: block;">
                     <h1>Chat Record: Alpha Trading Corp.</h1>
-                    <p>This conversation was evaluated and found to be compliant with platform guidelines.</p>
+                    <p>This report was evaluated and dismissed. No violation occurred.</p>
                 </div>
 
                 <div class="verification-blocks">
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-chat-circle-dots"></i> 1. Chat Context</div>
+                            <div class="block-header"><i class="ph-fill ph-flag"></i> 1. Report Details</div>
+                            <div class="flag-box" style="background:#f9fafb; border-color:#e5e7eb; color:#374151;">
+                                <span style="font-weight:600;">Communication Issue</span><br><br>
+                                <strong>Reported By:</strong> David Lee (Client)<br>
+                                <strong>Target:</strong> Alpha Trading Corp.<br>
+                            </div>
                             <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Client / User Name</div><div class="value">David Lee</div></div>
-                            </div>
-                        </div>
-                        <div class="block-action span-2">
-                            <div class="doc-preview-label">Live Chat Transcript</div>
-                            <div class="chat-container" style="height: 200px;">
-                                <div class="chat-message chat-client">
-                                    <div class="chat-meta">David Lee • Jun 24, 02:00 PM</div>
-                                    Do you have a catalog of your wholesale items?
-                                </div>
-                                <div class="chat-message chat-supplier">
-                                    <div class="chat-meta">Alpha Trading Corp. • Jun 24, 02:05 PM</div>
-                                    Yes, you can view our full catalog right here on our Lumera profile: lumera.com/alpha-trading/catalog. Let me know if you need specific pricing!
+                                <div class="info-item">
+                                    <div class="label">Client Note</div>
+                                    <div class="value" style="font-style: italic; font-size: 13px;">"They are refusing to reply to my messages."</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-flag"></i> 2. Flag Report & Decision</div>
-                            <div class="flag-box safe">
-                                Reported By: <span style="font-weight:600;">System</span><br>
-                                Report Reason: <span style="font-weight:600;">Spam Alert (False Positive)</span><br><br>
-                                <strong>System Note:</strong><br>
-                                Automated flag triggered by URL detection ("lumera.com/alpha-trading/catalog").
-                            </div>
-                        </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        
                         <div class="block-action">
-                            <div class="doc-preview-label">Moderator Decision</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision" style="background:#f3f4f6; border:1px solid #d1d5db; color:#374151;">
-                                    <i class="ph ph-check"></i> No Action Taken (Internal Link)
+                            <div class="doc-preview-label">Chat Log Transcript</div>
+                            <div class="chat-container" style="height: 250px;">
+                                <div class="chat-message client">
+                                    <div class="chat-bubble">Hello, are you available tomorrow?</div>
+                                    <div class="chat-meta">David Lee • 2:00 AM</div>
                                 </div>
+                                <div class="chat-message client">
+                                    <div class="chat-bubble">Hello??? Why aren't you answering?</div>
+                                    <div class="chat-meta">David Lee • 2:15 AM</div>
+                                </div>
+                                <div class="system-message">User Flagged Chat • 2:20 AM</div>
+                            </div>
+                        </div>
+
+                        <div class="block-decision">
+                            <div class="dp-title">Moderator Decision</div>
+                            <div class="decision-wrapper" style="margin-top:auto;">
+                                <div class="locked-decision locked-approve">
+                                    <i class="ph ph-prohibit"></i> Report Dismissed
+                                </div>
+                                <div class="static-reason" style="border-color:#e5e7eb; color:#4b5563;"><strong>Note:</strong> Messages sent outside business hours. No violation by supplier.</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="final-action-bar" style="background-color: #f9fafb; border-color: #e5e7eb;">
                         <div class="final-action-text">
-                            <h4 style="color: #374151;">Review Completed - Safe</h4>
-                            <p>Completed by Moderator on 06/24/2026 14:10:00</p>
+                            <h4 style="color: #374151;">Review Completed - Report Dismissed</h4>
+                            <p>Completed by Moderator on 06/23/2026</p>
                         </div>
                         <button class="btn-view" onclick="showList()">Return to Queue</button>
                     </div>
                 </div>
             </div>
 
-            <!-- COMPLETED MODERATION - REJECTED EXAMPLE (WARNING ISSUED) -->
+            <!-- COMPLETED MODERATION - REJECTED EXAMPLE (PENALTY) -->
             <div id="view-completed-rejected">
                 <div class="page-header" style="display: block;">
-                    <h1>Chat Record: Manila Catering Services</h1>
-                    <p>This conversation was evaluated and a formal warning was issued to the supplier.</p>
+                    <h1>Chat Record: Jane Doe (Client)</h1>
+                    <p>This account was penalized for severe policy violations.</p>
                 </div>
 
                 <div class="verification-blocks">
                     <div class="mod-block">
                         <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-chat-circle-dots"></i> 1. Chat Context</div>
-                            <div class="info-grid">
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
-                                <div class="info-item" style="grid-column: 1 / -1;"><div class="label">Client / User Name</div><div class="value">Jane Doe</div></div>
-                            </div>
-                        </div>
-                        <div class="block-action span-2">
-                            <div class="doc-preview-label">Live Chat Transcript</div>
-                            <div class="chat-container" style="height: 250px;">
-                                <div class="chat-message chat-client">
-                                    <div class="chat-meta">Jane Doe • Jun 23, 08:00 AM</div>
-                                    Hi, regarding the event yesterday, the food arrived 2 hours late and was completely cold. We are requesting a partial refund.
-                                </div>
-                                <div class="chat-message chat-supplier chat-flagged">
-                                    <div class="chat-meta">Manila Catering • Jun 23, 08:15 AM</div>
-                                    That's a lie. You people are just trying to get free food. You have no taste, don't ever message us again you [CENSORED] scammer.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-flag"></i> 2. Flag Report & Decision</div>
+                            <div class="block-header"><i class="ph-fill ph-flag"></i> 1. Report Details</div>
                             <div class="flag-box">
-                                Reported By: <span style="font-weight:600;">User (Jane Doe)</span><br>
-                                Report Reason: <span class="highlight">Harassment / Abusive Language</span><br><br>
-                                <strong>User Note:</strong><br>
-                                "The supplier is being extremely abusive when I tried to raise a valid concern about their service."
+                                <span class="highlight">Spam Links Detected</span><br><br>
+                                <strong>Reported By:</strong> System Alert<br>
+                                <strong>Target:</strong> Jane Doe (Client)<br>
                             </div>
                         </div>
-                        <div class="block-action" style="display:flex; align-items:center; justify-content:center; color: var(--text-tertiary); font-size: 24px;">-</div>
+                        
                         <div class="block-action">
-                            <div class="doc-preview-label">Moderator Decision</div>
+                            <div class="doc-preview-label">Chat Log Transcript</div>
+                            <div class="chat-container" style="height: 250px;">
+                                <div class="chat-message client">
+                                    <div class="chat-bubble">Click here to earn money fast! http://spam-link-promo.com</div>
+                                    <div class="chat-meta">Jane Doe • 1:00 PM</div>
+                                </div>
+                                <div class="system-message">System Flagged Chat • 1:01 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="block-decision">
+                            <div class="dp-title">Moderator Decision</div>
                             <div class="decision-wrapper" style="margin-top:auto;">
                                 <div class="locked-decision locked-reject">
-                                    <i class="ph ph-warning-circle"></i> Warning Issued
+                                    <i class="ph ph-warning"></i> Account Suspended
                                 </div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Harassment / Abusive Language. Message removed.</div>
+                                <div class="static-reason"><strong>Penalty:</strong> Permanent Ban (Spam Bot).</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
                         <div class="final-action-text">
-                            <h4 style="color: #991b1b;">Review Completed - Warning Issued</h4>
-                            <p>Completed by Moderator on 06/23/2026 08:15:00</p>
+                            <h4 style="color: #991b1b;">Review Completed - Penalty Applied</h4>
+                            <p>Completed by Moderator on 06/24/2026</p>
                         </div>
                         <button class="btn-view" onclick="showList()">Return to Queue</button>
                     </div>
@@ -576,7 +584,7 @@
         </main>
     </div>
 
-    <!-- --- WARNING MODAL (Go Back) --- -->
+    <!-- --- WARNING MODAL --- -->
     <div class="warning-modal-overlay" id="warning-modal">
         <div class="warning-modal-content">
             <div class="warning-modal-icon"><i class="ph-fill ph-warning"></i></div>
@@ -586,6 +594,26 @@
                 <button class="btn-outline" onclick="resumeModerating()">Cancel</button>
                 <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- IMAGE VIEWER MODAL                             -->
+    <!-- ============================================== -->
+    <div class="image-modal-overlay" id="image-modal">
+        <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
+        <div class="image-modal-content">
+            <img id="modal-img-target" src="" alt="Expanded Document">
+        </div>
+        <div class="modal-toolbar">
+            <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+            <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
         </div>
     </div>
 
@@ -652,6 +680,70 @@
         function resumeModerating() {
             document.getElementById('warning-modal').style.display = 'none';
         }
+
+        // --- IMAGE VIEWER MODAL LOGIC ---
+        let currentScale = 1;
+        let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        const modalEl = document.getElementById('image-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openImageModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
+            
+            modalImgTarget.src = src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            modalEl.style.display = 'none';
+            modalImgTarget.src = '';
+        }
+
+        function applyTransform() {
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+        }
+
+        function modifyImage(action) {
+            switch(action) {
+                case 'zoom-in': currentScale += 0.2; break;
+                case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
+                case 'rotate-left': currentRotate -= 90; break;
+                case 'rotate-right': currentRotate += 90; break;
+                case 'flip-h': currentFlipX *= -1; break;
+                case 'flip-v': currentFlipY *= -1; break;
+            }
+            applyTransform();
+        }
+        
+        // Mouse Wheel Zoom
+        modalEl.addEventListener('wheel', function(e) {
+            if (modalEl.style.display === 'flex') {
+                e.preventDefault(); 
+                if (e.deltaY < 0) {
+                    modifyImage('zoom-in');
+                } else {
+                    modifyImage('zoom-out');
+                }
+            }
+        }, { passive: false });
+
+        modalEl.addEventListener('click', function(e) {
+            if (e.target === modalEl) closeImageModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (modalEl.style.display === 'flex') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeImageModal();
+                }
+            }
+        });
     </script>
 </body>
 </html>
