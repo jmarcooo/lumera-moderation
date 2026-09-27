@@ -61,6 +61,7 @@
 
         /* --- VIEW CONTAINERS --- */
         #view-list { display: block; }
+        #view-detail-portfolio-multi { display: none; }
         #view-detail-portfolio { display: none; }
         #view-detail-avatar { display: none; }
         #view-detail-bio { display: none; }
@@ -102,9 +103,14 @@
         .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
-        /* --- GRANULAR MODERATION BLOCKS (1fr 1fr 1fr) --- */
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 24px; }
+        /* --- GRANULAR MODERATION BLOCKS --- */
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; margin-bottom: 24px; }
         
+        /* Layout for Updates (1fr 1fr 1fr) */
+        .mod-block.three-col { grid-template-columns: 1fr 1fr 1fr; }
+        /* Layout for Additions (2fr 1fr - No Current Asset) */
+        .mod-block.two-col { grid-template-columns: 2fr 1fr; }
+
         .block-data { padding: 32px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
         .block-action { padding: 32px; background-color: #fdfdfd; display: flex; flex-direction: column; }
         .block-decision { padding: 32px; background-color: #fafaf9; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; }
@@ -131,25 +137,29 @@
         .preview-meta { font-size: 12px; color: var(--text-tertiary); margin-top: auto; padding-top: 16px; }
 
         /* Album Info & Tags */
+        .album-submission { background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .album-submission:last-child { margin-bottom: 0; }
         .album-info-title { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; letter-spacing: -0.3px; }
         .album-info-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; }
         .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-        .tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; border: 1px solid var(--border-color); color: var(--text-secondary); background: white; }
+        .tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; border: 1px solid var(--border-color); color: var(--text-secondary); background: #f9fafb; }
 
         /* Multi-Image Gallery */
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-        .evidence-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .evidence-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
         .evidence-thumb { aspect-ratio: 1; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; position: relative; }
         .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- DECISION PANEL STYLING --- */
         .dp-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         
+        .decision-wrapper { display: flex; flex-direction: column; flex: 1; } /* Allows expanding */
+        
         .dp-radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
         .dp-radio-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text-main); cursor: pointer; padding: 4px 0; }
         .dp-radio-label input[type="radio"] { accent-color: #8b5cf6; width: 18px; height: 18px; cursor: pointer; }
 
-        .dp-sub-reasons { margin-left: 26px; display: none; flex-direction: column; gap: 8px; animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6; }
+        .dp-sub-reasons { margin-left: 26px; display: none; flex-direction: column; gap: 8px; animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6; margin-bottom: 16px; }
         .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
         /* Reveal sub-reasons when reject is checked */
@@ -263,11 +273,12 @@
                         <p>Review modular supplier profile updates including portfolios, avatars, bios, and banners.</p>
                     </div>
                     <div class="badge-ready">
-                        <div class="dot"></div> 4 pending
+                        <div class="dot"></div> 5 pending
                     </div>
                 </div>
 
                 <div class="list-container">
+                    
                     <div class="table-toolbar">
                         <div class="toolbar-left">
                             <div class="search-box">
@@ -291,13 +302,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Pending Portfolio (3 Images) -->
+                            <!-- Pending Portfolio (Multiple Albums) -->
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Celestial Weddings</div>
+                                    <div class="biz-docs">Media Upload</div>
+                                </td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (3 Albums)</td>
+                                <td class="cell-date">09/27/2026</td>
+                                <td class="cell-empty">-</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail('portfolio-multi')">Moderate</button></td>
+                            </tr>
+
+                            <!-- Pending Portfolio (Single Album) -->
                             <tr>
                                 <td>
                                     <div class="biz-name">Lumera Events Co.</div>
                                     <div class="biz-docs">Media Upload</div>
                                 </td>
-                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (3 Images)</td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (1 Album)</td>
                                 <td class="cell-date">09/27/2026</td>
                                 <td class="cell-empty">-</td>
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
@@ -375,63 +399,133 @@
 
             <!-- --- MODERATION DETAIL VIEWS --- -->
 
-            <!-- 1. PORTFOLIO ADDITION TASK -->
+            <!-- 1. MULTI-ALBUM PORTFOLIO ADDITION TASK (2-Col Layout) -->
+            <div id="view-detail-portfolio-multi">
+                <div class="page-header" style="display: block;">
+                    <h1>Moderate Asset: Portfolio Addition (3 Albums)</h1>
+                    <p>Evaluate the newly uploaded portfolio albums against platform media guidelines.</p>
+                </div>
+
+                <div class="mod-block two-col">
+                    <!-- Requested Update (Spans Left) -->
+                    <div class="block-action" style="border-right: 1px solid var(--border-color);">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Updates</div>
+                        
+                        <!-- Album 1 -->
+                        <div class="album-submission">
+                            <div class="album-info-title">Church Ceremony</div>
+                            <div class="album-info-desc">Elegant church wedding setups highlighting floral arches and aisle styling.</div>
+                            <div class="tag-row">
+                                <span class="tag">Church</span>
+                                <span class="tag">Wedding</span>
+                                <span class="tag">Floral</span>
+                            </div>
+                            <div class="doc-preview-label">Uploaded Media (3 Items)</div>
+                            <div class="evidence-gallery">
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1544597441-2a6286ebfb93?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                            </div>
+                        </div>
+
+                        <!-- Album 2 -->
+                        <div class="album-submission">
+                            <div class="album-info-title">Rustic Reception</div>
+                            <div class="album-info-desc">Farmhouse and barn inspired reception setups with warm lighting and wooden accents.</div>
+                            <div class="tag-row">
+                                <span class="tag">Rustic</span>
+                                <span class="tag">Reception</span>
+                            </div>
+                            <div class="doc-preview-label">Uploaded Media (2 Items)</div>
+                            <div class="evidence-gallery">
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                            </div>
+                        </div>
+
+                        <!-- Album 3 -->
+                        <div class="album-submission" style="margin-bottom: 0;">
+                            <div class="album-info-title">Bridal Bouquets</div>
+                            <div class="album-info-desc">Custom handcrafted bridal bouquets matched to specific color motifs.</div>
+                            <div class="tag-row">
+                                <span class="tag">Bouquet</span>
+                                <span class="tag">Custom</span>
+                            </div>
+                            <div class="doc-preview-label">Uploaded Media (3 Items)</div>
+                            <div class="evidence-gallery">
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1510076857177-7470076d4098?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1523694576729-dc99e9c0f9b4?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                                <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1459257868276-5e65389e2722?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Decision Panel (Spans Right) -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <select name="portfolio_multi_reject_reason">
+                                    <option value="">Select failure reason...</option>
+                                    <option value="quality">Blurry / Low Resolution Media</option>
+                                    <option value="watermark">Competitor Watermark / Branding</option>
+                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
+                                    <option value="safety">Inappropriate / NSFW</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. SINGLE ALBUM PORTFOLIO ADDITION TASK (2-Col Layout) -->
             <div id="view-detail-portfolio">
                 <div class="page-header" style="display: block;">
-                    <h1>Moderate Asset: Portfolio Addition</h1>
+                    <h1>Moderate Asset: Portfolio Addition (1 Album)</h1>
                     <p>Evaluate the newly uploaded portfolio album and media against platform guidelines.</p>
                 </div>
 
-                <div class="mod-block">
-                    <!-- Current Live Asset -->
-                    <div class="block-data">
-                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
-                        <div class="preview-container">
-                            <div class="text-preview current" style="text-align: center; border: 1px dashed var(--border-color); background: transparent;">
-                                <i class="ph ph-folder-plus" style="font-size: 32px; color: var(--text-tertiary); margin-bottom: 12px;"></i><br>
-                                <span style="font-weight: 600; color: var(--text-secondary);">New Album Creation</span><br>
-                                <span style="font-size: 12px; margin-top: 4px;">No previous version exists.</span>
-                            </div>
-                            <span class="preview-meta">Last updated: N/A</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Requested Update -->
-                    <div class="block-action">
+                <div class="mod-block two-col">
+                    <!-- Requested Update (Spans Left) -->
+                    <div class="block-action" style="border-right: 1px solid var(--border-color);">
                         <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
-                        <div class="preview-container">
-                            <div style="width: 100%;">
-                                <div class="album-info-title">Intimate Garden Setup</div>
-                                <div class="album-info-desc">A beautiful outdoor setup with lush floral arrangements and warm ambient lighting. Perfect for smaller, intimate gatherings.</div>
-                                <div class="tag-row">
-                                    <span class="tag">Garden</span>
-                                    <span class="tag">Intimate</span>
-                                    <span class="tag">Styling</span>
-                                </div>
+                        
+                        <div class="album-submission" style="margin-bottom: 0;">
+                            <div class="album-info-title">Intimate Garden Setup</div>
+                            <div class="album-info-desc">A beautiful outdoor setup with lush floral arrangements and warm ambient lighting. Perfect for smaller, intimate gatherings.</div>
+                            <div class="tag-row">
+                                <span class="tag">Garden</span>
+                                <span class="tag">Intimate</span>
+                                <span class="tag">Styling</span>
+                            </div>
 
-                                <div class="doc-preview-label">Uploaded Media (3 Items)</div>
-                                <div class="evidence-gallery">
-                                    <div class="evidence-thumb">
-                                        <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openMediaModal(this)">
-                                    </div>
-                                    <div class="evidence-thumb">
-                                        <img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)">
-                                    </div>
-                                    <div class="evidence-thumb">
-                                        <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)">
-                                    </div>
+                            <div class="doc-preview-label">Uploaded Media (3 Items)</div>
+                            <div class="evidence-gallery">
+                                <div class="evidence-thumb">
+                                    <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openMediaModal(this)">
+                                </div>
+                                <div class="evidence-thumb">
+                                    <img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)">
+                                </div>
+                                <div class="evidence-thumb">
+                                    <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)">
                                 </div>
                             </div>
-                            <span class="preview-meta">Submitted by: Lumera Events Co.</span>
                         </div>
                     </div>
 
-                    <!-- Decision Panel -->
+                    <!-- Decision Panel (Spans Right) -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
+                        <div class="decision-wrapper">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="approve"> Approve</label>
                                 <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
@@ -443,20 +537,20 @@
                                     <option value="safety">Inappropriate / NSFW</option>
                                 </select>
                             </div>
-                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
                         </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. AVATAR UPDATE TASK -->
+            <!-- 3. AVATAR UPDATE TASK (3-Col Layout) -->
             <div id="view-detail-avatar">
                 <div class="page-header" style="display: block;">
                     <h1>Moderate Asset: Avatar Update</h1>
                     <p>Compare the requested profile image against the current asset and platform guidelines.</p>
                 </div>
 
-                <div class="mod-block">
+                <div class="mod-block three-col">
                     <!-- Current Live Asset -->
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
@@ -478,9 +572,9 @@
                     <!-- Decision Panel -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
+                        <div class="decision-wrapper">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="approve"> Approve</label>
                                 <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
@@ -492,20 +586,20 @@
                                     <option value="safety">Inappropriate / NSFW</option>
                                 </select>
                             </div>
-                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
                         </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. BIO UPDATE TASK -->
+            <!-- 4. BIO UPDATE TASK (3-Col Layout) -->
             <div id="view-detail-bio">
                 <div class="page-header" style="display: block;">
                     <h1>Moderate Asset: Bio Update</h1>
                     <p>Review the requested text update for professional standards and policy compliance.</p>
                 </div>
 
-                <div class="mod-block">
+                <div class="mod-block three-col">
                     <!-- Current Live Asset -->
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
@@ -531,9 +625,9 @@
                     <!-- Decision Panel -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
+                        <div class="decision-wrapper">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="bio_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="bio_decision" value="approve"> Approve</label>
                                 <label class="dp-radio-label"><input type="radio" name="bio_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
@@ -544,20 +638,20 @@
                                     <option value="spam">Spam or Gibberish</option>
                                 </select>
                             </div>
-                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
                         </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. BANNER UPDATE TASK -->
+            <!-- 5. BANNER UPDATE TASK (3-Col Layout) -->
             <div id="view-detail-banner">
                 <div class="page-header" style="display: block;">
                     <h1>Moderate Asset: Banner Update</h1>
                     <p>Review the requested cover photo for image quality and platform branding rules.</p>
                 </div>
 
-                <div class="mod-block">
+                <div class="mod-block three-col">
                     <!-- Current Live Asset -->
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
@@ -579,9 +673,9 @@
                     <!-- Decision Panel -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
+                        <div class="decision-wrapper">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="banner_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="banner_decision" value="approve"> Approve</label>
                                 <label class="dp-radio-label"><input type="radio" name="banner_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
@@ -593,8 +687,8 @@
                                     <option value="safety">Inappropriate / NSFW</option>
                                 </select>
                             </div>
-                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
                         </div>
+                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
                     </div>
                 </div>
             </div>
@@ -606,7 +700,7 @@
                     <p>This text update was approved and is currently live on the supplier's profile.</p>
                 </div>
 
-                <div class="mod-block">
+                <div class="mod-block three-col">
                     <!-- Current (Before) -->
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Previous Live Asset</div>
@@ -632,11 +726,11 @@
                     <!-- Locked Decision -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
-                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved & Published</div>
+                        <div class="decision-wrapper">
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
                             <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/25/2026</div>
-                            <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
+                        <button class="btn-view" style="width: 100%; margin-top: auto;" onclick="showList()">Return to Queue</button>
                     </div>
                 </div>
             </div>
@@ -648,7 +742,7 @@
                     <p>This media update was rejected. The supplier's profile was reverted to the previous state.</p>
                 </div>
 
-                <div class="mod-block">
+                <div class="mod-block three-col">
                     <!-- Current Live Asset -->
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
@@ -674,12 +768,12 @@
                     <!-- Locked Decision -->
                     <div class="block-decision">
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                        <div class="decision-wrapper" style="margin-top:auto;">
+                        <div class="decision-wrapper">
                             <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected Update</div>
                             <div class="static-reason"><strong>Reason:</strong> Contains Contact Info / Heavy Text overlay attempting to bypass platform booking.</div>
                             <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/24/2026</div>
-                            <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
+                        <button class="btn-view" style="width: 100%; margin-top: auto;" onclick="showList()">Return to Queue</button>
                     </div>
                 </div>
             </div>
@@ -719,6 +813,7 @@
 
         function hideAllViews() {
             document.getElementById('view-list').style.display = 'none';
+            document.getElementById('view-detail-portfolio-multi').style.display = 'none';
             document.getElementById('view-detail-portfolio').style.display = 'none';
             document.getElementById('view-detail-avatar').style.display = 'none';
             document.getElementById('view-detail-bio').style.display = 'none';
