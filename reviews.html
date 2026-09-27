@@ -95,7 +95,7 @@
         .btn-view { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .btn-view:hover { background-color: #f3f4f6; color: var(--text-main); }
 
-        /* --- COMPREHENSIVE MODERATION BLOCKS --- */
+        /* --- COMPREHENSIVE MODERATION BLOCKS (1fr 2fr 1fr) --- */
         .verification-blocks { display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
         .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 2fr 1fr; }
         
@@ -109,7 +109,7 @@
         
         .info-grid { display: flex; flex-direction: column; gap: 12px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 8px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.4; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 8px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.4; word-break: break-word;}
 
         .review-comment { background: #fff1f2; border: 1px solid #ffe4e6; color: #881337; font-size: 14px; font-style: italic; padding: 10px 14px; border-radius: 6px; line-height: 1.5; }
         .field-rejected .label { color: var(--color-reject) !important; }
@@ -117,40 +117,44 @@
 
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 
-        /* Flag Box */
-        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.4; }
-        .flag-box .highlight { color: #b91c1c; font-weight: 600; }
-        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.4; }
-
-        /* --- MULTI-IMAGE GALLERY (NEW) --- */
+        /* --- MULTI-IMAGE GALLERY --- */
         .evidence-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
         .evidence-thumb { aspect-ratio: 4/3; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
         .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
         .evidence-thumb img:hover { opacity: 0.8; }
         .evidence-label { position: absolute; top: 6px; left: 6px; background: rgba(255,255,255,0.9); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
 
-        /* Shared Decision Styling */
+        /* Flag Box */
+        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.4; }
+        .flag-box .highlight { color: #b91c1c; font-weight: 600; }
+        .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.4; }
+
+        /* --- STYLED DECISION BUTTONS --- */
         .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
         .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
         .decision-group { display: flex; flex-direction: column; gap: 8px; } 
+        
         .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
         .decision-label input[type="radio"] { display: none; }
-        .decision-label.approve:hover { border-color: var(--color-approve); }
-        .decision-label.reject:hover { border-color: var(--color-reject); }
+        
+        .decision-label.approve:hover { border-color: var(--color-approve); background-color: #f0fdf4; }
+        .decision-label.reject:hover { border-color: var(--color-reject); background-color: #fef2f2; }
+        
+        /* Checked States */
         .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
         .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+
+        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
+        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
+        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
+        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
 
         /* --- READ ONLY MODERATION STATES --- */
         .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
         .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
-        
         .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; line-height: 1.4; }
         
-        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
-        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
@@ -248,6 +252,7 @@
 
     <div class="main-wrapper">
         <header class="topbar" id="main-topbar">
+            <!-- Universal back button triggers warning modal if actively moderating -->
             <a onclick="attemptGoBack()" class="btn-back" id="btn-back">
                 <i class="ph ph-arrow-left"></i>
                 Back to Queue
@@ -412,7 +417,7 @@
                                 "This person was never a client. This is a competitor trying to tank my rating. Attached are screenshots showing they have no booking history with us and are using a fake name."
                             </div>
                             
-                            <!-- UPDATED: Multiple Evidence Images Gallery -->
+                            <!-- Multiple Evidence Images Gallery -->
                             <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence (3 Items)</div>
                             <div class="evidence-gallery">
                                 <!-- Image 1 -->
@@ -439,11 +444,18 @@
                             <div class="action-instructions" style="margin-top: 0;">Does this review violate the platform's fair review and anti-harassment policies?</div>
                             
                             <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="dp-radio-group">
-                                    <label class="dp-radio-label"><input type="radio" name="check_review" value="approve"> Keep Review (Safe)</label>
-                                    <label class="dp-radio-label"><input type="radio" name="check_review" value="reject"> Remove Review</label>
+                                <!-- FULLY FIXED BUTTON STYLES -->
+                                <div class="decision-group">
+                                    <label class="decision-label approve">
+                                        <input type="radio" name="check_review" value="approve">
+                                        <i class="ph ph-check"></i> Keep Review (Safe)
+                                    </label>
+                                    <label class="decision-label reject">
+                                        <input type="radio" name="check_review" value="reject">
+                                        <i class="ph ph-trash"></i> Remove Review
+                                    </label>
                                 </div>
-                                <div class="dp-sub-reasons">
+                                <div class="rejection-reason">
                                     <select name="reason_review">
                                         <option value="">Select removal reason...</option>
                                         <option value="profanity">Profanity / Hate Speech</option>
@@ -500,7 +512,7 @@
                         <div class="block-decision">
                             <div class="dp-title">Moderator Decision</div>
                             <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision" style="background:#f3f4f6; border:1px solid #d1d5db; color:#374151;">
+                                <div class="locked-decision locked-approve">
                                     <i class="ph ph-check"></i> Review Kept (Safe)
                                 </div>
                             </div>
