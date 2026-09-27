@@ -61,7 +61,10 @@
 
         /* --- VIEW CONTAINERS --- */
         #view-list { display: block; }
-        #view-detail { display: none; }
+        #view-detail-portfolio { display: none; }
+        #view-detail-avatar { display: none; }
+        #view-detail-bio { display: none; }
+        #view-detail-banner { display: none; }
         #view-completed-approved { display: none; }
         #view-completed-rejected { display: none; }
 
@@ -86,7 +89,8 @@
         
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
-        .cell-email, .cell-date { color: var(--text-secondary); }
+        .cell-empty { color: var(--text-tertiary); text-align: center; }
+        .cell-date { color: var(--text-secondary); }
 
         .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status-pending { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
@@ -113,9 +117,14 @@
         /* Preview Containers */
         .preview-container { flex: 1; display: flex; flex-direction: column; text-align: left; }
         
-        .avatar-preview { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; margin-bottom: 16px; align-self: center; }
-        .banner-preview { width: 100%; aspect-ratio: 21/9; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 16px; }
-        
+        .avatar-preview { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; margin-bottom: 16px; align-self: center; background: #e5e7eb; }
+        .avatar-preview.current { filter: grayscale(100%) opacity(0.7); }
+        .clickable-img { cursor: zoom-in; transition: transform 0.2s; }
+        .clickable-img:hover { transform: scale(1.02); opacity: 0.9; }
+
+        .banner-preview { width: 100%; aspect-ratio: 21/9; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 16px; background: #e5e7eb; }
+        .banner-preview.current { filter: grayscale(100%) opacity(0.7); }
+
         .text-preview { background: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.6; color: var(--text-main); text-align: left; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; }
         .text-preview.current { color: var(--text-secondary); font-style: italic; background: #f3f4f6; }
 
@@ -130,9 +139,8 @@
         /* Multi-Image Gallery */
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
         .evidence-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .evidence-thumb { aspect-ratio: 1; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
-        .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
-        .evidence-thumb img:hover { opacity: 0.8; }
+        .evidence-thumb { aspect-ratio: 1; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; position: relative; }
+        .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- DECISION PANEL STYLING --- */
         .dp-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -144,6 +152,7 @@
         .dp-sub-reasons { margin-left: 26px; display: none; flex-direction: column; gap: 8px; animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6; }
         .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
+        /* Reveal sub-reasons when reject is checked */
         .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
@@ -159,9 +168,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- MEDIA VIEWER MODAL (With Navigation) --- */
-        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        .media-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .media-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .media-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
         
         .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 32px; border-radius: 50%; width: 56px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 1000; }
         .modal-arrow:hover { background: rgba(255,255,255,0.35); }
@@ -254,12 +263,11 @@
                         <p>Review modular supplier profile updates including portfolios, avatars, bios, and banners.</p>
                     </div>
                     <div class="badge-ready">
-                        <div class="dot"></div> 3 pending
+                        <div class="dot"></div> 4 pending
                     </div>
                 </div>
 
                 <div class="list-container">
-                    
                     <div class="table-toolbar">
                         <div class="toolbar-left">
                             <div class="search-box">
@@ -293,7 +301,7 @@
                                 <td class="cell-date">09/27/2026</td>
                                 <td class="cell-empty">-</td>
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                                <td><button class="btn-verify" onclick="showDetail('portfolio')">Moderate</button></td>
                             </tr>
                             
                             <!-- Pending Avatar -->
@@ -306,20 +314,33 @@
                                 <td class="cell-date">09/27/2026</td>
                                 <td class="cell-empty">-</td>
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                                <td><button class="btn-verify" onclick="showDetail('avatar')">Moderate</button></td>
                             </tr>
 
-                            <!-- Pending Portfolio (1 Image) -->
+                            <!-- Pending Bio -->
                             <tr>
                                 <td>
-                                    <div class="biz-name">Horizon Catering</div>
-                                    <div class="biz-docs">Media Upload</div>
+                                    <div class="biz-name">Prime Venues</div>
+                                    <div class="biz-docs">Content Edit</div>
                                 </td>
-                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (1 Image)</td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Bio Update</td>
                                 <td class="cell-date">09/26/2026</td>
                                 <td class="cell-empty">-</td>
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                                <td><button class="btn-verify" onclick="showDetail('bio')">Moderate</button></td>
+                            </tr>
+
+                            <!-- Pending Banner -->
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Grand Hotels</div>
+                                    <div class="biz-docs">Media Upload</div>
+                                </td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Banner Update</td>
+                                <td class="cell-date">09/26/2026</td>
+                                <td class="cell-empty">-</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail('banner')">Moderate</button></td>
                             </tr>
 
                             <!-- Approved Bio -->
@@ -329,11 +350,12 @@
                                     <div class="biz-docs">Content Edit</div>
                                 </td>
                                 <td>Bio Update</td>
-                                <td class="cell-date">09/26/2026</td>
-                                <td class="cell-date">09/26/2026</td>
+                                <td class="cell-date">09/25/2026</td>
+                                <td class="cell-date">09/25/2026</td>
                                 <td><span class="status-badge status-approved">Approved</span></td>
                                 <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
                             </tr>
+                            
                             <!-- Rejected Banner -->
                             <tr>
                                 <td>
@@ -341,8 +363,8 @@
                                     <div class="biz-docs">Media Upload</div>
                                 </td>
                                 <td>Banner Update</td>
-                                <td class="cell-date">09/25/2026</td>
-                                <td class="cell-date">09/25/2026</td>
+                                <td class="cell-date">09/24/2026</td>
+                                <td class="cell-date">09/24/2026</td>
                                 <td><span class="status-badge status-rejected">Rejected</span></td>
                                 <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
                             </tr>
@@ -351,8 +373,10 @@
                 </div>
             </div>
 
-            <!-- ACTIVE MODERATION DETAIL VIEW (Portfolio Addition Task) -->
-            <div id="view-detail">
+            <!-- --- MODERATION DETAIL VIEWS --- -->
+
+            <!-- 1. PORTFOLIO ADDITION TASK -->
+            <div id="view-detail-portfolio">
                 <div class="page-header" style="display: block;">
                     <h1>Moderate Asset: Portfolio Addition</h1>
                     <p>Evaluate the newly uploaded portfolio album and media against platform guidelines.</p>
@@ -376,7 +400,6 @@
                     <div class="block-action">
                         <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
                         <div class="preview-container">
-                            
                             <div style="width: 100%;">
                                 <div class="album-info-title">Intimate Garden Setup</div>
                                 <div class="album-info-desc">A beautiful outdoor setup with lush floral arrangements and warm ambient lighting. Perfect for smaller, intimate gatherings.</div>
@@ -389,17 +412,16 @@
                                 <div class="doc-preview-label">Uploaded Media (3 Items)</div>
                                 <div class="evidence-gallery">
                                     <div class="evidence-thumb">
-                                        <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openGalleryModal(this)">
+                                        <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openMediaModal(this)">
                                     </div>
                                     <div class="evidence-thumb">
-                                        <img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openGalleryModal(this)">
+                                        <img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openMediaModal(this)">
                                     </div>
                                     <div class="evidence-thumb">
-                                        <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openGalleryModal(this)">
+                                        <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openMediaModal(this)">
                                     </div>
                                 </div>
                             </div>
-                            
                             <span class="preview-meta">Submitted by: Lumera Events Co.</span>
                         </div>
                     </div>
@@ -417,6 +439,156 @@
                                     <option value="">Select failure reason...</option>
                                     <option value="quality">Blurry / Low Resolution Media</option>
                                     <option value="watermark">Competitor Watermark / Branding</option>
+                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
+                                    <option value="safety">Inappropriate / NSFW</option>
+                                </select>
+                            </div>
+                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. AVATAR UPDATE TASK -->
+            <div id="view-detail-avatar">
+                <div class="page-header" style="display: block;">
+                    <h1>Moderate Asset: Avatar Update</h1>
+                    <p>Compare the requested profile image against the current asset and platform guidelines.</p>
+                </div>
+
+                <div class="mod-block">
+                    <!-- Current Live Asset -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
+                        <div class="preview-container">
+                            <img src="https://placehold.co/200x200/e2e8f0/94a3b8?text=No+Avatar" alt="Current Avatar" class="avatar-preview current">
+                            <span class="preview-meta">Last updated: System Default</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Requested Update -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Requested Avatar" class="avatar-preview clickable-img" onclick="openMediaModal(this)">
+                            <span class="preview-meta">Submitted by: Nexus Studios</span>
+                        </div>
+                    </div>
+
+                    <!-- Decision Panel -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <select name="avatar_reject_reason">
+                                    <option value="">Select failure reason...</option>
+                                    <option value="quality">Blurry / Low Resolution</option>
+                                    <option value="text">Contains Contact Info / Heavy Text</option>
+                                    <option value="irrelevant">Irrelevant / Generic Stock Photo</option>
+                                    <option value="safety">Inappropriate / NSFW</option>
+                                </select>
+                            </div>
+                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. BIO UPDATE TASK -->
+            <div id="view-detail-bio">
+                <div class="page-header" style="display: block;">
+                    <h1>Moderate Asset: Bio Update</h1>
+                    <p>Review the requested text update for professional standards and policy compliance.</p>
+                </div>
+
+                <div class="mod-block">
+                    <!-- Current Live Asset -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
+                        <div class="preview-container">
+                            <div class="text-preview current">
+                                "We are a small business offering event spaces."
+                            </div>
+                            <span class="preview-meta">Last updated: 02/10/2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Requested Update -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-text-aa"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <div class="text-preview">
+                                "Prime Venues offers the best event spaces for your needs. We accommodate weddings, birthdays, and corporate events. Contact us directly at primevenues(at)email.com or message us on FB for exclusive discounts!"
+                            </div>
+                            <span class="preview-meta">Submitted by: Prime Venues</span>
+                        </div>
+                    </div>
+
+                    <!-- Decision Panel -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="bio_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="bio_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <select name="bio_reject_reason">
+                                    <option value="">Select failure reason...</option>
+                                    <option value="contact">Attempts Off-Platform Routing (Emails/Links)</option>
+                                    <option value="profanity">Profanity or Hate Speech</option>
+                                    <option value="spam">Spam or Gibberish</option>
+                                </select>
+                            </div>
+                            <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. BANNER UPDATE TASK -->
+            <div id="view-detail-banner">
+                <div class="page-header" style="display: block;">
+                    <h1>Moderate Asset: Banner Update</h1>
+                    <p>Review the requested cover photo for image quality and platform branding rules.</p>
+                </div>
+
+                <div class="mod-block">
+                    <!-- Current Live Asset -->
+                    <div class="block-data">
+                        <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
+                        <div class="preview-container">
+                            <img src="https://placehold.co/800x300/e2e8f0/94a3b8?text=Default+Cover" alt="Current Banner" class="banner-preview current">
+                            <span class="preview-meta">Last updated: System Default</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Requested Update -->
+                    <div class="block-action">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
+                        <div class="preview-container">
+                            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80" alt="Requested Banner" class="banner-preview clickable-img" onclick="openMediaModal(this)">
+                            <span class="preview-meta">Submitted by: Grand Hotels</span>
+                        </div>
+                    </div>
+
+                    <!-- Decision Panel -->
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="decision-wrapper" style="margin-top:auto;">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="banner_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="banner_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <select name="banner_reject_reason">
+                                    <option value="">Select failure reason...</option>
+                                    <option value="quality">Blurry / Low Resolution Media</option>
+                                    <option value="text">Contains Contact Info / Heavy Text</option>
                                     <option value="irrelevant">Irrelevant to Supplier Category</option>
                                     <option value="safety">Inappropriate / NSFW</option>
                                 </select>
@@ -462,7 +634,7 @@
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
                         <div class="decision-wrapper" style="margin-top:auto;">
                             <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved & Published</div>
-                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/26/2026</div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/25/2026</div>
                             <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
                     </div>
@@ -492,7 +664,7 @@
                         <div class="preview-container">
                             <!-- Simulated rejected banner with contact info overlay -->
                             <div style="position: relative; width: 100%;">
-                                <img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" alt="Requested Banner" class="banner-preview clickable-img" onclick="openGalleryModal(this)" style="margin-bottom: 0;">
+                                <img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" alt="Requested Banner" class="banner-preview clickable-img" onclick="openMediaModal(this)" style="margin-bottom: 0;">
                                 <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: yellow; padding: 10px 20px; font-weight: bold; font-size: 18px; border-radius: 8px; pointer-events: none; width: 80%; text-align: center;">CALL DIRECTLY: 0917-XXX-XXXX FOR 20% OFF</div>
                             </div>
                             <span class="preview-meta" style="margin-top: 16px;">Submitted by: Manila Catering Services</span>
@@ -505,7 +677,7 @@
                         <div class="decision-wrapper" style="margin-top:auto;">
                             <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected Update</div>
                             <div class="static-reason"><strong>Reason:</strong> Contains Contact Info / Heavy Text overlay attempting to bypass platform booking.</div>
-                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/25/2026</div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); text-align: center; margin-top: 12px;">Reviewed on 09/24/2026</div>
                             <button class="btn-view" style="width: 100%; margin-top: 16px;" onclick="showList()">Return to Queue</button>
                         </div>
                     </div>
@@ -547,15 +719,18 @@
 
         function hideAllViews() {
             document.getElementById('view-list').style.display = 'none';
-            document.getElementById('view-detail').style.display = 'none';
+            document.getElementById('view-detail-portfolio').style.display = 'none';
+            document.getElementById('view-detail-avatar').style.display = 'none';
+            document.getElementById('view-detail-bio').style.display = 'none';
+            document.getElementById('view-detail-banner').style.display = 'none';
             document.getElementById('view-completed-approved').style.display = 'none';
             document.getElementById('view-completed-rejected').style.display = 'none';
         }
 
-        function showDetail() {
+        function showDetail(type) {
             currentView = 'detail';
             hideAllViews();
-            document.getElementById('view-detail').style.display = 'block';
+            document.getElementById('view-detail-' + type).style.display = 'block';
             document.getElementById('btn-back').style.display = 'flex';
             document.getElementById('main-topbar').classList.add('has-back');
             document.getElementById('main-content').scrollTop = 0;
@@ -588,7 +763,7 @@
             document.getElementById('main-content').scrollTop = 0;
         }
 
-        // --- MEDIA VIEWER MODAL LOGIC (With Gallery) ---
+        // --- MEDIA VIEWER MODAL LOGIC (With Gallery Navigation) ---
         let currentScale = 1;
         let currentRotate = 0;
         let currentFlipX = 1;
@@ -602,19 +777,20 @@
         const btnNext = document.getElementById('gallery-next');
         const counterDisplay = document.getElementById('gallery-counter');
 
-        function openGalleryModal(clickedImg) {
+        function openMediaModal(clickedImg) {
             currentScale = 1;
             currentRotate = 0;
             currentFlipX = 1;
             currentFlipY = 1;
             
-            // Find if this image is part of a gallery group
+            // Check if the clicked image is part of an evidence gallery
             const galleryContainer = clickedImg.closest('.evidence-gallery');
             if (galleryContainer) {
                 const imgs = galleryContainer.querySelectorAll('.clickable-img');
                 galleryImages = Array.from(imgs).map(img => img.src);
                 currentIndex = galleryImages.indexOf(clickedImg.src);
             } else {
+                // If it's a standalone image (like Avatar or Banner)
                 galleryImages = [clickedImg.src];
                 currentIndex = 0;
             }
@@ -628,6 +804,7 @@
             applyTransform();
             modalImgTarget.src = galleryImages[currentIndex];
             
+            // Toggle visibility of navigation if there are multiple images
             if (galleryImages.length > 1) {
                 btnPrev.style.display = 'flex';
                 btnNext.style.display = 'flex';
@@ -692,6 +869,7 @@
             if (e.target === modalEl) closeMediaModal();
         });
 
+        // Keyboard support for navigation and closing
         document.addEventListener('keydown', function(e) {
             if (window.getComputedStyle(modalEl).display !== 'none') {
                 if (e.key === 'Escape' || e.key === 'Esc') {
