@@ -111,22 +111,28 @@
         .block-header.requested i { color: #8b5cf6; }
 
         /* Preview Containers */
-        .preview-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .preview-container { flex: 1; display: flex; flex-direction: column; text-align: left; }
         
-        .avatar-preview { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; margin-bottom: 16px; }
-        .avatar-preview.current { filter: grayscale(100%) opacity(0.7); }
-        .avatar-preview.clickable-img { cursor: zoom-in; transition: transform 0.2s; }
-        .avatar-preview.clickable-img:hover { transform: scale(1.05); }
-
+        .avatar-preview { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block; margin-bottom: 16px; align-self: center; }
         .banner-preview { width: 100%; aspect-ratio: 21/9; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 16px; }
-        .banner-preview.current { filter: grayscale(100%) opacity(0.7); }
-        .banner-preview.clickable-img { cursor: zoom-in; transition: transform 0.2s; }
-        .banner-preview.clickable-img:hover { opacity: 0.9; }
-
-        .text-preview { background: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.6; color: var(--text-main); text-align: left; width: 100%; }
+        
+        .text-preview { background: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.6; color: var(--text-main); text-align: left; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px; }
         .text-preview.current { color: var(--text-secondary); font-style: italic; background: #f3f4f6; }
 
-        .preview-meta { font-size: 12px; color: var(--text-tertiary); }
+        .preview-meta { font-size: 12px; color: var(--text-tertiary); margin-top: auto; padding-top: 16px; }
+
+        /* Album Info & Tags */
+        .album-info-title { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; letter-spacing: -0.3px; }
+        .album-info-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; border: 1px solid var(--border-color); color: var(--text-secondary); background: white; }
+
+        /* Multi-Image Gallery */
+        .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .evidence-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .evidence-thumb { aspect-ratio: 1; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
+        .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
+        .evidence-thumb img:hover { opacity: 0.8; }
 
         /* --- DECISION PANEL STYLING --- */
         .dp-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -138,7 +144,6 @@
         .dp-sub-reasons { margin-left: 26px; display: none; flex-direction: column; gap: 8px; animation: fadeIn 0.2s ease-in-out; background: #fff1f2; padding: 12px; border-radius: 6px; border: 1px solid #ffe4e6; }
         .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
-        /* Reveal sub-reasons when reject is checked */
         .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
@@ -153,17 +158,24 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MEDIA VIEWER MODAL --- */
-        .media-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .media-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
-        .media-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
+        /* --- MEDIA VIEWER MODAL (With Navigation) --- */
+        .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
+        .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
         
+        .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 32px; border-radius: 50%; width: 56px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 1000; }
+        .modal-arrow:hover { background: rgba(255,255,255,0.35); }
+        .modal-arrow-left { left: 40px; }
+        .modal-arrow-right { right: 40px; }
+
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
         .modal-btn:hover { color: #8b5cf6; }
         .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .modal-close:hover { background: rgba(255,255,255,0.2); }
         
+        .gallery-counter { position: absolute; bottom: -40px; color: white; font-size: 14px; font-weight: 500; }
+
     </style>
 </head>
 <body>
@@ -239,10 +251,10 @@
                 <div class="page-header">
                     <div>
                         <h1>Profile Content Queue</h1>
-                        <p>Review modular supplier profile updates including display names, bios, avatars, and cover banners.</p>
+                        <p>Review modular supplier profile updates including portfolios, avatars, bios, and banners.</p>
                     </div>
                     <div class="badge-ready">
-                        <div class="dot"></div> 1 pending
+                        <div class="dot"></div> 3 pending
                     </div>
                 </div>
 
@@ -271,10 +283,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Pending Avatar -->
+                            <!-- Pending Portfolio (3 Images) -->
                             <tr>
                                 <td>
                                     <div class="biz-name">Lumera Events Co.</div>
+                                    <div class="biz-docs">Media Upload</div>
+                                </td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (3 Images)</td>
+                                <td class="cell-date">09/27/2026</td>
+                                <td class="cell-empty">-</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                            </tr>
+                            
+                            <!-- Pending Avatar -->
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Nexus Studios</div>
                                     <div class="biz-docs">Profile Setup</div>
                                 </td>
                                 <td style="font-weight: 500; color: #8b5cf6;">Avatar Update</td>
@@ -283,6 +308,20 @@
                                 <td><span class="status-badge status-pending">Pending Review</span></td>
                                 <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
                             </tr>
+
+                            <!-- Pending Portfolio (1 Image) -->
+                            <tr>
+                                <td>
+                                    <div class="biz-name">Horizon Catering</div>
+                                    <div class="biz-docs">Media Upload</div>
+                                </td>
+                                <td style="font-weight: 500; color: #8b5cf6;">Portfolio Addition (1 Image)</td>
+                                <td class="cell-date">09/26/2026</td>
+                                <td class="cell-empty">-</td>
+                                <td><span class="status-badge status-pending">Pending Review</span></td>
+                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
+                            </tr>
+
                             <!-- Approved Bio -->
                             <tr>
                                 <td>
@@ -312,11 +351,11 @@
                 </div>
             </div>
 
-            <!-- ACTIVE MODERATION DETAIL VIEW (Avatar Task) -->
+            <!-- ACTIVE MODERATION DETAIL VIEW (Portfolio Addition Task) -->
             <div id="view-detail">
                 <div class="page-header" style="display: block;">
-                    <h1>Moderate Asset: Avatar Update</h1>
-                    <p>Compare the requested profile image against the current asset and platform guidelines.</p>
+                    <h1>Moderate Asset: Portfolio Addition</h1>
+                    <p>Evaluate the newly uploaded portfolio album and media against platform guidelines.</p>
                 </div>
 
                 <div class="mod-block">
@@ -324,8 +363,12 @@
                     <div class="block-data">
                         <div class="block-header"><i class="ph-fill ph-clock-counter-clockwise"></i> Current Live Asset</div>
                         <div class="preview-container">
-                            <img src="https://placehold.co/200x200/e2e8f0/94a3b8?text=No+Avatar" alt="Current Avatar" class="avatar-preview current">
-                            <span class="preview-meta">Last updated: System Default</span>
+                            <div class="text-preview current" style="text-align: center; border: 1px dashed var(--border-color); background: transparent;">
+                                <i class="ph ph-folder-plus" style="font-size: 32px; color: var(--text-tertiary); margin-bottom: 12px;"></i><br>
+                                <span style="font-weight: 600; color: var(--text-secondary);">New Album Creation</span><br>
+                                <span style="font-size: 12px; margin-top: 4px;">No previous version exists.</span>
+                            </div>
+                            <span class="preview-meta">Last updated: N/A</span>
                         </div>
                     </div>
                     
@@ -333,7 +376,30 @@
                     <div class="block-action">
                         <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update</div>
                         <div class="preview-container">
-                            <img src="https://img.magnific.com/free-vector/butterfly-colorful-logo-template_361591-1587.jpg?semt=ais_hybrid&w=740&q=80" alt="Requested Avatar" class="avatar-preview clickable-img" onclick="openMediaModal(this.src)">
+                            
+                            <div style="width: 100%;">
+                                <div class="album-info-title">Intimate Garden Setup</div>
+                                <div class="album-info-desc">A beautiful outdoor setup with lush floral arrangements and warm ambient lighting. Perfect for smaller, intimate gatherings.</div>
+                                <div class="tag-row">
+                                    <span class="tag">Garden</span>
+                                    <span class="tag">Intimate</span>
+                                    <span class="tag">Styling</span>
+                                </div>
+
+                                <div class="doc-preview-label">Uploaded Media (3 Items)</div>
+                                <div class="evidence-gallery">
+                                    <div class="evidence-thumb">
+                                        <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/166/2024/05/29070002/IMG_5341-1.jpg" class="clickable-img" onclick="openGalleryModal(this)">
+                                    </div>
+                                    <div class="evidence-thumb">
+                                        <img src="https://www.khimcruz.com/wp-content/uploads/2022/03/spring-garden-wedding-reception-with-blue-hydrangeas-and-ceiling-works-for-EJ-and-Jaira-by-Khim-Cruz.webp" class="clickable-img" onclick="openGalleryModal(this)">
+                                    </div>
+                                    <div class="evidence-thumb">
+                                        <img src="https://elegantebymichellej.com/wp-content/uploads/2023/01/HallieTomWedding2022-ClaudineHartzelPhotography-414.jpg" class="clickable-img" onclick="openGalleryModal(this)">
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <span class="preview-meta">Submitted by: Lumera Events Co.</span>
                         </div>
                     </div>
@@ -343,15 +409,15 @@
                         <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
                         <div class="decision-wrapper" style="margin-top:auto;">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="approve"> Approve & Publish</label>
-                                <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="reject"> Reject Update</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="approve"> Approve & Publish</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="avatar_reject_reason">
+                                <select name="portfolio_reject_reason">
                                     <option value="">Select failure reason...</option>
-                                    <option value="quality">Blurry / Low Resolution</option>
-                                    <option value="text">Contains Contact Info / Heavy Text</option>
-                                    <option value="irrelevant">Irrelevant / Generic Stock Photo</option>
+                                    <option value="quality">Blurry / Low Resolution Media</option>
+                                    <option value="watermark">Competitor Watermark / Branding</option>
+                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
                                     <option value="safety">Inappropriate / NSFW</option>
                                 </select>
                             </div>
@@ -426,7 +492,7 @@
                         <div class="preview-container">
                             <!-- Simulated rejected banner with contact info overlay -->
                             <div style="position: relative; width: 100%;">
-                                <img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" alt="Requested Banner" class="banner-preview clickable-img" onclick="openMediaModal(this.src)" style="margin-bottom: 0;">
+                                <img src="https://static.wixstatic.com/media/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/74d970_973cd7df53f94e9d9f5f4570db18bf0c~mv2.jpg" alt="Requested Banner" class="banner-preview clickable-img" onclick="openGalleryModal(this)" style="margin-bottom: 0;">
                                 <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: yellow; padding: 10px 20px; font-weight: bold; font-size: 18px; border-radius: 8px; pointer-events: none; width: 80%; text-align: center;">CALL DIRECTLY: 0917-XXX-XXXX FOR 20% OFF</div>
                             </div>
                             <span class="preview-meta" style="margin-top: 16px;">Submitted by: Manila Catering Services</span>
@@ -450,19 +516,29 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- MEDIA VIEWER MODAL                             -->
+    <!-- MEDIA VIEWER MODAL (With Gallery Nav)          -->
     <!-- ============================================== -->
     <div class="media-modal-overlay" id="media-modal">
         <button class="modal-close" onclick="closeMediaModal()"><i class="ph ph-x"></i></button>
+        
+        <!-- Gallery Navigation Arrows -->
+        <button class="modal-arrow modal-arrow-left" id="gallery-prev" onclick="showPrevImage()"><i class="ph ph-caret-left"></i></button>
+        <button class="modal-arrow modal-arrow-right" id="gallery-next" onclick="showNextImage()"><i class="ph ph-caret-right"></i></button>
+
         <div class="media-modal-content">
             <img id="modal-img-target" src="" alt="Expanded Media">
+            <div class="gallery-counter" id="gallery-counter"></div>
         </div>
+        
         <div class="modal-toolbar">
             <button class="modal-btn" onclick="modifyMedia('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
             <button class="modal-btn" onclick="modifyMedia('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
             <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
             <button class="modal-btn" onclick="modifyMedia('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
             <button class="modal-btn" onclick="modifyMedia('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyMedia('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyMedia('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
         </div>
     </div>
 
@@ -512,28 +588,80 @@
             document.getElementById('main-content').scrollTop = 0;
         }
 
-        // --- MEDIA VIEWER MODAL LOGIC ---
+        // --- MEDIA VIEWER MODAL LOGIC (With Gallery) ---
         let currentScale = 1;
         let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        let galleryImages = [];
+        let currentIndex = 0;
+
         const modalEl = document.getElementById('media-modal');
         const modalImgTarget = document.getElementById('modal-img-target');
+        const btnPrev = document.getElementById('gallery-prev');
+        const btnNext = document.getElementById('gallery-next');
+        const counterDisplay = document.getElementById('gallery-counter');
 
-        function openMediaModal(src) {
+        function openGalleryModal(clickedImg) {
             currentScale = 1;
             currentRotate = 0;
-            applyTransform();
+            currentFlipX = 1;
+            currentFlipY = 1;
             
-            modalImgTarget.src = src;
+            // Find if this image is part of a gallery group
+            const galleryContainer = clickedImg.closest('.evidence-gallery');
+            if (galleryContainer) {
+                const imgs = galleryContainer.querySelectorAll('.clickable-img');
+                galleryImages = Array.from(imgs).map(img => img.src);
+                currentIndex = galleryImages.indexOf(clickedImg.src);
+            } else {
+                galleryImages = [clickedImg.src];
+                currentIndex = 0;
+            }
+
+            renderGalleryImage();
             modalEl.style.display = 'flex';
+        }
+
+        function renderGalleryImage() {
+            currentScale = 1;
+            applyTransform();
+            modalImgTarget.src = galleryImages[currentIndex];
+            
+            if (galleryImages.length > 1) {
+                btnPrev.style.display = 'flex';
+                btnNext.style.display = 'flex';
+                counterDisplay.style.display = 'block';
+                counterDisplay.innerText = `Image ${currentIndex + 1} of ${galleryImages.length}`;
+            } else {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'none';
+                counterDisplay.style.display = 'none';
+            }
+        }
+
+        function showNextImage() {
+            if (galleryImages.length > 1) {
+                currentIndex = (currentIndex + 1) % galleryImages.length;
+                renderGalleryImage();
+            }
+        }
+
+        function showPrevImage() {
+            if (galleryImages.length > 1) {
+                currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+                renderGalleryImage();
+            }
         }
 
         function closeMediaModal() {
             modalEl.style.display = 'none';
             modalImgTarget.src = '';
+            galleryImages = [];
         }
 
         function applyTransform() {
-            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg)`;
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
         }
 
         function modifyMedia(action) {
@@ -542,10 +670,13 @@
                 case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
                 case 'rotate-left': currentRotate -= 90; break;
                 case 'rotate-right': currentRotate += 90; break;
+                case 'flip-h': currentFlipX *= -1; break;
+                case 'flip-v': currentFlipY *= -1; break;
             }
             applyTransform();
         }
         
+        // Mouse Wheel Zoom
         modalEl.addEventListener('wheel', function(e) {
             if (modalEl.style.display === 'flex') {
                 e.preventDefault(); 
@@ -565,6 +696,10 @@
             if (window.getComputedStyle(modalEl).display !== 'none') {
                 if (e.key === 'Escape' || e.key === 'Esc') {
                     closeMediaModal();
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
                 }
             }
         });
