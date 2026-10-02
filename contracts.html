@@ -179,8 +179,39 @@
         .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; }
         .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
         .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        /* --- RADIO DECISION STYLING (Profile Style) --- */
+        .dp-radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .dp-radio-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 500; color: var(--text-main);
+            cursor: pointer; padding: 4px 0;
+        }
+        .dp-radio-label input[type="radio"] {
+            accent-color: #8b5cf6;
+            width: 16px; height: 16px;
+            cursor: pointer;
+        }
+
+        .dp-sub-reasons {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            background: #fff1f2;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffe4e6;
+        }
+
+        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
+        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
+        div:has(input[value="reject"]:checked) > .dp-sub-reasons, div:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex !important; }
+
+
+        /* Reveal sub-reasons when reject is checked */
+        :has(> .dp-radio-group input[value="reject"]:checked) .dp-sub-reasons, .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons, .decision-wrapper:has(input[value="reject"]:checked) .dp-sub-reasons, :has(> * > input[value="reject"]:checked) .dp-sub-reasons {
+            display: flex;
+        }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
@@ -266,6 +297,10 @@
                 <a href="contracts.html" class="nav-item active">
                     <i class="ph ph-file-text"></i>
                     <span>Contracts</span>
+                </a>
+                <a href="packages.html" class="nav-item">
+                    <i class="ph ph-package"></i>
+                    <span>Packages</span>
                 </a>
             </div>
         </nav>
@@ -575,25 +610,19 @@
                             </div>
                             
                             <div class="action-instructions">Based on the feedback above, finalize the document status.</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve" style="border-color:#e5e7eb; color:#374151;">
-                                        <input type="radio" name="check_contract" value="approve">
-                                        <i class="ph ph-check"></i> Approve Contract
-                                    </label>
-                                    <label class="decision-label reject" style="color:#dc2626;">
-                                        <input type="radio" name="check_contract" value="reject">
-                                        <i class="ph ph-x"></i> Reject Contract
-                                    </label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_contract">
-                                        <option value="">Select rejection reason...</option>
-                                        <option value="legal_denied">Legal team rejected terms</option>
-                                        <option value="missing_sig">Missing required signatures</option>
-                                        <option value="wrong_doc">Incorrect document uploaded</option>
-                                    </select>
-                                </div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="contract_decision" value="approve"> Approve Contract</label>
+                                <label class="dp-radio-label"><input type="radio" name="contract_decision" value="reject"> Reject Contract</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="contract_reject_reason" value="terms"> Unfair Terms/Conditions</label>
+                                <label class="dp-radio-label"><input type="radio" name="contract_reject_reason" value="details"> Missing Event Details</label>
+                                <label class="dp-radio-label"><input type="radio" name="contract_reject_reason" value="price"> Price Mismatch</label>
+                                <label class="dp-radio-label"><input type="radio" name="contract_reject_reason" value="policy"> Violates Platform Policy</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_contract" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>

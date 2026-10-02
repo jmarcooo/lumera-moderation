@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumera Admin - Review Moderation</title>
+    <title>Lumera Admin - Package Moderation</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
             --sidebar-width: 260px;
             --header-height: 70px;
             --primary-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
-            
+
             /* Action Colors */
             --color-approve: #059669;
             --bg-approve: #d1fae5;
@@ -48,11 +48,11 @@
         .topbar-right { display: flex; align-items: center; gap: 20px; }
         .topbar-right i.ph-bell { font-size: 24px; color: var(--text-secondary); cursor: pointer; }
         .avatar { width: 32px; height: 32px; background-color: #9333ea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; cursor: pointer; }
-        
+
         .btn-back { display: none; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; cursor: pointer; }
         .btn-back:hover { color: var(--text-main); }
         .content { flex: 1; padding: 32px 48px; overflow-y: auto; scroll-behavior: smooth; }
-        
+
         .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
         .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #1f2937; }
         .page-header p { color: var(--text-secondary); font-size: 14px; }
@@ -67,7 +67,7 @@
 
         /* --- LIST TOOLBAR & TABLE --- */
         .list-container { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
-        
+
         .table-toolbar { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; }
         .toolbar-left { display: flex; align-items: center; gap: 12px; }
         .search-box { display: flex; align-items: center; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; width: 280px; gap: 8px; transition: border-color 0.2s; }
@@ -97,56 +97,50 @@
 
         /* --- COMPREHENSIVE MODERATION BLOCKS (1fr 2fr 1fr) --- */
         .verification-blocks { display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
-        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1fr 2fr 1fr; }
-        
-        .block-data { padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-        .block-action { padding: 20px; background-color: #fafaf9; display: flex; flex-direction: column; }
-        .block-action + .block-action { border-left: 1px dashed var(--border-color); }
-        .block-decision { padding: 20px; background-color: #ffffff; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .mod-block { background-color: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; display: grid; grid-template-columns: 1.2fr 2fr 1fr; }
+
+        .block-data { padding: 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; background: #fafaf9; }
+        .block-action { padding: 20px; display: flex; flex-direction: column; background: #ffffff; }
+        .block-decision { padding: 20px; background-color: #fafaf9; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; }
 
         .block-header { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
         .block-header i { color: #8b5cf6; font-size: 20px; }
-        
+
         .info-grid { display: flex; flex-direction: column; gap: 12px; }
         .info-item .label { font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #f9fafb; padding: 8px 12px; border-radius: 6px; border: 1px solid #f3f4f6; line-height: 1.4; word-break: break-word;}
-
-        .review-comment { background: #fff1f2; border: 1px solid #ffe4e6; color: #881337; font-size: 14px; font-style: italic; padding: 10px 14px; border-radius: 6px; line-height: 1.5; }
-        .field-rejected .label { color: var(--color-reject) !important; }
-        .field-rejected .value { background-color: var(--bg-reject) !important; border: 1px solid #fca5a5 !important; color: #991b1b !important; }
+        .info-item .value { font-size: 14px; color: var(--text-main); font-weight: 500; background-color: #ffffff; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); line-height: 1.4; word-break: break-word;}
 
         .doc-preview-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 
-        /* --- MULTI-IMAGE GALLERY --- */
-        .evidence-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
-        .evidence-thumb { aspect-ratio: 4/3; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: #f3f4f6; cursor: zoom-in; position: relative; }
-        .evidence-thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s; }
-        .evidence-thumb img:hover { opacity: 0.8; }
-        .evidence-label { position: absolute; top: 6px; left: 6px; background: rgba(255,255,255,0.9); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); pointer-events: none; display: flex; align-items: center; gap: 4px; z-index: 2; }
-
         /* Flag Box */
-        .flag-box { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; font-size: 13px; color: #374151; margin-bottom: 16px; line-height: 1.4; }
-        .flag-box .highlight { color: #b91c1c; font-weight: 600; }
+        .flag-box { background: #fff1f2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px; font-size: 13px; color: #881337; margin-bottom: 16px; line-height: 1.5; }
+        .flag-box .highlight { color: #b91c1c; font-weight: 700; }
         .action-instructions { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex: 1; line-height: 1.4; }
 
-        /* --- STYLED DECISION BUTTONS --- */
-        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
-        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .decision-group { display: flex; flex-direction: column; gap: 8px; } 
-        
-        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
-        .decision-label input[type="radio"] { display: none; }
-        
-        .decision-label.approve:hover { border-color: var(--color-approve); background-color: #f0fdf4; }
-        .decision-label.reject:hover { border-color: var(--color-reject); background-color: #fef2f2; }
-        
-        /* Checked States */
-        .decision-label:has(input[value="approve"]:checked) { background-color: var(--bg-approve); border-color: var(--color-approve); color: var(--color-approve); font-weight: 600; }
-        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+        /* --- CHAT LOG UI --- */
+        .chat-container { display: flex; flex-direction: column; gap: 16px; height: 400px; overflow-y: auto; padding: 16px; background: #f3f4f6; border: 1px solid var(--border-color); border-radius: 8px; }
 
-        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
-        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
+        .chat-message { display: flex; flex-direction: column; max-width: 85%; }
+        .chat-message.supplier { align-self: flex-end; align-items: flex-end; }
+        .chat-message.client { align-self: flex-start; align-items: flex-start; }
+
+        .chat-bubble { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .supplier .chat-bubble { background: var(--primary-gradient); color: white; border-bottom-right-radius: 4px; }
+        .client .chat-bubble { background: white; border: 1px solid var(--border-color); color: var(--text-main); border-bottom-left-radius: 4px; }
+
+        .chat-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; display: flex; gap: 8px; }
+
+        /* Inline Chat Images */
+        .chat-image { max-width: 220px; height: auto; border-radius: 8px; margin-top: 8px; cursor: zoom-in; display: block; border: 2px solid transparent; transition: opacity 0.2s; }
+        .chat-image:hover { opacity: 0.9; }
+        .client .chat-image { border-color: var(--border-color); }
+        .supplier .chat-image { border-color: rgba(255,255,255,0.2); }
+
+        .system-message { align-self: center; background: #e5e7eb; color: #4b5563; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin: 8px 0; }
+
         /* --- RADIO DECISION STYLING (Profile Style) --- */
+        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; }
+
         .dp-radio-group { display: flex; flex-direction: column; gap: 10px; }
         .dp-radio-label {
             display: flex; align-items: center; gap: 8px;
@@ -176,16 +170,17 @@
 
 
         /* Reveal sub-reasons when reject is checked */
-        :has(> .dp-radio-group input[value="reject"]:checked) .dp-sub-reasons, .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons, .decision-wrapper:has(input[value="reject"]:checked) .dp-sub-reasons, :has(> * > input[value="reject"]:checked) .dp-sub-reasons {
+        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
             display: flex;
         }
 
         /* --- READ ONLY MODERATION STATES --- */
         .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
-        .locked-approve { background-color: var(--bg-approve); border: 1px solid var(--color-approve); color: var(--color-approve); }
+        .locked-approve { background-color: #e5e7eb; border: 1px solid #d1d5db; color: #374151; }
         .locked-reject { background-color: var(--bg-reject); border: 1px solid var(--color-reject); color: var(--color-reject); }
+
         .static-reason { margin-top: 10px; font-size: 13px; color: var(--color-reject); background: #ffffff; padding: 8px 12px; border-radius: 6px; border: 1px solid #fecaca; line-height: 1.4; }
-        
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Final Action Bar */
@@ -207,23 +202,15 @@
         .btn-primary { background: var(--primary-gradient); border: none; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.9; }
 
-        /* --- IMAGE VIEWER MODAL (With Navigation) --- */
+        /* --- IMAGE VIEWER MODAL --- */
         .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .image-modal-content { position: relative; max-width: 90%; max-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: visible; }
         .image-modal-content img { max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-in-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px; }
-        
-        .modal-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; font-size: 32px; border-radius: 50%; width: 56px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 1000; }
-        .modal-arrow:hover { background: rgba(255,255,255,0.35); }
-        .modal-arrow-left { left: 40px; }
-        .modal-arrow-right { right: 40px; }
-
         .modal-toolbar { margin-top: 24px; display: flex; gap: 16px; background: #ffffff; padding: 10px 24px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .modal-btn { background: none; border: none; font-size: 24px; color: #4b5563; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; padding: 4px; }
         .modal-btn:hover { color: #8b5cf6; }
         .modal-close { position: absolute; top: 24px; right: 32px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 32px; cursor: pointer; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .modal-close:hover { background: rgba(255,255,255,0.2); }
-
-        .gallery-counter { position: absolute; bottom: -40px; color: white; font-size: 14px; font-weight: 500; }
 
     </style>
 </head>
@@ -235,7 +222,7 @@
             <span class="brand-name">Lumera</span>
             <span class="badge-admin">ADMIN</span>
         </div>
-        
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-header">
@@ -265,7 +252,7 @@
                     <i class="ph ph-storefront"></i>
                     <span>Supplier Profile</span>
                 </a>
-                <a href="reviews.html" class="nav-item active">
+                <a href="reviews.html" class="nav-item">
                     <i class="ph ph-star"></i>
                     <span>Reviews</span>
                 </a>
@@ -277,7 +264,7 @@
                     <i class="ph ph-file-text"></i>
                     <span>Contracts</span>
                 </a>
-                <a href="packages.html" class="nav-item">
+                <a href="packages.html" class="nav-item active">
                     <i class="ph ph-package"></i>
                     <span>Packages</span>
                 </a>
@@ -287,7 +274,6 @@
 
     <div class="main-wrapper">
         <header class="topbar" id="main-topbar">
-            <!-- Universal back button triggers warning modal if actively moderating -->
             <a onclick="attemptGoBack()" class="btn-back" id="btn-back">
                 <i class="ph ph-arrow-left"></i>
                 Back to Queue
@@ -299,27 +285,27 @@
         </header>
 
         <main class="content" id="main-content">
-            
+
             <!-- LIST VIEW -->
             <div id="view-list">
                 <div class="page-header">
                     <div>
-                        <h1>Flagged Reviews Queue</h1>
-                        <p>Evaluate customer reviews flagged by the system or reported by suppliers for policy violations.</p>
+                        <h1>Package Moderation Queue</h1>
+                        <p>Evaluate new items or services being sold by suppliers.</p>
                     </div>
                     <div class="badge-ready">
-                        <div class="dot"></div> 3 pending
+                        <div class="dot"></div> 2 pending
                     </div>
                 </div>
 
                 <div class="list-container">
-                    
-                    <!-- TABLE TOOLBAR (Search, Filter, Sort) -->
+
+                    <!-- TABLE TOOLBAR -->
                     <div class="table-toolbar">
                         <div class="toolbar-left">
                             <div class="search-box">
                                 <i class="ph ph-magnifying-glass"></i>
-                                <input type="text" placeholder="Search supplier or reviewer...">
+                                <input type="text" placeholder="Search chat records...">
                             </div>
                             <button class="btn-outline"><i class="ph ph-funnel"></i> Filter</button>
                             <button class="btn-outline"><i class="ph ph-sort-ascending"></i> Sort By</button>
@@ -329,281 +315,164 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Target Supplier</th>
-                                <th>Reviewer Name</th>
-                                <th>Flag Reason</th>
-                                <th>Date Flagged</th>
+                                <th>Package Title</th>
+                                <th>Supplier</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Date Modified</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- New More Examples Added Here -->
-                            <tr>
-                                <td>
-                                    <div class="biz-name">Lumera Events Co.</div>
-                                    <div class="biz-docs">★☆☆☆☆ (1.0)</div>
-                                </td>
-                                <td>John Smith</td>
-                                <td class="cell-email">Harassment / Profanity</td>
-                                <td class="cell-date">06/25/2026</td>
-                                <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="biz-name">Nexus Logistics</div>
-                                    <div class="biz-docs">★★☆☆☆ (2.0)</div>
-                                </td>
-                                <td>Mark Rivera</td>
-                                <td class="cell-email">System: Keyword Alert</td>
-                                <td class="cell-date">06/26/2026</td>
-                                <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="biz-name">Horizon Studios</div>
-                                    <div class="biz-docs">★★★★★ (5.0)</div>
-                                </td>
-                                <td>Anna Reyes</td>
-                                <td class="cell-date" style="color: #d97706;">Fake Booking (Reported)</td>
-                                <td class="cell-date">06/26/2026</td>
-                                <td><span class="status-badge status-pending">Pending Review</span></td>
-                                <td><button class="btn-verify" onclick="showDetail()">Moderate</button></td>
-                            </tr>
-                            
-                            <!-- Existing History -->
-                            <tr>
-                                <td>
-                                    <div class="biz-name">Alpha Trading Corp.</div>
-                                    <div class="biz-docs">★★★★☆ (4.0)</div>
-                                </td>
-                                <td>David Lee</td>
-                                <td class="cell-email">System: Keyword Alert</td>
-                                <td class="cell-date">06/24/2026</td>
-                                <td><span class="status-badge status-approved" style="background:#f3f4f6; color:#4b5563; border-color:#e5e7eb;">Review Kept</span></td>
-                                <td><button class="btn-view" onclick="showCompletedApproved()">View</button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="biz-name">Manila Catering Services</div>
-                                    <div class="biz-docs">★☆☆☆☆ (1.0)</div>
-                                </td>
-                                <td>Jane Doe</td>
-                                <td class="cell-email">Fake Booking / Spam</td>
-                                <td class="cell-date">06/23/2026</td>
-                                <td><span class="status-badge status-rejected">Review Removed</span></td>
-                                <td><button class="btn-view" onclick="showCompletedRejected()">View</button></td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Intimate Garden Setup</div>
+                                <div class="biz-category">Lumera Events Co.</div>
+                            </td>
+                            <td>Anna Reyes</td>
+                            <td class="cell-email">Event Styling</td>
+                            <td class="cell-date">₱15,000.00</td>
+                            <td class="cell-empty">-</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Premium Wedding Photography</div>
+                                <div class="biz-category">Lens & Light Studios</div>
+                            </td>
+                            <td>Mark Bautista</td>
+                            <td class="cell-email">Photography</td>
+                            <td class="cell-date">₱45,000.00</td>
+                            <td class="cell-empty">-</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Basic Sound System Rental</div>
+                                <div class="biz-category">AudioVibes</div>
+                            </td>
+                            <td>Sarah Cruz</td>
+                            <td class="cell-email">Audio & Lighting</td>
+                            <td class="cell-date">₱5,000.00</td>
+                            <td class="cell-empty">-</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Platinum Catering Package</div>
+                                <div class="biz-category">Taste of Manila</div>
+                            </td>
+                            <td>David Lim</td>
+                            <td class="cell-email">Catering</td>
+                            <td class="cell-date">₱125,000.00</td>
+                            <td class="cell-date">06/20/2026 14:30:00</td>
+                            <td><span class="status-badge status-approved">Approved</span></td>
+                            <td><button class="btn-view" style="padding: 6px 16px; font-size: 13px;" onclick="showCompletedApproved()">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Fire Dancer Troupe</div>
+                                <div class="biz-category">Ignite Entertainers</div>
+                            </td>
+                            <td>Juan Dela Cruz</td>
+                            <td class="cell-email">Entertainment</td>
+                            <td class="cell-date">₱20,000.00</td>
+                            <td class="cell-date">06/19/2026 09:15:22</td>
+                            <td><span class="status-badge status-rejected">Rejected</span></td>
+                            <td><button class="btn-view" style="padding: 6px 16px; font-size: 13px;" onclick="showCompletedRejected()">View</button></td>
+                        </tr>
+                    </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- ACTIVE MODERATION DETAIL VIEW (PENDING TASK) -->
-            <div id="view-detail">
+            <!-- ACTIVE MODERATION DETAIL VIEW (PENDING TASK) -->
+            <div id="view-detail" style="display: none;">
                 <div class="page-header" style="display: block;">
-                    <h1>Moderate Review: Lumera Events Co.</h1>
-                    <p>Review the context of the flag and decide whether the review should remain public or be removed.</p>
+                    <h1>Moderate Package: Intimate Garden Setup</h1>
+                    <p>Review the package details and media provided by the supplier.</p>
                 </div>
 
                 <div class="verification-blocks">
-                    <!-- Block 1: Review Context (1fr 2fr 1fr) -->
                     <div class="mod-block">
-                        <!-- Col 1: The Review Content (25%) -->
+
+                        <!-- Col 1: Package Details -->
                         <div class="block-data">
                             <div class="block-header">
-                                <i class="ph-fill ph-chat-centered-text"></i> 1. Review Details
+                                <i class="ph-fill ph-package"></i> 1. Package Details
                             </div>
+
                             <div class="info-grid">
                                 <div class="info-item">
-                                    <div class="label">Target Supplier</div>
+                                    <div class="label">Package Title</div>
+                                    <div class="value">Intimate Garden Setup</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="label">Supplier</div>
                                     <div class="value">Lumera Events Co.</div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="label">Reviewer Name</div>
-                                    <div class="value">John Smith</div>
+                                    <div class="label">Category</div>
+                                    <div class="value">Event Styling</div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="label">Star Rating</div>
-                                    <div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div>
+                                    <div class="label">Price</div>
+                                    <div class="value">₱15,000.00</div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="label">Date Posted</div>
-                                    <div class="value">June 24, 2026</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="label">Review Comment</div>
-                                    <div class="review-comment">
-                                        "Absolutely terrible service. The owner is a complete scam artist and a [PROFANITY CENSORED]. Do not book them under any circumstances. They completely ruined our event!"
+                                    <div class="label">Description</div>
+                                    <div class="value" style="font-style: italic; font-size: 13px;">
+                                        "A beautiful setup for intimate garden events."
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Col 2: Flag Context & Evidence (50%) -->
+
+                        <!-- Col 2: Media Viewer -->
                         <div class="block-action">
-                            <div class="doc-preview-label">Flag Report Context</div>
-                            <div class="flag-box">
-                                Reported By: <span style="font-weight:600;">Supplier</span><br>
-                                Report Reason: <span class="highlight">Harassment / Defamation</span><br><br>
-                                <strong>Supplier Note:</strong><br>
-                                "This person was never a client. This is a competitor trying to tank my rating. Attached are screenshots showing they have no booking history with us and are using a fake name."
-                            </div>
-                            
-                            <!-- Multiple Evidence Images Gallery -->
-                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence (3 Items)</div>
-                            <div class="evidence-gallery">
-                                <!-- Image 1 -->
-                                <div class="evidence-thumb">
-                                    <div class="evidence-label"><i class="ph ph-image"></i> History.jpg</div>
-                                    <img src="https://dhtmlx.com/blog/wp-content/uploads/2017/12/hotel-calendar.png" alt="Evidence 1" class="clickable-img" onclick="openGalleryModal(this)">
+                            <div class="doc-preview-label">Package Media</div>
+                            <div class="evidence-gallery" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <div class="evidence-thumb" style="height: 150px; overflow: hidden; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <img src="https://images.unsplash.com/photo-1544597441-2a6286ebfb93?w=400&q=80" class="clickable-img" onclick="openImageModal(this.src)" style="width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; transition: transform 0.2s;">
                                 </div>
-                                <!-- Image 2 -->
-                                <div class="evidence-thumb">
-                                    <div class="evidence-label"><i class="ph ph-image"></i> FakeProfile.jpg</div>
-                                    <img src="https://images.unsplash.com/photo-1596265371388-43edbaadab94?w=400&q=80" alt="Evidence 2" class="clickable-img" onclick="openGalleryModal(this)">
-                                </div>
-                                <!-- Image 3 -->
-                                <div class="evidence-thumb">
-                                    <div class="evidence-label"><i class="ph ph-image"></i> ChatLog.jpg</div>
-                                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80" alt="Evidence 3" class="clickable-img" onclick="openGalleryModal(this)">
+                                <div class="evidence-thumb" style="height: 150px; overflow: hidden; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80" class="clickable-img" onclick="openImageModal(this.src)" style="width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; transition: transform 0.2s;">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Col 3: Decision Area (25%) -->
+                        <!-- Col 3: Decision Panel -->
                         <div class="block-decision">
-                            <div class="dp-title">Moderator Decision</div>
-                            <div class="action-instructions" style="margin-top: 0;">Does this review violate the platform's fair review and anti-harassment policies?</div>
-                            
+                            <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="review_decision" value="approve"> Keep Review</label>
-                                <label class="dp-radio-label"><input type="radio" name="review_decision" value="reject"> Delete Review</label>
+                                <label class="dp-radio-label"><input type="radio" name="package_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="package_decision" value="reject"> Reject</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <label class="dp-radio-label"><input type="radio" name="review_reject_reason" value="spam"> Spam / Fake Review</label>
-                                <label class="dp-radio-label"><input type="radio" name="review_reject_reason" value="harassment"> Hate Speech / Harassment</label>
-                                <label class="dp-radio-label"><input type="radio" name="review_reject_reason" value="irrelevant"> Irrelevant Content</label>
-                                <label class="dp-radio-label"><input type="radio" name="review_reject_reason" value="pii"> Contains Personal Info (PII)</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="inappropriate"> Inappropriate Content</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="misleading"> Misleading Details</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="offensive"> Offensive Language</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="unrealistic"> Unrealistic Expectations</label>
                             </div>
                             <div style="margin-top: 12px;">
                                 <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
-                                <textarea name="moderator_insights_review" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                                <textarea name="moderator_insights" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Final Action Bar -->
                     <div class="final-action-bar">
                         <div class="final-action-text">
                             <h4>Submit Moderation Decision</h4>
-                            <p>Removing a review will permanently delete it from the supplier's public profile.</p>
+                            <p>Once submitted, the package will be updated accordingly.</p>
                         </div>
-                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMPLETED MODERATION - APPROVED EXAMPLE (KEPT) -->
-            <div id="view-completed-approved">
-                <div class="page-header" style="display: block;">
-                    <h1>Review Record: Alpha Trading Corp.</h1>
-                    <p>This review was evaluated and deemed safe to remain on the platform.</p>
-                </div>
-
-                <div class="verification-blocks">
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-chat-centered-text"></i> 1. Review Details</div>
-                            <div class="info-grid">
-                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Alpha Trading Corp.</div></div>
-                                <div class="info-item"><div class="label">Reviewer Name</div><div class="value">David Lee</div></div>
-                                <div class="info-item"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★★★★☆ (4.0)</div></div>
-                                <div class="info-item"><div class="label">Review Comment</div><div class="review-comment" style="background:#f9fafb; border-color:#e5e7eb; color:#374151;">"Food was great, but the delivery was 30 minutes late. Otherwise, good service."</div></div>
-                            </div>
-                        </div>
-                        
-                        <div class="block-action">
-                            <div class="doc-preview-label">Flag Report Context</div>
-                            <div class="flag-box">
-                                Reported By: <span style="font-weight:600;">System</span><br>
-                                Report Reason: <span class="highlight">Keyword Alert</span><br><br>
-                                <strong>System Note:</strong><br>
-                                Automated flag triggered by keyword: "late".
-                            </div>
-                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence</div>
-                            <div class="action-instructions">No evidence attached.</div>
-                        </div>
-
-                        <div class="block-decision">
-                            <div class="dp-title">Moderator Decision</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-approve">
-                                    <i class="ph ph-check"></i> Review Kept (Safe)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="final-action-bar" style="background-color: #f9fafb; border-color: #e5e7eb;">
-                        <div class="final-action-text">
-                            <h4 style="color: #374151;">Review Completed - Kept on Platform</h4>
-                            <p>Completed by Moderator on 06/24/2026 14:10:00</p>
-                        </div>
-                        <button class="btn-view" onclick="showList()">Return to Queue</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMPLETED MODERATION - REJECTED EXAMPLE (REMOVED) -->
-            <div id="view-completed-rejected">
-                <div class="page-header" style="display: block;">
-                    <h1>Review Record: Manila Catering Services</h1>
-                    <p>This review was evaluated and removed from the platform for policy violations.</p>
-                </div>
-
-                <div class="verification-blocks">
-                    <div class="mod-block">
-                        <div class="block-data">
-                            <div class="block-header"><i class="ph-fill ph-chat-centered-text"></i> 1. Review Details</div>
-                            <div class="info-grid">
-                                <div class="info-item"><div class="label">Target Supplier</div><div class="value">Manila Catering Services</div></div>
-                                <div class="info-item"><div class="label">Reviewer Name</div><div class="value">Jane Doe</div></div>
-                                <div class="info-item"><div class="label">Star Rating</div><div class="value" style="color:#f59e0b; font-weight:bold; font-size:16px;">★☆☆☆☆ (1.0)</div></div>
-                                <div class="info-item field-rejected"><div class="label">Review Comment</div><div class="value" style="background:#fef2f2; border-color:#fca5a5; color:#991b1b; font-style:italic;">"Click here to get 50% off your next catering order: http://spam-link-promo.com"</div></div>
-                            </div>
-                        </div>
-                        
-                        <div class="block-action">
-                            <div class="doc-preview-label">Flag Report Context</div>
-                            <div class="flag-box">
-                                Reported By: <span style="font-weight:600;">System</span><br>
-                                Report Reason: <span class="highlight">Spam / External Links</span><br><br>
-                                <strong>System Note:</strong><br>
-                                Automated flag triggered by external URL detection.
-                            </div>
-                            <div class="doc-preview-label" style="margin-top: 10px;">Attached Evidence</div>
-                            <div class="action-instructions">No evidence attached.</div>
-                        </div>
-
-                        <div class="block-decision">
-                            <div class="dp-title">Moderator Decision</div>
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="locked-decision locked-reject">
-                                    <i class="ph ph-trash"></i> Review Removed
-                                </div>
-                                <div class="static-reason"><strong>Violation Reason:</strong> Spam / Promotional links.</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
-                        <div class="final-action-text">
-                            <h4 style="color: #991b1b;">Review Completed - Removed from Platform</h4>
-                            <p>Completed by Moderator on 06/23/2026 08:15:00</p>
-                        </div>
-                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                        <button class="btn-submit" onclick="submitDecision()">Submit Decision</button>
                     </div>
                 </div>
             </div>
@@ -611,12 +480,12 @@
         </main>
     </div>
 
-    <!-- --- WARNING MODAL (Go Back) --- -->
+    <!-- --- WARNING MODAL --- -->
     <div class="warning-modal-overlay" id="warning-modal">
         <div class="warning-modal-content">
             <div class="warning-modal-icon"><i class="ph-fill ph-warning"></i></div>
             <h3 class="warning-modal-title">Leave Moderation?</h3>
-            <p class="warning-modal-desc">You are currently reviewing a flagged customer review. Any unsaved decisions will be lost. Are you sure you want to return to the queue?</p>
+            <p class="warning-modal-desc">You are currently reviewing a flagged chat. Any unsaved decisions will be lost. Are you sure you want to return to the queue?</p>
             <div class="warning-modal-actions">
                 <button class="btn-outline-modal" onclick="resumeModerating()">Cancel</button>
                 <button class="btn-primary" onclick="confirmGoBack()">Yes, Go Back</button>
@@ -625,20 +494,13 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- IMAGE VIEWER MODAL (Gallery Support)           -->
+    <!-- IMAGE VIEWER MODAL                             -->
     <!-- ============================================== -->
     <div class="image-modal-overlay" id="image-modal">
         <button class="modal-close" onclick="closeImageModal()"><i class="ph ph-x"></i></button>
-        
-        <!-- Gallery Navigation Arrows -->
-        <button class="modal-arrow modal-arrow-left" id="gallery-prev" onclick="showPrevImage()"><i class="ph ph-caret-left"></i></button>
-        <button class="modal-arrow modal-arrow-right" id="gallery-next" onclick="showNextImage()"><i class="ph ph-caret-right"></i></button>
-
         <div class="image-modal-content">
             <img id="modal-img-target" src="" alt="Expanded Document">
-            <div class="gallery-counter" id="gallery-counter"></div>
         </div>
-        
         <div class="modal-toolbar">
             <button class="modal-btn" onclick="modifyImage('zoom-in')" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
             <button class="modal-btn" onclick="modifyImage('zoom-out')" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
@@ -655,11 +517,10 @@
         let currentView = 'list';
 
         function hideAllViews() {
-            document.getElementById('view-list').style.display = 'none';
-            document.getElementById('view-detail').style.display = 'none';
-            document.getElementById('view-completed-approved').style.display = 'none';
-            document.getElementById('view-completed-rejected').style.display = 'none';
+            if(document.getElementById('view-list')) document.getElementById('view-list').style.display = 'none';
+            if(document.getElementById('view-detail')) document.getElementById('view-detail').style.display = 'none';
         }
+
 
         function showDetail() {
             currentView = 'detail';
@@ -715,77 +576,28 @@
             document.getElementById('warning-modal').style.display = 'none';
         }
 
-        // --- IMAGE VIEWER MODAL (WITH GALLERY LOGIC) ---
+        // --- IMAGE VIEWER MODAL LOGIC ---
         let currentScale = 1;
         let currentRotate = 0;
         let currentFlipX = 1;
         let currentFlipY = 1;
-        let galleryImages = [];
-        let currentIndex = 0;
-        
         const modalEl = document.getElementById('image-modal');
         const modalImgTarget = document.getElementById('modal-img-target');
-        const btnPrev = document.getElementById('gallery-prev');
-        const btnNext = document.getElementById('gallery-next');
-        const counterDisplay = document.getElementById('gallery-counter');
 
-        function openGalleryModal(clickedImg) {
+        function openImageModal(src) {
             currentScale = 1;
             currentRotate = 0;
             currentFlipX = 1;
             currentFlipY = 1;
             applyTransform();
-            
-            // Find if this image is part of a gallery
-            const galleryContainer = clickedImg.closest('.evidence-gallery');
-            if (galleryContainer) {
-                const imgs = galleryContainer.querySelectorAll('.clickable-img');
-                galleryImages = Array.from(imgs).map(img => img.src);
-                currentIndex = galleryImages.indexOf(clickedImg.src);
-            } else {
-                galleryImages = [clickedImg.src];
-                currentIndex = 0;
-            }
 
-            renderGalleryImage();
+            modalImgTarget.src = src;
             modalEl.style.display = 'flex';
-        }
-
-        function renderGalleryImage() {
-            currentScale = 1;
-            applyTransform();
-            modalImgTarget.src = galleryImages[currentIndex];
-            
-            if (galleryImages.length > 1) {
-                btnPrev.style.display = 'flex';
-                btnNext.style.display = 'flex';
-                counterDisplay.style.display = 'block';
-                counterDisplay.innerText = `Image ${currentIndex + 1} of ${galleryImages.length}`;
-            } else {
-                btnPrev.style.display = 'none';
-                btnNext.style.display = 'none';
-                counterDisplay.style.display = 'none';
-            }
-        }
-
-        function showNextImage() {
-            if (galleryImages.length > 1) {
-                currentIndex = (currentIndex + 1) % galleryImages.length;
-                renderGalleryImage();
-            }
-        }
-
-        function showPrevImage() {
-            if (galleryImages.length > 1) {
-                currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-                renderGalleryImage();
-            }
         }
 
         function closeImageModal() {
             modalEl.style.display = 'none';
             modalImgTarget.src = '';
-            galleryImages = [];
         }
 
         function applyTransform() {
@@ -803,11 +615,11 @@
             }
             applyTransform();
         }
-        
-        // --- Mouse Wheel Zoom (Bound to entire modal) ---
+
+        // Mouse Wheel Zoom
         modalEl.addEventListener('wheel', function(e) {
             if (modalEl.style.display === 'flex') {
-                e.preventDefault(); 
+                e.preventDefault();
                 if (e.deltaY < 0) {
                     modifyImage('zoom-in');
                 } else {
@@ -816,26 +628,26 @@
             }
         }, { passive: false });
 
-        // Close on outside click
         modalEl.addEventListener('click', function(e) {
-            if (e.target === modalEl) {
-                closeImageModal();
-            }
+            if (e.target === modalEl) closeImageModal();
         });
 
-        // --- Keyboard Navigation ---
         document.addEventListener('keydown', function(e) {
-            if (window.getComputedStyle(modalEl).display !== 'none') {
+            if (modalEl.style.display === 'flex') {
                 if (e.key === 'Escape' || e.key === 'Esc') {
                     closeImageModal();
-                } else if (e.key === 'ArrowRight') {
-                    showNextImage();
-                } else if (e.key === 'ArrowLeft') {
-                    showPrevImage();
                 }
             }
         });
 
-    </script>
-</body>
+        function submitDecision() {
+            alert('Decision submitted!');
+            showList();
+        }
+
+
+
+</script>
+
+    </body>
 </html>

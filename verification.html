@@ -182,6 +182,8 @@
         
         .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
         .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
+        div:has(input[value="reject"]:checked) > .dp-sub-reasons, div:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex !important; }
+
 
         /* Reveal sub-reasons when reject is checked */
         .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
@@ -264,6 +266,10 @@
                 <a href="contracts.html" class="nav-item">
                     <i class="ph ph-file-text"></i>
                     <span>Contracts</span>
+                </a>
+                <a href="packages.html" class="nav-item">
+                    <i class="ph ph-package"></i>
+                    <span>Packages</span>
                 </a>
             </div>
         </nav>
@@ -446,6 +452,10 @@
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="fraud"> Suspected fraud</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_1" value="incomplete"> Incomplete info</label>
                             </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_sec_1" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -490,6 +500,10 @@
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_2" value="expired"> Expired document</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_2" value="fraud"> Suspected fraud</label>
                             </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_sec_2" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -530,6 +544,10 @@
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="mismatch"> Details mismatch</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="unreasonable"> Unreasonable price</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_3" value="expired"> Expired / Illegible</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_sec_3" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>
@@ -583,6 +601,10 @@
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="illegible"> Illegible / Blurry</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="expired"> Expired document</label>
                                 <label class="dp-radio-label"><input type="radio" name="r_sec_4" value="fraud"> Suspected fraud</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_sec_4" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>
