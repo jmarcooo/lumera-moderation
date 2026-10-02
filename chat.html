@@ -155,8 +155,37 @@
 
         .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
         .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        /* --- RADIO DECISION STYLING (Profile Style) --- */
+        .dp-radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .dp-radio-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 500; color: var(--text-main);
+            cursor: pointer; padding: 4px 0;
+        }
+        .dp-radio-label input[type="radio"] {
+            accent-color: #8b5cf6;
+            width: 16px; height: 16px;
+            cursor: pointer;
+        }
+
+        .dp-sub-reasons {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            background: #fff1f2;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffe4e6;
+        }
+
+        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
+        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
+
+        /* Reveal sub-reasons when reject is checked */
+        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
+            display: flex;
+        }
 
         /* --- READ ONLY MODERATION STATES --- */
         .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
@@ -442,25 +471,18 @@
                             <div class="dp-title">Moderator Decision</div>
                             <div class="action-instructions" style="margin-top: 0;">Select the appropriate enforcement action based on the chat evidence.</div>
                             
-                            <div class="decision-wrapper" style="margin-top:auto;">
-                                <div class="decision-group">
-                                    <label class="decision-label approve">
-                                        <input type="radio" name="check_chat" value="approve">
-                                        <i class="ph ph-prohibit"></i> Dismiss Report
-                                    </label>
-                                    <label class="decision-label reject">
-                                        <input type="radio" name="check_chat" value="reject">
-                                        <i class="ph ph-warning"></i> Apply Penalty
-                                    </label>
-                                </div>
-                                <div class="rejection-reason">
-                                    <select name="reason_chat">
-                                        <option value="">Select Penalty...</option>
-                                        <option value="warning">Issue Formal Warning</option>
-                                        <option value="suspend_7">Suspend Account (7 Days)</option>
-                                        <option value="ban">Permanent Ban</option>
-                                    </select>
-                                </div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="chat_decision" value="approve"> Dismiss Flag</label>
+                                <label class="dp-radio-label"><input type="radio" name="chat_decision" value="reject"> Apply Penalty</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="chat_penalty" value="warning"> Issue Warning</label>
+                                <label class="dp-radio-label"><input type="radio" name="chat_penalty" value="mute"> Temporary Mute (24h)</label>
+                                <label class="dp-radio-label"><input type="radio" name="chat_penalty" value="ban"> Permanent Ban</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_chat" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>

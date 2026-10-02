@@ -138,25 +138,39 @@
 
         .system-message { align-self: center; background: #e5e7eb; color: #4b5563; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin: 8px 0; }
 
-        /* --- STYLED DECISION BUTTONS --- */
-        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
-        .decision-wrapper { display: flex; flex-direction: column; width: 100%; }
-        .decision-group { display: flex; flex-direction: column; gap: 8px; }
+        /* --- RADIO DECISION STYLING (Profile Style) --- */
+        .dp-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; }
 
-        .decision-label { flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; user-select: none; background-color: #ffffff; }
-        .decision-label input[type="radio"] { display: none; }
+        .dp-radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .dp-radio-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 500; color: var(--text-main);
+            cursor: pointer; padding: 4px 0;
+        }
+        .dp-radio-label input[type="radio"] {
+            accent-color: #8b5cf6;
+            width: 16px; height: 16px;
+            cursor: pointer;
+        }
 
-        .decision-label.approve:hover { border-color: var(--text-main); background-color: #f3f4f6; }
-        .decision-label.reject:hover { border-color: var(--color-reject); background-color: #fef2f2; }
+        .dp-sub-reasons {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            background: #fff1f2;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ffe4e6;
+        }
 
-        /* Checked States */
-        .decision-label:has(input[value="approve"]:checked) { background-color: #e5e7eb; border-color: var(--text-main); color: var(--text-main); font-weight: 600; }
-        .decision-label:has(input[value="reject"]:checked) { background-color: var(--bg-reject); border-color: var(--color-reject); color: var(--color-reject); font-weight: 600; }
+        .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
+        .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
 
-        .rejection-reason { display: none; margin-top: 12px; animation: fadeIn 0.2s ease-in-out; }
-        .decision-wrapper:has(input[value="reject"]:checked) .rejection-reason { display: block; }
-        .rejection-reason select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); background-color: #ffffff; outline: none; cursor: pointer; }
-        .rejection-reason select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+        /* Reveal sub-reasons when reject is checked */
+        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
+            display: flex;
+        }
 
         /* --- READ ONLY MODERATION STATES --- */
         .locked-decision { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; width: 100%; cursor: not-allowed; }
@@ -319,6 +333,28 @@
                             <td><span class="status-badge" style="background-color: #fef08a; color: #854d0e; border: 1px solid #fde047;">Pending Review</span></td>
                             <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
                         </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Premium Wedding Photography</div>
+                                <div class="biz-category">Lens & Light Studios</div>
+                            </td>
+                            <td>Mark Bautista</td>
+                            <td class="cell-email">Photography</td>
+                            <td class="cell-date">₱45,000.00</td>
+                            <td><span class="status-badge" style="background-color: #fef08a; color: #854d0e; border: 1px solid #fde047;">Pending Review</span></td>
+                            <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="biz-name">Basic Sound System Rental</div>
+                                <div class="biz-category">AudioVibes</div>
+                            </td>
+                            <td>Sarah Cruz</td>
+                            <td class="cell-email">Audio & Lighting</td>
+                            <td class="cell-date">₱5,000.00</td>
+                            <td><span class="status-badge" style="background-color: #fef08a; color: #854d0e; border: 1px solid #fde047;">Pending Review</span></td>
+                            <td><button class="btn-submit" style="padding: 6px 16px; font-size: 13px;" onclick="showDetail()">Moderate</button></td>
+                        </tr>
                     </tbody>
                     </table>
                 </div>
@@ -383,18 +419,19 @@
                         <!-- Col 3: Decision Panel -->
                         <div class="block-decision">
                             <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
-                            <div class="decision-wrapper">
-                                <div class="dp-radio-group">
-                                    <label class="dp-radio-label"><input type="radio" name="package_decision" value="approve"> Approve</label>
-                                    <label class="dp-radio-label"><input type="radio" name="package_decision" value="reject"> Reject</label>
-                                </div>
-                                <div class="dp-sub-reasons" style="display: none; margin-top: 10px;">
-                                    <select name="package_reject_reason" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color);">
-                                        <option value="">Select reason...</option>
-                                        <option value="inappropriate">Inappropriate Content</option>
-                                        <option value="misleading">Misleading Details</option>
-                                    </select>
-                                </div>
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="package_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="package_decision" value="reject"> Reject</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="inappropriate"> Inappropriate Content</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="misleading"> Misleading Details</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="offensive"> Offensive Language</label>
+                                <label class="dp-radio-label"><input type="radio" name="r_package_reason" value="unrealistic"> Unrealistic Expectations</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                     </div>
@@ -578,17 +615,7 @@
             showList();
         }
 
-        // Show reason dropdown when Reject is selected
-        document.querySelectorAll('input[name="package_decision"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const reasonSelect = document.querySelector('.dp-sub-reasons');
-                if (this.value === 'reject') {
-                    reasonSelect.style.display = 'block';
-                } else {
-                    reasonSelect.style.display = 'none';
-                }
-            });
-        });
+
 
 </script>
 
