@@ -82,6 +82,7 @@
         .data-table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
         .data-table tr:hover td { background-color: #f9fafb; }
         .biz-name { font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .biz-category { font-size: 13px; color: var(--text-secondary); }
         .biz-docs { font-size: 12px; color: var(--text-tertiary); }
         .cell-email, .cell-date { color: var(--text-secondary); }
 
@@ -166,7 +167,7 @@
 
         .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
         .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
-        div:has(input[value="reject"]:checked) > .dp-sub-reasons, div:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex !important; }
+
 
 
         /* Reveal sub-reasons when reject is checked */
@@ -477,6 +478,68 @@
                 </div>
             </div>
 
+            <!-- COMPLETED MODERATION - APPROVED EXAMPLE -->
+            <div id="view-completed-approved" style="display: none;">
+                <div class="page-header" style="display: block;">
+                    <h1>Asset Record: Platinum Catering Package</h1>
+                    <p>This package was approved and is currently live on the supplier's profile.</p>
+                </div>
+                <div class="verification-blocks">
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-package"></i> Package Details</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Package Title</div><div class="value">Platinum Catering Package</div></div>
+                                <div class="info-item"><div class="label">Supplier</div><div class="value">Taste of Manila</div></div>
+                                <div class="info-item"><div class="label">Price</div><div class="value">₱125,000.00</div></div>
+                            </div>
+                        </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Moderator Decision</div>
+                            <div class="locked-decision locked-approve"><i class="ph ph-check-circle"></i> Approved</div>
+                        </div>
+                    </div>
+                    <div class="final-action-bar" style="background-color: #f0fdf4; border-color: #bbf7d0;">
+                        <div class="final-action-text">
+                            <h4 style="color: #166534;">Review Completed - Approved</h4>
+                            <p>Completed by Moderator on 06/20/2026</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPLETED MODERATION - REJECTED EXAMPLE -->
+            <div id="view-completed-rejected" style="display: none;">
+                <div class="page-header" style="display: block;">
+                    <h1>Asset Record: Fire Dancer Troupe</h1>
+                    <p>This package was rejected. The supplier must correct the highlighted issues and resubmit.</p>
+                </div>
+                <div class="verification-blocks">
+                    <div class="mod-block">
+                        <div class="block-data">
+                            <div class="block-header"><i class="ph-fill ph-package"></i> Package Details</div>
+                            <div class="info-grid">
+                                <div class="info-item"><div class="label">Package Title</div><div class="value">Fire Dancer Troupe</div></div>
+                                <div class="info-item"><div class="label">Supplier</div><div class="value">Ignite Entertainers</div></div>
+                            </div>
+                        </div>
+                        <div class="block-decision">
+                            <div class="dp-title">Moderator Decision</div>
+                            <div class="locked-decision locked-reject"><i class="ph ph-x-circle"></i> Rejected</div>
+                            <div class="static-reason"><strong>Reason:</strong> Safety violation - Fire performances require special permits not provided.</div>
+                        </div>
+                    </div>
+                    <div class="final-action-bar" style="background-color: #fef2f2; border-color: #fecaca;">
+                        <div class="final-action-text">
+                            <h4 style="color: #991b1b;">Review Completed - Rejected</h4>
+                            <p>Completed by Moderator on 06/19/2026</p>
+                        </div>
+                        <button class="btn-view" onclick="showList()">Return to Queue</button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -519,6 +582,8 @@
         function hideAllViews() {
             if(document.getElementById('view-list')) document.getElementById('view-list').style.display = 'none';
             if(document.getElementById('view-detail')) document.getElementById('view-detail').style.display = 'none';
+            if(document.getElementById('view-completed-approved')) document.getElementById('view-completed-approved').style.display = 'none';
+            if(document.getElementById('view-completed-rejected')) document.getElementById('view-completed-rejected').style.display = 'none';
         }
 
 

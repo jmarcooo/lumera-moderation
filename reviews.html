@@ -172,11 +172,11 @@
 
         .dp-sub-reasons .dp-radio-label { color: #881337; font-weight: 400; }
         .dp-sub-reasons .dp-radio-label input[type="radio"] { accent-color: #e11d48; }
-        div:has(input[value="reject"]:checked) > .dp-sub-reasons, div:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex !important; }
+
 
 
         /* Reveal sub-reasons when reject is checked */
-        :has(> .dp-radio-group input[value="reject"]:checked) .dp-sub-reasons, .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons, .decision-wrapper:has(input[value="reject"]:checked) .dp-sub-reasons, :has(> * > input[value="reject"]:checked) .dp-sub-reasons {
+                .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons {
             display: flex;
         }
 

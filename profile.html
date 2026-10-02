@@ -163,7 +163,7 @@
         .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
         /* Reveal sub-reasons when reject is checked */
-        :has(> .dp-radio-group input[value="reject"]:checked) .dp-sub-reasons, .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons, .decision-wrapper:has(input[value="reject"]:checked) .dp-sub-reasons, :has(> * > input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
+                .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
         .btn-submit:hover { opacity: 0.9; }
@@ -410,13 +410,12 @@
                     <p>Evaluate the newly uploaded portfolio albums against platform media guidelines.</p>
                 </div>
 
-                <div class="mod-block two-col">
-                    <!-- Requested Update (Spans Left) -->
+                <!-- Album 1 -->
+                <div class="mod-block two-col" style="margin-bottom: 24px;">
                     <div class="block-action" style="border-right: 1px solid var(--border-color);">
-                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Updates</div>
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update: Album 1</div>
                         
-                        <!-- Album 1 -->
-                        <div class="album-submission">
+                        <div class="album-submission" style="margin-bottom: 0;">
                             <div class="album-info-title">Church Ceremony</div>
                             <div class="album-info-desc">Elegant church wedding setups highlighting floral arches and aisle styling.</div>
                             <div class="tag-row">
@@ -431,9 +430,34 @@
                                 <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
                             </div>
                         </div>
+                    </div>
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision (Album 1)</div>
+                        <div class="decision-wrapper">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a1_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_a1" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Album 2 -->
-                        <div class="album-submission">
+                <!-- Album 2 -->
+                <div class="mod-block two-col" style="margin-bottom: 24px;">
+                    <div class="block-action" style="border-right: 1px solid var(--border-color);">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update: Album 2</div>
+
+                        <div class="album-submission" style="margin-bottom: 0;">
                             <div class="album-info-title">Rustic Reception</div>
                             <div class="album-info-desc">Farmhouse and barn inspired reception setups with warm lighting and wooden accents.</div>
                             <div class="tag-row">
@@ -446,8 +470,33 @@
                                 <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
                             </div>
                         </div>
+                    </div>
+                    <div class="block-decision">
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision (Album 2)</div>
+                        <div class="decision-wrapper">
+                            <div class="dp-radio-group">
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_decision" value="reject"> Reject Update</label>
+                            </div>
+                            <div class="dp-sub-reasons">
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a2_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_a2" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Album 3 -->
+                <!-- Album 3 -->
+                <div class="mod-block two-col">
+                    <div class="block-action" style="border-right: 1px solid var(--border-color);">
+                        <div class="block-header requested"><i class="ph-fill ph-upload-simple"></i> Requested Update: Album 3</div>
+
                         <div class="album-submission" style="margin-bottom: 0;">
                             <div class="album-info-title">Bridal Bouquets</div>
                             <div class="album-info-desc">Custom handcrafted bridal bouquets matched to specific color motifs.</div>
@@ -462,29 +511,26 @@
                                 <div class="evidence-thumb"><img src="https://images.unsplash.com/photo-1459257868276-5e65389e2722?w=400&q=80" class="clickable-img" onclick="openMediaModal(this)"></div>
                             </div>
                         </div>
-
                     </div>
-
-                    <!-- Decision Panel (Spans Right) -->
                     <div class="block-decision">
-                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision</div>
+                        <div class="dp-title"><i class="ph-fill ph-gavel"></i> Moderator Decision (Album 3)</div>
                         <div class="decision-wrapper">
                             <div class="dp-radio-group">
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_decision" value="approve"> Approve</label>
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_decision" value="reject"> Reject Update</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_decision" value="approve"> Approve</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
-                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_a3_reject_reason" value="safety"> Inappropriate / NSFW</label>
                             </div>
                             <div style="margin-top: 12px;">
                                 <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
-                                <textarea name="moderator_insights_portfolio_multi" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
+                                <textarea name="moderator_insights_a3" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
-                        <button class="btn-submit" onclick="showList()">Submit Decision</button>
+                        <button class="btn-submit" style="margin-top: 16px;" onclick="showList()">Submit All Decisions</button>
                     </div>
                 </div>
             </div>
