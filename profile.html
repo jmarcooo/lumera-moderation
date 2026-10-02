@@ -163,7 +163,7 @@
         .dp-sub-reasons select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #fca5a5; font-size: 13px; color: #991b1b; background-color: #ffffff; outline: none; cursor: pointer; }
         
         /* Reveal sub-reasons when reject is checked */
-        .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
+        :has(> .dp-radio-group input[value="reject"]:checked) .dp-sub-reasons, .block-decision:has(input[value="reject"]:checked) .dp-sub-reasons, .decision-wrapper:has(input[value="reject"]:checked) .dp-sub-reasons, :has(> * > input[value="reject"]:checked) .dp-sub-reasons { display: flex; }
 
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.3); width: 100%; margin-top: auto; }
         .btn-submit:hover { opacity: 0.9; }
@@ -474,13 +474,14 @@
                                 <label class="dp-radio-label"><input type="radio" name="portfolio_multi_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="portfolio_multi_reject_reason">
-                                    <option value="">Select failure reason...</option>
-                                    <option value="quality">Blurry / Low Resolution Media</option>
-                                    <option value="watermark">Competitor Watermark / Branding</option>
-                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
-                                    <option value="safety">Inappropriate / NSFW</option>
-                                </select>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_multi_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_portfolio_multi" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
@@ -533,13 +534,14 @@
                                 <label class="dp-radio-label"><input type="radio" name="portfolio_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="portfolio_reject_reason">
-                                    <option value="">Select failure reason...</option>
-                                    <option value="quality">Blurry / Low Resolution Media</option>
-                                    <option value="watermark">Competitor Watermark / Branding</option>
-                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
-                                    <option value="safety">Inappropriate / NSFW</option>
-                                </select>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_reject_reason" value="watermark"> Competitor Watermark / Branding</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="portfolio_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_portfolio" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
@@ -582,13 +584,14 @@
                                 <label class="dp-radio-label"><input type="radio" name="avatar_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="avatar_reject_reason">
-                                    <option value="">Select failure reason...</option>
-                                    <option value="quality">Blurry / Low Resolution</option>
-                                    <option value="text">Contains Contact Info / Heavy Text</option>
-                                    <option value="irrelevant">Irrelevant / Generic Stock Photo</option>
-                                    <option value="safety">Inappropriate / NSFW</option>
-                                </select>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_reject_reason" value="quality"> Blurry / Low Resolution</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_reject_reason" value="text"> Contains Contact Info / Heavy Text</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_reject_reason" value="irrelevant"> Irrelevant / Generic Stock Photo</label>
+                                <label class="dp-radio-label"><input type="radio" name="avatar_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_avatar" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
@@ -635,12 +638,13 @@
                                 <label class="dp-radio-label"><input type="radio" name="bio_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="bio_reject_reason">
-                                    <option value="">Select failure reason...</option>
-                                    <option value="contact">Attempts Off-Platform Routing (Emails/Links)</option>
-                                    <option value="profanity">Profanity or Hate Speech</option>
-                                    <option value="spam">Spam or Gibberish</option>
-                                </select>
+                                <label class="dp-radio-label"><input type="radio" name="bio_reject_reason" value="contact"> Attempts Off-Platform Routing (Emails/Links)</label>
+                                <label class="dp-radio-label"><input type="radio" name="bio_reject_reason" value="profanity"> Profanity or Hate Speech</label>
+                                <label class="dp-radio-label"><input type="radio" name="bio_reject_reason" value="spam"> Spam or Gibberish</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_bio" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
@@ -683,13 +687,14 @@
                                 <label class="dp-radio-label"><input type="radio" name="banner_decision" value="reject"> Reject Update</label>
                             </div>
                             <div class="dp-sub-reasons">
-                                <select name="banner_reject_reason">
-                                    <option value="">Select failure reason...</option>
-                                    <option value="quality">Blurry / Low Resolution Media</option>
-                                    <option value="text">Contains Contact Info / Heavy Text</option>
-                                    <option value="irrelevant">Irrelevant to Supplier Category</option>
-                                    <option value="safety">Inappropriate / NSFW</option>
-                                </select>
+                                <label class="dp-radio-label"><input type="radio" name="banner_reject_reason" value="quality"> Blurry / Low Resolution Media</label>
+                                <label class="dp-radio-label"><input type="radio" name="banner_reject_reason" value="text"> Contains Contact Info / Heavy Text</label>
+                                <label class="dp-radio-label"><input type="radio" name="banner_reject_reason" value="irrelevant"> Irrelevant to Supplier Category</label>
+                                <label class="dp-radio-label"><input type="radio" name="banner_reject_reason" value="safety"> Inappropriate / NSFW</label>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <label style="font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: block;">Moderator Input / Insights (Optional)</label>
+                                <textarea name="moderator_insights_banner" rows="3" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); resize: vertical; font-size: 13px; font-family: inherit;"></textarea>
                             </div>
                         </div>
                         <button class="btn-submit" onclick="showList()">Submit Decision</button>
