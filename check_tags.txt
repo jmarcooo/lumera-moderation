@@ -1,0 +1,197 @@
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('rotate-left')" title="Rotate Left"><i class="ph ph-arrow-counter-clockwise"></i></button>
+            <button class="modal-btn" onclick="modifyImage('rotate-right')" title="Rotate Right"><i class="ph ph-arrow-clockwise"></i></button>
+            <div style="width: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+            <button class="modal-btn" onclick="modifyImage('flip-h')" title="Flip Horizontal"><i class="ph ph-arrows-left-right"></i></button>
+            <button class="modal-btn" onclick="modifyImage('flip-v')" title="Flip Vertical"><i class="ph ph-arrows-out-line-vertical"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'list';
+
+        function hideAllViews() {
+            document.getElementById('view-list').style.display = 'none';
+            document.getElementById('view-detail').style.display = 'none';
+            document.getElementById('view-completed-approved').style.display = 'none';
+            document.getElementById('view-completed-rejected').style.display = 'none';
+        }
+
+        function showDetail() {
+            currentView = 'detail';
+            hideAllViews();
+            document.getElementById('view-detail').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedApproved() {
+            currentView = 'completed';
+            hideAllViews();
+            document.getElementById('view-completed-approved').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showCompletedRejected() {
+            currentView = 'completed';
+            hideAllViews();
+            document.getElementById('view-completed-rejected').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'flex';
+            document.getElementById('main-topbar').classList.add('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function showList() {
+            currentView = 'list';
+            hideAllViews();
+            document.getElementById('view-list').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('main-topbar').classList.remove('has-back');
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // --- WARNING MODAL LOGIC FOR GOING BACK ---
+        function attemptGoBack() {
+            if (currentView === 'detail') {
+                document.getElementById('warning-modal').style.display = 'flex';
+            } else {
+                showList();
+            }
+        }
+
+        function confirmGoBack() {
+            document.getElementById('warning-modal').style.display = 'none';
+            showList();
+        }
+
+        function resumeModerating() {
+            document.getElementById('warning-modal').style.display = 'none';
+        }
+
+        // --- IMAGE VIEWER MODAL LOGIC ---
+        let currentScale = 1;
+        let currentRotate = 0;
+        let currentFlipX = 1;
+        let currentFlipY = 1;
+        const modalEl = document.getElementById('image-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openImageModal(src) {
+            currentScale = 1;
+            currentRotate = 0;
+            currentFlipX = 1;
+            currentFlipY = 1;
+            applyTransform();
+
+            modalImgTarget.src = src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            modalEl.style.display = 'none';
+            modalImgTarget.src = '';
+        }
+
+        function applyTransform() {
+            modalImgTarget.style.transform = `scale(${currentScale}) rotate(${currentRotate}deg) scaleX(${currentFlipX}) scaleY(${currentFlipY})`;
+        }
+
+        function modifyImage(action) {
+            switch(action) {
+                case 'zoom-in': currentScale += 0.2; break;
+                case 'zoom-out': currentScale = Math.max(0.2, currentScale - 0.2); break;
+                case 'rotate-left': currentRotate -= 90; break;
+                case 'rotate-right': currentRotate += 90; break;
+                case 'flip-h': currentFlipX *= -1; break;
+                case 'flip-v': currentFlipY *= -1; break;
+            }
+            applyTransform();
+        }
+
+        // Mouse Wheel Zoom
+        modalEl.addEventListener('wheel', function(e) {
+            if (modalEl.style.display === 'flex') {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    modifyImage('zoom-in');
+                } else {
+                    modifyImage('zoom-out');
+                }
+            }
+        }, { passive: false });
+
+        modalEl.addEventListener('click', function(e) {
+            if (e.target === modalEl) closeImageModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (modalEl.style.display === 'flex') {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    closeImageModal();
+                }
+            }
+        });
+    </script>
+
+    <!-- --- MEDIA VIEWER MODAL --- -->
+    <div class="media-modal-overlay" id="media-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div class="media-modal-controls" style="position: absolute; top: 20px; right: 20px; display: flex; gap: 12px;">
+            <button onclick="closeMediaModal()" style="background: rgba(255,255,255,0.1); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="media-modal-content" style="position: relative; max-width: 90vw; max-height: 85vh; display: flex; align-items: center; justify-content: center;">
+            <img id="modal-img-target" src="" alt="Expanded Media" style="max-width: 100%; max-height: 75vh; object-fit: contain; transition: transform 0.2s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 4px;">
+        </div>
+    </div>
+
+    <script>
+        // List/Detail Toggle
+        const viewList = document.getElementById('view-list');
+        const viewDetail = document.getElementById('view-detail');
+
+        function showDetail() {
+            viewList.style.display = 'none';
+            viewDetail.style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function showList() {
+            viewDetail.style.display = 'none';
+            viewList.style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function submitDecision() {
+            alert('Decision submitted!');
+            showList();
+        }
+
+        // --- MEDIA VIEWER ---
+        const modalEl = document.getElementById('media-modal');
+        const modalImgTarget = document.getElementById('modal-img-target');
+
+        function openMediaModal(clickedImg) {
+            modalImgTarget.src = clickedImg.src;
+            modalEl.style.display = 'flex';
+        }
+
+        function closeMediaModal() {
+            modalEl.style.display = 'none';
+        }
+
+        // Show reason dropdown when Reject is selected
+        document.querySelectorAll('input[name="package_decision"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const reasonSelect = document.querySelector('.dp-sub-reasons');
+                if (this.value === 'reject') {
+                    reasonSelect.style.display = 'block';
+                } else {
+                    reasonSelect.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
